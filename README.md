@@ -6,7 +6,7 @@
 The book is written in **Thai**.
 Yah, there are plenty of ML books in English out there.
 My mission is to write a **Thai** ML book capturing the **adventurous spirits** of the ML community
-that a like-minded person, including myself in the next life, will enjoy.
+that a like-minded person, including myself both in this life and the next, will enjoy.
 
 > Mark Twain: "*Sail away from the safe harbor. Catch the trade winds in your sails. Explore. Dream. Discover.*" 
 
