@@ -3,7 +3,8 @@
 
 ![Main Cover Image](https://github.com/tatpongkatanyukul/AdventureBook/blob/main/deep_learning2b.png)
 
-> "Sail away from the safe harbor. Catch the trade winds in your sails. Explore. Dream. Discover." --- Mark Twain
+> "Sail away from the safe harbor. Catch the trade winds in your sails. Explore. Dream. Discover." 
+--- Mark Twain
 
 ## Chapter 1
 
