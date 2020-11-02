@@ -5,6 +5,7 @@
 
 > Mark Twain: "*Sail away from the safe harbor. Catch the trade winds in your sails. Explore. Dream. Discover.*" 
 
+[Local wiki article of the book](http://degas.en.kku.ac.th/coewiki/doku.php?id=pr:advbook)
 
 ## Chapter 1
 Overview of machine learning and pattern recognition.
