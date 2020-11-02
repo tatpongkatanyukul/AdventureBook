@@ -74,7 +74,7 @@ Discuss sequential data and effective models.
 to do: Hands-on sequential models.
 
 ## Chapter 9
-Give some examples of visual pattern recognition tasks.
+Give some examples of sequential pattern recognition tasks.
 
 ### Exercises
 to do: Hands-on sequential tasks.
