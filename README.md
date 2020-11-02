@@ -1,6 +1,7 @@
-# The Adventures of Machine Learning in the World of Pattern Recognitiion (a.k.a. The Adventure Book of Machine Learning)
+# The Adventures of Machine Learning in the World of Pattern Recognitiion 
+(a.k.a. The Adventure Book of Machine Learning)
 
-
+https://github.com/tatpongkatanyukul/AdventureBook/blob/main/deep_learning2b.png
 
 ## Chapter 1
 
