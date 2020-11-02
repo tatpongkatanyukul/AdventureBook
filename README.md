@@ -8,7 +8,7 @@
 ### Exercises
 - Data
 
-- [Codon table!](https://github.com/tatpongkatanyukul/AdventureBook/blob/main/codons.txt)
+- [Codon table](https://github.com/tatpongkatanyukul/AdventureBook/blob/main/codons.txt)
 
 -- DNA sequences
 
