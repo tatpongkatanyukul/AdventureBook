@@ -16,5 +16,3 @@
   * [Insulin](https://github.com/tatpongkatanyukul/AdventureBook/blob/main/homo_sapiens_insulin.txt)
   * [P53](https://github.com/tatpongkatanyukul/AdventureBook/blob/main/homo_sapiens_p53.txt)
   * [Titin](https://github.com/tatpongkatanyukul/AdventureBook/blob/main/homo_sapiens_titin.txt)
-
-
