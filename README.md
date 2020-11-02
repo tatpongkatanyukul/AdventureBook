@@ -1,12 +1,15 @@
-# The Adventure Book of Machine Learning
+# การผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรูปแบบ
+# The Adventures of Machine Learning in the World of Pattern Recognitiion (a.k.a. The Adventure Book of Machine Learning)
 
-## การผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรูปแบบ
-## The Adventures of Machine Learning in the World of Pattern Recognitiion
+## Chapter 1
 
-
-# Chapter 1
-
-## Exercises
-
+### Exercises
+* Data
+** Codon table: https://github.com/tatpongkatanyukul/AdventureBook/blob/main/codons.txt
+** DNA sequences
+*** Mitochondrion: https://github.com/tatpongkatanyukul/AdventureBook/blob/main/homo_sapiens_mitochondrion.txt
+*** Insulin: https://github.com/tatpongkatanyukul/AdventureBook/blob/main/homo_sapiens_insulin.txt
+*** P53: https://github.com/tatpongkatanyukul/AdventureBook/blob/main/homo_sapiens_p53.txt
+*** Titin: https://github.com/tatpongkatanyukul/AdventureBook/blob/main/homo_sapiens_titin.txt
 
 
