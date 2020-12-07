@@ -16,6 +16,7 @@ that a like-minded person, including myself both in this life and the next, will
 ## Drafts
 
   * The first draft (submitted for my sabbatical leave, on Dec 8th, 2020)
+    * cover
 
 
 ## Chapter 1
