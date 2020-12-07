@@ -8,11 +8,14 @@ Yah, there are plenty of ML books in English out there.
 My mission is to write a **Thai** ML book capturing the **adventurous spirits** of the ML community
 that a like-minded person, including myself both in this life and the next, will enjoy it.
 
-
 > Mark Twain: "*Sail away from the safe harbor. Catch the trade winds in your sails. Explore. Dream. Discover.*" 
 
 
 [Local wiki article of the book (in Thai)](http://degas.en.kku.ac.th/coewiki/doku.php?id=pr:advbook)
+
+## Drafts
+
+  * The first draft (submitted for my sabbatical leave, on Dec 8th, 2020)
 
 
 ## Chapter 1
