@@ -62,6 +62,9 @@ Introduce GPU-enable tools, e.g., PyTorch.
 ## Chapter 6
 Explain convolution neural networks (CNN).
 
+To-Do: inception
+  * [Inception code](https://github.com/pytorch/vision/blob/master/torchvision/models/googlenet.py)
+
 ### Exercises
 Hands-on CNN.
 
@@ -82,3 +85,6 @@ Give some examples of sequential pattern recognition tasks.
 
 ### Exercises
 to do: Hands-on sequential tasks.
+
+
+
