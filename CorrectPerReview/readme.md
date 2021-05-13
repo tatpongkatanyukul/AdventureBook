@@ -5,6 +5,8 @@
     * เพิ่ม ```raggedbottom``` อนุญาตให้ แต่ละหน้าไม่ต้องเขียนจนเต็มหน้า (น่าจะลด overfull หรือ underfull ได้ ดู log file) 
   * ```03ann.tex```
     * แก้ไข "**ไหล**ของเหล่ายักษ์." เป็น "**ไหล่**ของเหล่ายักษ์"
+  * ```06conv.tex```
+    * แก้ไขคำซ้ำซ้อน "...(fully connected layer) (Fully Connected Layer)" เป็น "...(fully connected layer)"
 
 ปล. ฉบับนี้ไม่จำเป็นต้องตรงกับฉบับพิมพ์จริง 100%
 
