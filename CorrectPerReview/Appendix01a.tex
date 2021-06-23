@@ -1,0 +1,743 @@
+\chapter{การหาค่าดีที่สุดกับการรู้จำรู้แบบและการเรียนรู้ของเครื่อง}
+\label{opt optimization in PRML}
+
+%เพื่อให้เห็นอย่างชัดเจนว่า
+\textit{การหาค่าดีที่สุด}นั้น 
+เป็นพื้นฐานเบื้องหลังของ\textit{การรู้จำรู้แบบ}และ\textit{การเรียนรู้ของเครื่อง}
+เนื้อหาส่วนนี้ ยกตัวอย่างภารกิจและวิธี\textit{การรู้จำรู้แบบ}แบบต่างๆ และอธิบายในมุมมองของศาสตร์\textit{การหาค่าดีที่สุด}
+
+\section{การหาค่าถดถอย (ทั่วๆไป)}
+\index{การหาค่าถดถอย}\index{regression}
+
+\textit{การหาค่าถดถอย} (regression)
+เป็นการอนุมานค่าเอาต์พุต $y \in \mathbb{R}$ จากค่าอินพุต $\bm{x}$
+โดยคำนวณจาก $y = f(\bm{x}, \bm{\theta})$ เมื่อ $f(\cdot, \cdot)$ เป็นโมเดลที่เลือกใช้ และ $\bm{\theta}$ เป็นค่าพารามิเตอร์ของโมเดล.
+
+ค่าพารามิเตอร์ $\bm{\theta}$ หาได้จากค่าที่ทำให้\textit{ผลรวมค่าผิดพลาดกำลังสอง}มีค่าน้อยที่สุด.
+นั่นคือ
+\begin{eqnarray}
+\bm{\theta} = \arg\min_{\bm{w}} \frac{1}{2} \sum_{n=1}^N \left( f(\bm{\tilde{x}}_n, \bm{w}) - \tilde{y}_n \right)^2
+\label{eq: opt regression loss}
+\end{eqnarray}
+โดยข้อมูลเก่า $\{\bm{\tilde{x}}_1, \ldots, \bm{\tilde{x}}_N\}$ และ $\{\tilde{y}_1, \ldots, \tilde{y}_N\}$ คือตัวอย่างอินพุตและเอาต์พุตตามลำดับ (จำนวน $N$ ตัวอย่าง).
+
+ภาระกิจคือ การทำนายค่าตัวเลขจากค่าอินพุต.
+ประสบการณ์ได้จากข้อมูลเก่า.
+สมถนะวัดได้จาก\textit{ผลรวมค่าผิดพลาดกำลังสอง} (sum of squared errors, คำย่อ SSE).
+\index{sum of squared errors}
+\index{ผลรวมค่าผิดพลาดกำลังสอง}
+
+\section{การจำแนกกลุ่ม (ทั่วๆไป)}
+\index{การจำแนกกลุ่ม}\index{classification}
+
+\textit{การจำแนกกลุ่ม} (classification)
+เป็นการอนุมาน\textit{ฉลากของกลุ่ม} (class label หรือมักเรียกย่อว่า \textit{ฉลาก} หรือ label) \index{ฉลาก}\index{label}
+$\bm{y}$ จากค่าอินพุต $\bm{x}$
+โดย\textit{ฉลาก} $\bm{y}$ มักถูกแสดงใน\textit{รูปแบบรหัสหนึ่งร้อน} 
+และค่าของ $\bm{y}$ คำนวณได้จาก $\bm{y} = f(\bm{x}, \bm{\theta})$ เมื่อ 
+$\bm{\theta}$ เป็นค่าพารามิเตอร์ของโมเดล
+$f(\cdot, \cdot)$ เป็นโมเดลที่เลือกใช้ 
+และ $f$ ให้เอาต์พุตออกมาใน\textit{รูปแบบรหัสหนึ่งร้อน}.
+
+\textit{รูปแบบรหัสหนึ่งร้อน} (one-hot coding หรือ one-of-K coding)%
+\index{รูปแบบรหัสหนึ่งร้อน}\index{one-hot coding}\index{one-of-K coding}
+ออกแบบมาสำหรับงานจำแนกกลุ่ม.
+แนวคิดคือ \textit{รหัสหนึ่งร้อน}หนึ่งรูปแบบจะระบุกลุ่มหนึ่งกลุ่มจากกลุ่มทั้งหมด $K$ กลุ่ม 
+โดยสำหรับการจำแนกกลุ่ม $K$ กลุ่ม รหัสจะประกอบด้วยตัวเลข $K$ ตัวเลข
+และในจำนวน $K$ ตัวเลขนั้นจะมีแค่หนึ่งเลขเท่านั้นที่มีค่าเป็น $1$ ที่เหลือเป็น $0$ ทั้งหมด.
+ตำแหน่งของตัวเลขที่มีค่าเป็น $1$ จะระบุกลุ่มของอินพุต.
+ในทางปฏิบัติ\textit{รูปแบบรหัสหนึ่งร้อน} ถูกควบคุมอย่างหลวมๆ ด้วย
+เงื่อนไข $\bm{y} = [y_1, \ldots, y_K]^T, y_k \in [0,1]$ สำหรับ $k = 1, \ldots, K$ และ $\sum_{k=1}^K y_k = 1$.
+
+ค่าพารามิเตอร์ $\bm{\theta}$ หาได้จากค่าที่ทำให้\textit{ผลรวมค่าเอนโทรปีผสม}น้อยที่สุด.
+นั่นคือ
+\begin{eqnarray}
+  \bm{\theta} &=& \arg\min_{\bm{w}} \sum_{n=1}^N \mathrm{loss}_n
+  \label{eq: opt classification loss}, \\
+%
+  \mathrm{loss}_n &=& - \sum_{k=1}^K \tilde{y}_{k,n} \cdot \log f^{(k)}(\bm{\tilde{x}}_n, \bm{w})
+  \label{eq: opt classification cross-entropy}
+\end{eqnarray}
+โดย
+$f^{(k)}(\cdot, \cdot)$ แทนส่วนประกอบที่ $k^{th}$ ของผลลัพธ์จากฟังชั่น $f$
+และ
+ข้อมูลเก่า $\{\bm{\tilde{x}}_1, \ldots, \bm{\tilde{x}}_N\}$ และ $\{\bm{\tilde{y}}_1, \ldots, \bm{\tilde{y}}_N\}$ คือตัวอย่างอินพุตและเอาต์พุตตามลำดับ (จำนวน $N$ ตัวอย่าง).
+ตัวอย่างเอาต์พุต $\bm{\tilde{y}}_n = [\tilde{y}_{1,n}, \ldots, \tilde{y}_{K,n}]^T$ สำหรับ $n=1, \ldots, N$.
+
+ภาระกิจคือ การทำนายกลุ่มของค่าอินพุต.
+ประสบการณ์ได้จากข้อมูลเก่า.
+สมถนะวัดได้จาก\textit{ผลรวมค่าเอนโทรปีผสม} (sum of cross entropy).
+\index{ผลรวมค่าเอนโทรปีผสม}
+\index{sum of cross entropy}
+
+\section{การจำแนกกลุ่มแบบสองกลุ่ม (ซัพพอร์ตเวคเตอร์แมชชีน)}
+\index{การจำแนกกลุ่มแบบสองกลุ่ม}\index{binary classification}
+\index{ซัพพอร์ตเวคเตอร์แมชชีน}\index{Support Vector Machine}
+\index{SVM}
+
+\textit{การจำแนกกลุ่มแบบสองกลุ่ม} (bi-class or binary classification)
+เป็นการอนุมานค่าเอาต์พุต $y \in \{-1,+1\}$ จากค่าอินพุต $\bm{x}$.
+\textit{ซัพพอร์ตเวคเตอร์แมชชีน} (Support Vector Machine คำย่อ SVM) เป็นวิธีหนึ่งที่ออกแบบมาสำหรับงาน\textit{การจำแนกกลุ่มแบบสองกลุ่ม}.
+\textit{ซัพพอร์ตเวคเตอร์แมชชีน}อนุมานค่าเอาต์พุตจาก
+\begin{eqnarray}
+y &=& \mathrm{sign}\left(\sum_{i=1}^K \hat{a}_i \cdot \hat{y}_i \cdot \kappa(\bm{x}, \bm{\hat{x}}_i) + b \right)
+\label{eq: opt svm inference}
+\end{eqnarray}
+เมื่อ 
+$\mathrm{sign}(u) = -1$ ถ้า $u < 0$ นอกนั้น $\mathrm{sign}(u) = 1$.
+ตัวแปร $\bm{\hat{x}}_i, \hat{y}_i$ เป็นข้อมูลเก่า (หรือข้อมูลเก่าที่ถูกเลือกออกมา ที่เรียกว่า \textit{เวคเตอร์สนับสนุน} หรือ support vectors\cite{CL2011}. 
+$K$ คือจำนวน\textit{เวคเตอร์สนับสนุน})
+และ
+$\kappa(\cdot, \cdot)$ คือ \textit{ฟังชั่นแก่น} (kernel function)
+เช่น 
+\textit{แก่นเชิงเส้น} (linear kernel) ใช้
+$\kappa(\bm{u}, \bm{v}) = \langle \bm{u}, \bm{v} \rangle = \bm{u}^T \bm{v}$
+หรือ
+\textit{แก่นเรเดียลเบซิส} (radial basis kernel) ใช้
+$\kappa(\bm{u}, \bm{v}) = \exp( - \gamma || \bm{u} - \bm{v} ||^2 )$ และ $\gamma > 0$ เป็นค่าที่เลือกใช้. 
+
+ค่าพารามิเตอร์ 
+$\hat{a}_1, \ldots, \hat{a}_K$ 
+ถูกเลือกมาจาก $a_1, \ldots, a_N$ 
+โดย $\hat{a}_i$ คือค่าพารามิเตอร์ที่สอดคล้องกับ\textit{เวคเตอร์สนับสนุน} $\bm{\hat{x}}_i$ กับ $\hat{y}_i$ ที่ถูกเลือก.
+นั่นคือ หากเลือก $\bm{\tilde{x}}_j$ กับ $\tilde{y}_j$
+มาเป็น
+\textit{เวคเตอร์สนับสนุน} $\bm{\hat{x}}_i$ กับ $\hat{y}_i$ 
+แล้ว 
+ดังนั้น $\hat{a}_i = a_j$.
+ส่วนค่า $\bm{a} = [a_1, \ldots, a_N]^T$
+และ $b$ หาได้จากการเลือก\textit{ขอบเขตตัดสินใจ} (decision hyperplane) ที่ทำให้ระยะห่างระหว่างขอบเขตของกลุ่มข้อมูลทั้งสองมีค่ามากที่สุด.
+จากทฤษฎี\textit{การโปรแกรมเชิงเส้น} (linear programming) การคำนวณดังกล่าวเทียบเท่ากับกับการคำนวณใน\textit{ทวิภาค} (dual form) ดังนี้
+
+%
+\begin{eqnarray}
+\bm{a} &=& \arg\min_{\bm{a}} \sum_{i=1}^N a_i - \frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N a_i a_j \tilde{y}_i \tilde{y}_j \kappa(\tilde{x}_i, \tilde{x}_j)
+\label{eq: opt SVM dual obj} \\
+\mbox{s.t.} &\;& 
+\nonumber \\
+&\;& \sum_{i=1}^N \tilde{y}_i \cdot a_i = 0
+%\label{eq: opt SVM dual obj criterion 1}, \\
+\nonumber , \\
+&\;& 0 \leq a_i \leq C, \mbox{ for all } i\mbox{'s}
+%\label{eq: opt SVM dual obj criterion 2}. \\
+\nonumber . 
+\end{eqnarray}
+
+และ
+\begin{eqnarray}
+b &=& \frac{1}{|M|}  \sum_{i \in M} 
+\left\{ \tilde{y}_i - \sum_{j \in S} a_j \cdot \tilde{y}_j \kappa(\bm{\tilde{x}}_i, \bm{\tilde{x}}_j) \right\}
+\label{eq: opt SVM b}
+\end{eqnarray}
+
+เมื่อ $M = \{i: 0 \leq a_i \leq C \}$
+และ
+$S = \{i: a_i > 0\}$.
+สัญญลักษณ์ $|M|$ คือขนาดของเซต $M$.
+ข้อมูลเก่า $\{\bm{\tilde{x}}_1, \ldots, \bm{\tilde{x}}_N\}$ และ $\{\tilde{y}_1, \ldots, \tilde{y}_N\}$ คือตัวอย่างอินพุตและเอาต์พุตตามลำดับ (จำนวน $N$ ตัวอย่าง).
+ตัวแปร $C$ เป็นตัวแปรที่เลือกได้ โดยค่าที่ใหญ่จะบังคับให้โมเดลลดการทายกลุ่มผิดลง
+แต่หากค่า $C$ ใหญ่เกินไปอาจนำไปสู่การ\textit{โอเวอร์ฟิต}กับข้อมูลเก่า และทำให้สูญเสีย\textit{คุณสมบัติความทั่วไป}ได้.
+
+ภาระกิจคือ การทำนายฉลากกลุ่มจากค่าอินพุต.
+ประสบการณ์ได้จากข้อมูลเก่า.
+สมถนะวัดได้จากระยะห่างระหว่างขอบเขตของกลุ่มทั้งสอง.
+
+%LATER
+%\section{การลดขนาดมิติ (พีซีเอ)}
+%\index{พีซีเอ}\index{PCA}\index{Principal Component Analysis}
+%
+%\textit{พีซีเอ} (PCA ซึ่งย่อมาจาก Principal Component Analysis)
+%
+%BREAK HERE
+
+
+%LATER
+%\section{การประมาณความหนาแน่น (การประมาณแก่นความหนาแน่น)}
+%\index{การประมาณความหนาแน่น}\index{Density Estimation}
+%\index{การประมาณแก่นความหนาแน่น}\index{Kernel Density Estimation}
+%
+%\textit{การประมาณแก่นความหนาแน่น} (Kernel Density Estimation, คำย่อ KDE)
+
+\section{การแบ่งกลุ่ม (เคมีนส์)}
+\index{การแบ่งกลุ่ม}\index{clustering}
+\index{เคมีนส์}\index{K-Means}
+
+\textit{การแบ่งกลุ่ม} (clustering)
+เป็นการอนุมานกลุ่มให้กับข้อมูล $\bm{x}$
+เพื่อให้ความต่างของข้อมูลในกลุ่มมีค่าน้อยที่สุด.
+%
+วิธี\textit{เคมีนส์} (K-Means) เป็นวิธีการอนุมานกลุ่มให้กับข้อมูล
+โดยมองเสมือนว่าแต่ละกลุ่มมี\textit{จุดกึ่งกลาง} (centroid) ของกลุ่มอยู่ เพียงแต่ค่า\textit{จุดกึ่งกลาง}เป็น\textit{ตัวแปรแฝง} (latent variable) ที่ไม่รู้ค่าแน่นอน.
+วิธี\textit{เคมีนส์}ใช้วิธีการประเมิน\textit{จุดกึ่งกลาง}ของกลุ่ม $\bm{\mu}_k$
+ร่วมกับการมอบหมายกลุ่ม $r_{nk}$
+เพื่อให้ได้ผลรวมระยะห่างระหว่างจุดข้อมูลต่างๆในกลุ่มเดียวกันน้อยที่สุด.
+%
+%โดยจัดจุดข้อมูลเข้าไปอยู่ในกลุ่มที่ระยะห่างระหว่าง\textit{จุดกึ่งกลาง}กับจุดข้อมูลน้อยที่สุด.
+%จนกระทั่ง\textit{จุดกึ่งกลาง}ของกลุ่มสัมพันธ์กับข้อมูลในกลุ่ม.
+
+นั่นคือ สำหรับข้อมูล $\bm{x}_1, \ldots, \bm{x}_N$ ที่ต้องการแบ่งเป็น $K$ กลุ่ม.
+วิธี\textit{เคมีนส์}จะหาการมอบหมายกลุ่ม $r_{nk} \in \{0, 1\}$
+%, n = 1, \ldots, N; k = 1, \ldots, K$
+และ $\sum_{k=1}^K r_{nk}$ สำหรับ $n = 1, \ldots, N$
+ที่ทำให้
+ผลรวมระยะห่างระหว่างจุดข้อมูลในกลุ่มและ\textit{จุดกึ่งกลาง}มีค่าน้อยที่สุด
+ซึ่งคือ หา $\bm{R} = [r_{nk}]$ โดย
+\begin{eqnarray}
+\bm{R} &=& \arg\min_{\bm{R}} \sum_{n=1}^N \sum_{k=1}^K r_{nk} || \bm{x}_n - \bm{\mu}_k ||^2
+\label{eq: opt K-means obj}, \\
+\mbox{s.t.} &\;& 
+\nonumber \\
+&\;& \sum_{k=1}^K r_{nk} = 1, \mbox{ for all } n\mbox{'s}
+\nonumber
+\end{eqnarray}
+เมื่อ
+\begin{eqnarray}
+\bm{\mu}_k = \frac{\sum_{n=1}^N r_{nk} \bm{x}_n}{\sum_{n=1}^N r_{nk}}
+\label{eq: opt K-means centroid}.
+\end{eqnarray}
+
+ภาระกิจคือ การทำนายการมอบหมายกลุ่มให้กับข้อมูล.
+ประสบการณ์ได้จากตัวข้อมูลเอง.
+สมถนะวัดได้จากผลรวมระยะห่างระหว่างจุดข้อมูลต่างๆในกลุ่มเดียวกัน.
+
+\section{การเรียนรู้สถานะแฝง (วิธีค่าคาดหมายการหาค่ามากที่สุด)}
+
+\textit{วิธีค่าคาดหมายการหาค่ามากที่สุด} (Expectation-Maximization คำย่อ EM) เป็นแนวทางหรือวิธีกว้างๆที่ใช้แก้ปัญหาการหาค่าดีที่สุด 
+ที่มี
+%ต้องหาค่า\texit{ตัวทำมากที่สุด} (maximizer) 
+%เกี่ยวข้องกับ
+\textit{ตัวแปรแฝง} (latent variable) เกี่ยวข้องด้วย
+ในลักษณะที่ ต้องการหาค่าตัวแปรควบคุมเพื่อทำค่าจุดประสงค์ให้ดีสุด 
+แต่ค่าตัวแปรควบคุมขึ้นอยู่กับค่าตัวแปรแฝง 
+และในขณะเดียวกัน ค่าของตัวแปรแฝงก็ขึ้นกับค่าของตัวแปรควบคุม.
+นั่นคือ ต้องการหาค่าตัวควบคุม $\bm{w}$ ที่ทำให้ฟังชั่นจุดประสงค์ $J$ มีค่ามากที่สุด แต่ฟังชั่น $J$ ขึ้นกับค่าตัวแปรแฝง $\bm{z}$ ซึ่งตัวแปรแฝงขึ้นกับค่าตัวควบคุม $\bm{z} = h(\bm{w})$
+เมื่อ $h$ เป็นฟังชั่นความสัมพันธ์ระหว่าง $\bm{w}$ และ $\bm{z}$.
+ปัญหานี้เขียนได้เป็น
+\begin{eqnarray}
+\bm{w} &=& \arg\max_{\bm{w}} J(\bm{w}, \bm{z})
+\label{eq: opt EM obj}, \\
+\bm{z} &=& h(\bm{w})
+\label{eq: opt EM dependent}.
+\end{eqnarray}
+
+\textit{วิธีค่าคาดหมายการหาค่ามากที่สุด}จะใช้การทำงานสองขั้นตอนสลับกัน เรียกว่า \textit{ขั้นตอนอี} (E Step) และ\textit{ขั้นตอนเอ็ม} (M Step)
+โดย
+\textit{ขั้นตอนอี} จะประมาณค่าตัวแปรแฝง ในขณะที่ตรึงค่าของตัวแปรควบคุมให้คงที่.
+นั่นคือ คำนวณ $\bm{z} = h(\bm{w})$
+\textit{ขั้นตอนเอ็ม} จะหาค่าตัวแปรควบคุมที่ทำมากที่สุด 
+ในขณะที่ตรึงค่าของตัวแปรแฝงคงที่.
+นั่นคือ หา $\bm{w} = \arg\max_{\bm{w}} J(\bm{w}, \bm{z})$.
+และทำขั้นตอนทั้งสองนี้สลับกันไป จนค่าของตัวแปรทั้งหมดลู่เข้า (หรือจนกว่าจะเข้าเกณฑ์การหยุดคำนวณ)
+
+ตัวอย่างเช่น ภาระกิจของวิธี\textit{เคมีนส์} ซึ่ง
+ต้องการหาค่าตัวแปรควบคุม $r_{nk}$ ที่ขึ้นกับค่าตัวแปรแฝง $\bm{\mu}_k$
+และค่าตัวแปรแฝง $\bm{\mu}_k$ ก็ขึ้นกับค่าตัวแปรควบคุม $r_{nk}$.
+วิธี\textit{เคมีนส์} จะเริ่มจาก
+(1) \textit{ขั้นตอนอีเริ่มต้น} (Initial E Step) จะประมาณค่าตัวแปรแฝง
+โดยการสุ่มจุดข้อมูลออกมาเป็นจุดกึ่งกลาง.
+นั่นคือ สำหรับแต่ละกลุ่มที่ $k^{th}$ ประมาณ  $\bm{\mu}_k = \bm{x}_{\tilde{n}}$ เมื่อ $\bm{x}_{\tilde{n}}$ คือข้อมูลที่ถูกสุ่มขึ้นมา.
+(2) \textit{ขั้นตอนเอ็ม} จะจัดทุกจุดข้อมูล $\bm{x}_n$ เข้ากลุ่ม $k^{th}$
+หรือกำหนดค่า $r_{nk} = 1$ และ $r_{nj} = 0$
+สำหรับทุกๆ $j = 1, \ldots, K$ ที่ $j \neq k$
+ถ้า
+$d_{n,k} \leq d_{n,j}$ 
+เมื่อ $d_{n,k} = ||\bm{x}_n - \bm{\mu_k}||^2$.
+ค่า $\bm{\mu_k}$ จะใช้ค่าล่าสุดที่ได้จาก\textit{ขั้นตอนอี}.
+(3) \textit{ขั้นตอนอี} จะประมาณค่าตัวแปรแฝง $\bm{\mu}_k = \frac{\sum_n r_{nk} \bm{x}_n}{\sum_n r_{nk}}$.
+ค่า $r_{nk}$ จะใช้ค่าล่าสุดที่ได้จาก\textit{ขั้นตอนเอ็ม}.
+และจะทำขั้นตอนเอ็มและอีเช่นนี้ สลับกันไปจนค่าต่างๆลู่เข้า.
+
+%LATER
+%\section{การหาสินค้าแนะนำ (การกรองเชิงความร่วมมือ)}
+%
+%\textit{การกรองเชิงความร่วมมือ} (Collaborative Filtering\cite{SK2009})
+
+%LATER
+%\section{การหาหัวข้อเรื่อง (แอลดีเอ)}
+%
+%\textit{แอลดีเอ} (LDA ซึ่งย่อมาจาก Latent Dirichlet Allocation\cite{BNM2003})
+
+%LATER
+%\section{การรู้จำเชิงลำดับ (เอชเอ็มเอ็ม)}
+%\textit{เอชเอ็มเอ็ม} (HMM ซึ่งย่อมาจาก Hidden Markov Model)
+%
+
+%LATER
+%\section{การรู้จำเชิงลำดับ (แอลเอสทีเอ็ม)}
+%\textit{แอลเอสทีเอ็ม} (LSTM ซึ่งย่อมาจาก Long Short-Term Memory\cite{GSC2000})
+
+%LATER
+%\section{การเรียนรู้แบบเสริมกำลัง (ทั่วไป)}
+%
+%\textit{การเรียนรู้แบบเสริมกำลัง} (Reinforcement Learning\cite{SB1998})
+
+%LATER
+%\section{การตรวจหาความใหม่}
+%Novelty/Anomaly Detection\cite{PCCT2014}
+
+%LATER
+%\section{การจัดลำดับหน้าเวป (เพจแรงค์)}
+%PageRank\cite{Page98thepagerank}
+
+\section{การอนุมานเชิงสร้าง (โครงข่ายปรปักษ์เชิงสร้าง)}.
+
+\textit{การอนุมานเชิงสร้าง} (Generative Inference) เป็นการเรียนรู้ข้อมูล เพื่อการสร้างข้อมูลขึ้นมาใหม่ โดยให้มีคุณลักษณะเช่นเดียวกับข้อมูลที่ได้เรียนรู้มา
+หรือจากมุมมองทางทฤษฎี ก็คือการเรียนรู้ธรรมชาติ เรียนรู้คุณลักษณะ
+หรือเรียนรู้ความน่าจะเป็นของข้อมูล.
+
+\textit{โครงข่ายปรปักษ์เชิงสร้าง} (Generative Adversarial Network, คำย่อ GAN\cite{GPaMXWfOCB2014})
+เป็น\textit{กรอบความคิด} (framework) สำหรับการสร้างโมเดลสำหรับ\textit{การอนุมานเชิงสร้าง} โดยใช้โมเดล สองโมเดล.
+โมเดลหนึ่งฝึกเป็น\textit{โมเดลเชิงสร้าง} (Generative Model) $G$ 
+ที่เรียนรู้ความน่าจะเป็นของข้อมูล
+และอีกโมเดลหนึ่งฝึกเป็น\textit{โมเดลจำแนก} (Discriminative Model) $D$ ที่เรียนรู้ที่จะจำแนกข้อมูลจริงออกจากข้อมูลที่ถูกสร้างขึ้นมา.
+โมเดลทั้งสองจะถูกฝึกในลักษณะแข่งกันในสภาพที่จุดประสงค์ขัดแย้งกัน.
+นั่นคือ \textit{โมเดลจำแนก} $D$ จะถูกฝึกให้ประมาณค่าความน่าจะเป็นที่
+จุดข้อมูล $\bm{x}$ มาจากชุดข้อมูลจริง ไม่ใช่ถูกสร้างมาจาก\textit{โมเดลเชิงสร้าง} $G$.
+ในขณะที่\textit{โมเดลเชิงสร้าง} $G$ จะถูกฝึกให้สร้างตัวอย่าง $\bm{x}$ ที่ทำให้ความน่าจะเป็นที่\textit{โมเดลจำแนก} $D$ จะอนุมานถูก มีค่าน้อยที่สุด.
+
+การอนุมานหรือการสร้างจุดข้อมูลใหม่ ทำได้โดยการคำนวณ
+\begin{equation}
+\bm{x}' = G(z, \bm{\theta}_g)
+\label{eq: opt GAN generation}
+\end{equation}
+เมื่อ $\bm{x}'$ แทนจุดข้อมูลใหม่ที่ถูกสร้างขึ้น
+%$G$ เป็น\textit{โมเดลเชิงสร้าง}.
+ส่วน $\bm{\theta}_g$ เป็นค่าพารามิเตอร์ของโมเดลเชิงสร้าง
+และ $z \in \mathbb{R}$ เป็นค่าที่สุ่มขึ้นมา เช่น $z \sim \mathcal{U}(0,1)$ สำหรับค่า $z$ ที่ถูกสุ่มแบบ\textit{การแจกแจงเอกรูป} (uniform distribution).
+
+ค่าพารามิเตอร์ $\bm{\theta}_g$ สามารถหาได้จากการหาค่าดีที่สุดของฟังชั่นจุดประสงค์ของปัญหา\textit{เกมส์น้อยสุดของมากสุดแบบสองผู้เล่น} (two-player minimax game)
+\begin{eqnarray}
+\min_{\bm{\theta}_g} \max_{\bm{\theta}_d} \mathbb{E}_{\bm{x} \sim p_{data}(\bm{x})}\left[ \log D(\bm{x}, \bm{\theta}_d) \right] 
++ \mathbb{E}_{z \sim p_z(z)}\left[ \log (1 - D(G(z, \bm{\theta}_g), \bm{\theta}_d) ) \right]
+\end{eqnarray}
+เมื่อ $\bm{\theta}_d$ คือค่าพารามิเตอร์ของ\textit{โมเดลจำแนก} $D$.
+เทอม $\mathbb{E}_{\bm{x} \sim p_{data}(\bm{x})}\left[ \log D(\bm{x}, \bm{\theta}_d) \right]$ คือ\textit{ค่าคาดหมาย} (expected value) ของความเป็นไปได้ที่\textit{โมเดลจำแนก} $D$ จะทายจุดข้อมูลจริง $\bm{x}$ ว่ามาจากข้อมูลจริง.
+เทอม $\mathbb{E}_{z \sim p_z(z)}\left[ \log (1 - D(G(z, \bm{\theta}_g), \bm{\theta}_d) ) \right]$
+คือ\textit{ค่าคาดหมาย}ของความเป็นไปได้ที่\textit{โมเดลจำแนก} $D$ จะทายจุดข้อมูลที่สร้างขึ้นมาจาก\textit{โมเดลเชิงสร้าง} ว่าไม่ใช่ข้อมูลจริง.
+
+\textit{โมเดลจำแนก} $D$ จะถูกฝึก หรือค่า $\bm{\theta}_d$ จะถูกปรับเพื่อให้\textit{ค่าคาดหมาย}ของความเป็นไปได้ที่\textit{โมเดลจำแนก} $D$ จะทายถูก มีค่ามากที่สุด 
+ทั้งสองกรณี.
+นั่นคือ \textit{โมเดลจำแนก} $D$ พยายามจะทายให้ถูกว่าจุดข้อมูลจริง $\bm{x}$ มาข้อมูลจริง (ค่าคาดหมายเทอมแรก) และพยายามจะทายให้ถูกว่าจุดข้อมูลที่สร้างขึ้นด้วย $G(z, \bm{\theta}_g)$ ไม่ได้มาข้อมูลจริง (ค่าคาดหมายเทอมหลัง).
+ในขณะที่
+\textit{โมเดลเชิงสร้าง} $G$ จะถูกฝึก หรือค่า $\bm{\theta}_g$ จะถูกปรับเพื่อให้
+\textit{ค่าคาดหมาย}ของความเป็นไปได้ที่\textit{โมเดลจำแนก} $D$ จะทายถูก มีค่าน้อยที่สุด.
+นั่นคือ $G(z, \bm{\theta}_g)$ พยายามจะสร้างจุดข้อมูล $\bm{x}'$ ให้คล้ายกับว่า $\bm{x}'$ มาจากข้อมูลจริง หรือ $\bm{x}' \sim p_{data}(\bm{x})$.
+การทำเช่นนี้เทียบเท่า \textit{โมเดลเชิงสร้าง} $G$ พยายามจะแปลงค่าสุ่ม $z \sim p_z(z)$ ไปเป็นจุดตัวอย่างในการแจกแจง $p_{data}(\bm{x})$ หรือเขียนสรุปง่ายได้ว่า $G: z \sim p_z(z) \mapsto x \sim p_{data}(\bm{x})$.
+
+ภารกิจคือการสร้างจุดข้อมูลใหม่ที่มีคุณลักษณะเหมือนกับข้อมูลเดิม.
+ประสบการณ์ได้จากข้อมูลเดิม.
+สมถนะวัดได้จากความใกล้เคียงระหว่างค่าฟังชั่นจุดประสงค์ของ\textit{เกมส์น้อยสุดของมากสุดแบบสองผู้เล่น}
+กับค่าฟังชั่นจุดประสงค์ที่\textit{จุดดีที่สุดท้องถิ่น} (local optimum) ซึ่งกูดเฟลโล่และคณะ\cite{GPaMXWfOCB2014} วิเคราะห์ไว้ว่าคือ $-\log 4$.
+
+%\section{การอนุมานเชิงสร้าง (พิกเซลอาร์เอ็นเอ็น)}.
+%\textit{พิกเซลอาร์เอ็นเอ็น} (PixelRNN)
+
+%\subsection{การติดตามภาพวัตถุ (วิธีขยับค่าเฉลี่ย)}
+%\textit{วิธีขยับค่าเฉลี่ย} (Mean Shift\cite{CRM2000})
+
+%LATER
+%\section{การอนุมานเชิงสร้าง (วาริเอชั่นนอลออตโตเอนโคดเดอร์)}.
+%\textit{วาริเอชั่นนอลออตโตเอนโคดเดอร์} (Variational Auto-Encoder)
+
+\section{การเข้าใจสิ่งที่อ่านของเครื่อง (เอมอาร์ซี) และฟิวชั่นเน็ต}
+\index{การเข้าใจสิ่งที่อ่านของเครื่อง}
+\index{Machine Reading Comprehension}
+
+\textit{การเข้าใจสิ่งที่อ่านของเครื่อง} หรือ\textit{เอมอาร์ซี} (Machine Reading Comprehension คำย่อ MRC)\cite{HuangEtAl2017a}\cite{ChenEtAl2017a} 
+ได้แก่
+\textit{ภารกิจ} ที่ให้เครื่องอ่าน ประมวล และทำความเข้าใจ \textit{ข้อความ} (text) และสามารถตอบคำถามที่เกี่ยวข้องได้%
+\footnote{%
+	ถอดความจาก \textit{ฮวงและคณะ}\cite{HuangEtAl2017a}.
+}%
+.
+%
+หรือหากพูดเจาะจงลงไป นั่นคือ
+หากกำหนด\textit{บริบท}(หรือข้อความที่เป็นแหล่งความรู้)ให้ และถาม\textit{คำถาม}
+เครื่องต้องอ่าน ทำความเข้าใจ\textit{ข้อความบริบท}ที่มี และสามารถหาคำตอบให้กับ\textit{คำถาม}ได้.
+
+ภารกิจนี้ อาจถูกตีกรอบดังนี้\cite{HuangEtAl2017a}.
+บริบท สามารถแสดงได้ในรูปของ
+ลำดับของ\textit{โทเค็นคำ} (word tokens)
+นั่นคือ 
+บริบท
+%\begin{equation}
+$\bm{C} = \{\bm{w}_1^C, \bm{w}_2^C, \bm{w}_3^C, \ldots, \bm{w}_m^C\}
+\label{eq: opt MRC context}$
+%\end{equation}
+และ
+คำถาม ก็สามารถแสดงได้ในลักษณะเดียวกัน
+นั่นคือ
+คำถาม
+$\bm{Q} = \{\bm{w}_1^Q, \bm{w}_2^Q, \bm{w}_3^Q, \ldots, \bm{w}_n^Q\}
+\label{eq: opt MRC context 2}$
+%
+โดย $m$ แทนจำนวนคำในบริบท.
+ตัวแปร $n$ แทนจำนวนคำในคำถาม.
+และ $\bm{w}_i$ คือ \textit{โทเค็นคำ} ที่แต่ละโทเค็นแสดงอยู่ในรูปเวคเตอร์ของเลขจำนวนจริง
+$\bm{w}_i \in \mathbb{R}^d$ เมื่อ $d$ คือขนาดของเวคเตอร์.
+คำหนึ่งคำ จะแทนด้วย \textit{โทเค็นคำ}หนึ่งโทเค็น.
+\textit{โทเค็นคำ} อาจได้มาจาก\textit{วิธีถุงคำ} (bag of words) หรือ\textit{วิธีรหัสคำ} (word embedding) ในแบบต่างๆก็ได้ 
+\index{word embedding}
+\index{วิธีรหัสคำ}
+(เช่น 
+\textit{เวคเตอร์ทั่วไป}
+%Global Vector
+\cite[Global Vector]{PSM2014a}, 
+\textit{เวคเตอร์คำผ่านบริบท}
+%Contextualized Word Vector
+\cite[Contextualized Word Vector]{McCannEtAl2017a}).
+%
+โดยทั่วไปแล้ว $m >> n$ ส่วนวิธีการหาคำตอบก็แตกต่างกันไป
+โดยคำตอบ ก็อยู่ในรูป $\bm{A} = \{\bm{w}_1^A, \ldots, \bm{w}_k^A \}$ เมื่อ $k$ แทนจำนวนคำของคำตอบ. 
+%ซึ่งวิธีการหา $\bm{w}_i^A, i = 1, \ldots, k$ 
+
+แทนที่จะหาคำตอบทั่วๆไป เพื่อให้ปัญหาง่ายพอในการแก้ \textit{ราชพฤคาร์และคณะ}\cite{RajpurkarEtAl2016a} ตีกรอบปัญหาเป็นว่า
+คำตอบ $\bm{A}$ จะเป็นส่วนหนึ่งของลำดับของคำในบริบท $\bm{C}$.
+นั่นคือ $\bm{A} = \{\bm{w}_i^C, \ldots, \bm{w}_{i+k-1}^C$ โดย $k \leq m$ และ $i \in \{1, \ldots, m+1-k\}$.
+ดังนั้นการตอบคำถาม $\bm{Q}$ คือ การหาตำแหน่งเริ่มต้น $i$ และจำนวนคำ $k$ ในบริบท $\bm{C}$.
+\textit{ฮวงและคณะ}\cite{HuangEtAl2017a} เสนอ\textit{ฟิวชั่นเน็ต} (FusionNet) เพื่อแก้ปัญหานี้.
+
+เทียบเท่าการหาค่า $i$ กับ $k$
+\textit{ฮวงและคณะ}หาค่า $i$ และ $i^e$ (ซึ่ง $i^e = i + k -1$) จาก
+\begin{eqnarray}
+i^\ast, i^{e \ast} =& \arg\max_{i, i^e} & Pr[b=i|\bm{C}, \bm{Q}] \cdot Pr[e=i^e|\bm{C}, \bm{Q}] 
+\label{eq: opt MRC objective function}
+\nonumber \\
+&\; s.t. & 0 \leq i^e - i \leq k - 1
+\label{eq: opt MRC objective function condition}
+\end{eqnarray}
+เมื่อ $k$ คือจำนวนคำที่กำหนด%
+\footnote{%
+	ค่า $k$ เป็นเหมือนค่าความกระชับของคำตอบ.
+	ถ้าค่า $k$ เล็ก ก็คือคำตอบจะกระชับ 
+	ถ้าค่า $k$ ใหญ่ ก็คือคำตอบอาจจะเยิ่นเย้อ.
+	นอกจากนั้น ค่า $k$ ยังเป็นกลไกที่ช่วยป้องกัน ไม่ให้โมเดลเลือกทั้งบริบทมาเป็นคำตอบอีกด้วย.
+	\textit{ฮวงและคณะ}กำหนดค่า $k$ นี้เป็น $15$ คำ.
+	นั่นคือ คำตอบจะไม่เกิน $15$ คำ.
+}.
+ค่า $Pr[b=i|\bm{C}, \bm{Q}]$ เป็น ค่าความน่าจะเป็น ที่ตำแหน่งเริ่มต้นจะเป็น $i$ สำหรับบริบท $\bm{C}$ และคำถาม $\bm{Q}$.
+และค่า $Pr[e=i^e|\bm{C}, \bm{Q}]$ เป็น ค่าความน่าจะเป็น ที่ตำแหน่งสุดท้ายจะเป็น $i^e$ สำหรับบริบท $\bm{C}$ และคำถาม $\bm{Q}$.
+\textit{ฮวงและคณะ}ประมาณ
+ค่า $Pr[b=i|\bm{C}, \bm{Q}]$ 
+ด้วย $\tilde{P}[b=i|\bm{C}, \bm{Q}]$
+และ ค่า $Pr[e=i^e|\bm{C}, \bm{Q}]$ 
+ด้วย $\tilde{P}[e=i^e|\bm{C}, \bm{Q}]$
+โดย
+%
+\begin{eqnarray}
+\tilde{P}[b=i|\bm{C}, \bm{Q}] & \propto & 
+\exp{( (\bm{u}^Q)^T \cdot \bm{W}_B \cdot \bm{u}_i^C) }
+\label{eq: opt fusion-net PS}
+\nonumber
+\\
+\tilde{P}[e=i|\bm{C}, \bm{Q}] & \propto & 
+\exp{( (\bm{v}^Q)^T \cdot \bm{W}_E \cdot \bm{u}_i^C) }
+\label{eq: opt fusion-net PE}
+\nonumber
+\end{eqnarray}
+เมื่อ $\bm{u}^Q$ เป็นเวคเตอร์สรุปความเข้าใจคำถามโดยรวม.
+เวคเตอร์ $\bm{v}^Q$
+เป็นเวคเตอร์สรุปความเข้าใจคำถามทั้งหมด 
+โดยคำนึงถึง
+ความคาดหมายของจุดเริ่มต้นของคำตอบที่ตำแหน่งต่างๆ.
+เวคเตอร์ $\bm{u}_i^C$ เป็นเวคเตอร์แทนความเข้าใจบริบทในตำแหน่งทีี่ $i^{th}$.
+ตัวแปร $\bm{W}_B \in \mathbb{R}^{d \times d}$
+และ $\bm{W}_E \in \mathbb{R}^{d \times d}$
+แทนเมตริกซ์ของค่าน้ำหนักความสัมพันธ์ 
+ซึ่งค่าหาได้จาก\textit{กระบวนการฝึกของเครื่อง} (training).
+
+เวคเตอร์สรุปความเข้าใจคำถามโดยรวม $\bm{u}^Q = \sum_i \beta_i \bm{u}_i^Q$ 
+โดย $\beta_i \propto \exp{(\bm{w}^T \bm{u}_i^Q)}$
+และ $\bm{w}$ ก็เป็นค่าน้ำหนักอีกชุด ที่หาได้จาก\textit{กระบวนการฝึกของเครื่อง}.
+เวคเตอร์สรุปความเข้าใจคำถาม
+โดยคำนึงถึงจุดเริ่มต้นของคำตอบ
+$\bm{v}^Q = \mathrm{GRU}(\bm{u}^Q, \sum_i \tilde{P}[b=i|\bm{C}, \bm{Q}]
+\cdot
+ \bm{u}_i^C; \bm{\phi}_{vq})$
+เมื่อ $\mathrm{GRU}$ แทนการคำนวณ\textit{กรู} (GRU, Gated Recurrent Unit\cite{ChoEtAl2014a})
+ที่ใช้ $\bm{u}^Q$ เป็น\textit{ความจำ}
+และใช้ $\sum_i \tilde{P}[b=i|\bm{C}, \bm{Q}] \cdot \bm{u}_i^C$ เป็นอินพุตของ\textit{กรู}
+ส่วน $\bm{\phi}_{vq}$ %{\color{red}
+%
+เป็นพารามิเตอร์ของ\textit{กรู}ที่หาได้จาก\textit{กระบวนการฝึก.
+%}.
+%(to confirm after code check 2018 Nov 18)
+}
+%
+เหล่าเวคเตอร์ $\{\bm{u}_i^C\}_{i=1, \ldots, m}$ และ
+$\{\bm{u}_i^Q\}_{i=1, \ldots, n}$
+ได้มาจาก\textit{ฟิวชั่นเน็ต}.
+
+\paragraph{ฟิวชั่นเน็ต.}
+\textit{ฟิวชั่นเน็ต}ทำหน้าที่แปลง
+อินพุต ซึ่งประกอบด้วย
+\textit{บริบท} $\bm{C} = \{\bm{w}_1^C, \ldots, \bm{w}_m^C \}$
+และ\textit{คำถาม} $\bm{Q} = \{\bm{w}_1^Q, \ldots, \bm{w}_n^Q \}$
+ไปเป็น
+ความเข้าใจบริบท  (context understanding)
+%(context understanding vectors) 
+%จากมุมมองของคำถาม
+$\bm{U}^C = \{\bm{u}^C_1, \ldots, \bm{u}^C_m \}$
+% = \{ \bm{u}^C_i \}_{i=1, \ldots, m}$
+และ
+ความเข้าใจคำถาม 
+(question understanding) 
+$\bm{U}^Q = \{\bm{u}^Q_1, \ldots, \bm{u}^Q_n \}$.
+%= \{ \bm{u}^Q_i \}_{i=1, \ldots, n}$
+
+\textit{ฮวงและคณะ}\cite{HuangEtAl2017a}เชื่อว่า
+การเชื่อมโยงความสัมพันธ์
+ระหว่าง\textit{บริบท}
+และ\textit{คำถาม}
+ในหลายๆระดับ 
+ตั้งแต่\textit{ระดับคำ} (word level)
+\textit{ความหมายระดับล่าง} (low-level  semantics)
+ไปจนถึง
+\textit{มโนทัศน์ระดับสูง} (high-level concept)
+จะช่วยให้สามารถหา\textit{คำตอบ}ได้ดีขึ้น.
+%
+ดังนั้น
+ในสังเคราะห์\textit{ความเข้าใจบริบท}
+$\bm{U}^C$
+จาก\textit{บริบท} $\bm{C}$ 
+และ\textit{คำถาม} $\bm{Q}$
+จะเป็นเชื่อมโยงความสัมพันธ์ของ
+\textit{บริบท}และ\textit{คำถาม}
+ในหลายๆระดับ.
+
+\textit{ฮวงและคณะ}แทน แต่ละคำทั้งในบริบทและคำถามด้วย
+\textit{เวคเตอร์รหัสคำ}ที่มีส่วนประกอบเป็น
+\textit{เวคเตอร์ทั่วไป}\cite{PSM2014a}
+ขนาด $300$ มิติ
+และ
+\textit{เวคเตอร์คำผ่านบริบท}\cite{McCannEtAl2017a} ขนาด $600$ มิติ.
+แต่คำในบริบทจะมีส่วนประกอบเพิ่มเติม คือ
+\textit{รหัสคำ}จาก\textit{ชนิดของคำ} (part of speech คำย่อ POS) ขนาด $12$ มิติ
+\textit{รหัสคำ}จาก\textit{สัญญาชืื่ออัตตลักษณ์} (Named Entity Recognition คำย่อ NER) ขนาด $8$ มิติ
+\textit{ค่าบรรทัดฐานของความถี่คำ} (normalized term frequency) ขนาด $1$ มิติ.
+นั่นคือ
+$\bm{w}_i^C = [\bm{g}_i^C; \bm{c}_i^C; \bm{pos}_i^C; \bm{ner}_i^C; \bm{f}_i^C] \in \mathbb{R}^{300+600+12+8+1}$
+และ
+$\bm{w}_i^Q = [\bm{g}_i^Q; \bm{c}_i^Q] \in \mathbb{R}^{300+600}$
+เมื่อ $\bm{g}$ แทน\textit{เวคเตอร์ทั่วไป}\cite{PSM2014a}.
+ตัวแปร $\bm{c}$ แทน\textit{เวคเตอร์คำผ่านบริบท}\cite{McCannEtAl2017a}.
+ตัวแปร $\bm{pos}$ แทน\textit{รหัสคำ}จาก\textit{ชนิดของคำ}.
+ตัวแปร $\bm{ner}$ แทน\textit{รหัสคำ}จาก\textit{สัญญาชืื่ออัตตลักษณ์}
+และ $\bm{f}$ แทน\textit{ค่าบรรทัดฐานของความถี่คำ}.
+
+\paragraph{การทำความเข้าใจคำถาม.}
+คำถามจะถูกกลั่นกรองออกมาเป็น\textit{มโนทัศน์ระดับล่าง} (low-level concept) $\{\bm{h}^{Ql}_i\}_{i=1,\ldots,n}$
+และ\textit{มโนทัศน์ระดับสูง} (high-level concept) $\{\bm{h}^{Qh}_i\}_{i=1,\ldots,n}$
+โดย\textit{แอลเอสทีเอ็มสองทิศทาง} (ฺBi-directional LSTM\cite{GravesSchmidhuber2005a}) ดังนี้
+%
+\begin{eqnarray}
+\bm{h}^{Ql}_1, \ldots, \bm{h}^{Ql}_n 
+&=& \mathrm{BiLSTM}(\bm{w}^Q_1, \ldots, \bm{w}^Q_n; \bm{\phi}_{Ql}),
+\label{eq: opt fusion net hQ low}
+\\
+\bm{h}^{Qh}_1, \ldots, \bm{h}^{Qh}_n 
+&=& \mathrm{BiLSTM}(\bm{h}^{Ql}_1, \ldots, \bm{h}^{Ql}_n; \bm{\phi}_{Qh}),
+\label{eq: opt fusion net hQ high}
+\end{eqnarray}
+เมื่อ $\bm{\phi}_{Ql}$ และ 
+$\bm{\phi}_{Qh}$ เป็นพารามิเตอร์ของ $\mathrm{BiLSTM}$ ซึ่งหาได้จาก\textit{กระบวนการฝึก}
+
+\textit{ความเข้าใจคำถาม} ก็หาได้จาก
+%
+\begin{eqnarray}
+\bm{U}^Q = \{\bm{u}^Q_1, \ldots, \bm{u}^Q_n \} = 
+\mathrm{BiLSTM}(
+[\bm{h}^{Ql}_1; \bm{h}^{Qh}_1], \ldots, 
+[\bm{h}^{Ql}_n; \bm{h}^{Qh}_n]
+; \bm{\phi}_{UQ})
+\end{eqnarray}
+เมื่อ $\bm{\phi}_{UQ}$ เป็นพารามิเตอร์ของ $\mathrm{BiLSTM}$ ซึ่งหาได้จาก\textit{กระบวนการฝึก}
+
+\paragraph{การอ่านบริบทในระดับคำ.}
+เพื่อเพิ่มความเกี่ยวข้องกับคำถามเข้าไปในบริบท
+\textit{ฟิวชั่นเน็ต}เสริมคำของบริบท เป็น
+$\bm{\tilde{w}}^C_i = [\bm{w}^C_i, e_i, \bm{\hat{g}}^C_i]$
+เมื่อ
+$e_i$ ระบุว่าคำที่ $i^{th}$ ในบริบทมีปรากฎอยู่ในคำถามหรือไม่
+และ
+$\bm{\hat{g}}^C_i$
+แทน\textit{ความสนใจ} (attention).
+เวคเตอร์ $\bm{\hat{g}}^C_i$ เป็นความสัมพันธ์\textit{ในระดับคำ}
+ระหว่างคำในบริบท และคำในคำถาม ซึ่งหาได้จาก
+%
+\begin{eqnarray}
+\bm{\hat{g}}^C_i &=& \sum_j \alpha_{ij} \bm{g}_j^Q,
+\label{eq: opt fusion-net g hat alpha}
+\\
+\alpha_{ij} &\propto& \exp{(S(\bm{g}^C_i, \bm{g}^Q_j))}
+\label{eq: opt fusion-net g hat alpha 2}
+\end{eqnarray}
+เมื่อ ฟังชั่นความสนใจ (attention function)
+\begin{equation}
+S(\bm{x},\bm{y}) = \mathrm{ReLU}(\bm{W} \bm{x})^T \mathrm{ReLU}(\bm{W} \bm{y})
+\label{eq: opt funsion net attention function}
+\end{equation}
+โดย $\bm{W} \in \mathbb{R}^{300 \times 300}$ เป็นเมตริกซ์ของค่าน้ำหนักซึ่งค่าจะหาได้จาก\textit{กระบวนการฝึก}
+และ $\mathrm{ReLU}([x_1, \ldots, x_k]) = [\mathrm{ReLU}(x_1), \ldots, \mathrm{ReLU}(x_k)]$ 
+ซึ่ง $\mathrm{ReLU}(x) = \max\{0, x\}$.
+
+\paragraph{การอ่านบริบทในระดับมโนทัศน์.}
+ในทำนองเดียวกับมโนทัศน์ของคำถาม
+มโนทัศน์ของบริบทหาได้จาก
+%
+\begin{eqnarray}
+\bm{h}^{Cl}_1, \ldots, \bm{h}^{Cl}_m 
+&=& \mathrm{BiLSTM}(\bm{\tilde{w}}^C_1, \ldots, \bm{\tilde{w}}^C_m; \bm{\phi}_{Cl}),
+\label{eq: opt fusion net hC low}
+\\
+\bm{h}^{Ch}_1, \ldots, \bm{h}^{Ch}_m 
+&=& \mathrm{BiLSTM}(\bm{h}^{Cl}_1, \ldots, \bm{h}^{Cl}_m; \bm{\phi}_{Ch}),
+\label{eq: opt fusion net hC high}
+\end{eqnarray}
+เมื่อ $\bm{\phi}_{Cl}$ และ 
+$\bm{\phi}_{Ch}$ เป็นพารามิเตอร์ของ $\mathrm{BiLSTM}$ ซึ่งหาได้จาก\textit{กระบวนการฝึก}
+%
+\textit{ฮวงและคณะ}\cite{HuangEtAl2017a}กำหนดขนาดให้ทุกๆ\textit{มโนทัศน์}เป็น $\bm{h} \in \mathbb{R}^{250}$. 
+
+\paragraph{การหลอมรวมบริบทและคำถาม} (fusion)
+เป็นการผสานข้อมูลบริบทในหลายๆระดับ เข้ากับข้อมูลคำถามในหลายๆระดับ.
+\textit{ฮวงและคณะ}\cite{HuangEtAl2017a}เสนอ 
+\textit{ประวัติคำ} (History of Word) สำหรับอ้างถึง ข้อมูลในหลายๆระดับ 
+%
+\textit{ฮวงและคณะ} กำหนด\textit{ประวัติคำ} $\bm{r}^C_i$ และ $\bm{r}^Q_i$ เป็น
+%
+\begin{eqnarray}
+\bm{r}^C_i = [\bm{g}^C_i; \bm{c}^C_i; \bm{h}^{Cl}_i; \bm{h}^{Ch}_i]
+\label{app fusion net HoW C}
+\\
+\bm{r}^Q_i = [\bm{g}^Q_i; \bm{c}^Q_i; \bm{h}^{Ql}_i; \bm{h}^{Qh}_i]
+\label{app fusion net HoW Q} .
+\end{eqnarray}
+
+ทั้ง $\bm{r}^C_i, \bm{r}^Q_i \in \mathbb{R}^{1400}$.
+สังเกตุ $\bm{g}^C_i$, $\bm{g}^Q_i$ และ $\bm{c}^C_i$, $\bm{c}^Q_i$ เป็น\textit{ลักษณะสำคัญ} (features) ของคำในตำแหน่งที่ $i^{th}$.
+ส่วน $\bm{h}^{Cl}$, $\bm{h}^{Ql}$,
+$\bm{h}^{Ch}$ และ $\bm{h}^{Qh}$
+เป็น\textit{ลักษณะสำคัญ}ระดับล่าง
+และระดับสูงในตำแหน่งที่ $i^{th}$.
+
+จากนั้น\textit{ฟิวชั่นเน็ตหลอมรวม}\textit{ประวัติคำ}ของทั้งบริบทและคำถามเข้าด้วยกัน 
+โดย
+%
+\begin{eqnarray}
+\bm{\hat{h}}^{Cl}_i &=& \sum_j \alpha^l_{ij} \bm{h}^{Ql}_j
+\label{eq: opt fusion net fusion l}
+\\
+\bm{\hat{h}}^{Ch}_i &=& \sum_j \alpha^h_{ij} \bm{h}^{Qh}_j
+\label{eq: opt fusion net fusion h}
+\\
+\bm{\hat{u}}^C_i &=& \sum_j \alpha^u_{ij} \bm{u}^Q_j
+\label{eq: opt fusion net fusion ul}
+\end{eqnarray}
+เรียก
+$\bm{\hat{h}}^{Cl}_i$,
+$\bm{\hat{h}}^{Ch}_i$
+และ $\bm{\hat{u}}^C_i$
+เป็น \textit{การหลอมรวมระดับล่าง}
+\textit{การหลอมรวมระดับสูง}
+และ
+\textit{การหลอมรวมความเข้าใจ}
+ตามลำดับ
+เมื่อ
+%
+\begin{eqnarray}
+\alpha^l_{ij} & \propto & \exp (S^l(\bm{r}^C_i, \bm{r}^Q_j))
+\label{eq: opt funsion net alpha la},
+\\
+\alpha^h_{ij} & \propto & \exp(S^h(\bm{r}^C_i, \bm{r}^Q_j))
+\label{eq: opt funsion net alpha lb},
+\\
+\alpha^u_{ij} & \propto & \exp(S^u(\bm{r}^C_i, \bm{r}^Q_j))
+\label{eq: opt funsion net alpha lc}.
+\end{eqnarray}
+\textit{ฟังชั่นความสนใจ} $S$ นิยามในสมการ~\ref{eq: opt funsion net attention function}.
+หมายเหตุ แต่ละ\textit{ฟังชั่นความสนใจ}จะมี\textit{ค่าน้ำหนัก}ที่ต้องเรียนรู้
+นั่นคือ ในกระบวนการนี้จะมี
+ค่าน้ำหนัก $\bm{W}_l, \bm{W}_h, \bm{W}_u$ ที่ได้จาก\textit{กระบวนการฝึก}.
+\textit{ฟิวชั่นเน็ต}กำหนดขนาดของค่าน้ำหนักเหล่านี้เป็น $250 \times 1400$.
+
+\paragraph{การทำความเข้าใจบริบทจากมุมมองของคำถาม.}
+\textit{ตัวแทนบริบทที่ผ่านการหลอมรวมกับคำถาม} $\{\bm{v}^C_i\}_{i=1,\ldots,m}$ หาได้จาก
+%
+\begin{equation}
+\{\bm{v}^C_1, \ldots, \bm{v}^C_m \}
+=
+\mathrm{BiLSTM}(
+[\bm{h}_1^{Cl}; \bm{h}_1^{Ch};
+\bm{\hat{h}}_1^{Cl}; \bm{\hat{h}}_1^{Ch};
+\bm{\hat{u}}_1^C],
+\ldots,
+[\bm{h}_m^{Cl}; \bm{h}_m^{Ch};
+\bm{\hat{h}}_m^{Cl}; \bm{\hat{h}}_m^{Ch};
+\bm{\hat{u}}_m^C];
+\bm{\phi}_v
+)
+\label{eq: opt fusion net v}
+\end{equation}
+เมื่อ $\bm{\phi}_v$ เป็นพารามิเตอร์ที่ได้จาก\textit{กระบวนการเรียนรู้}.
+
+นอกจากนั้น  \textit{ฮวงและคณะ}ยังเพิ่มกลไก\textit{การหลอมรวมเสริมตนเอง}(self-boosted fusion) เข้าไปอีก โดยสร้าง\textit{ประวัติของคำรวมเสริมตน}เข้าไป
+$\bm{s}^C_i = [\bm{g}^C_i; \bm{c}^C_i;
+\bm{h}^{Cl}_i; \bm{h}^{Ch}_i;
+\bm{\hat{h}}^{Cl}_i; \bm{\hat{h}}^{Ch}_i;
+\bm{\hat{u}}^C_i; \bm{v}^C_i
+] \in \mathbb{R}^{2400}$.
+ทบทวน $\bm{g}^C_i, \bm{c}^C_i$ เป็นข้อมูลของบริบทระดับคำ.
+$\bm{h}^{Cl}_i, \bm{h}^{Ch}_i$
+เป็นข้อมูลของบริบทระดับล่างและระดับสูง.
+$\bm{\hat{h}}^{Cl}_i, \bm{\hat{h}}^{Ch}_i,
+\bm{\hat{u}}^C_i$
+เป็นข้อมูลของบริบทที่ผ่านการหลอมรวมกับคำถามในระดับล่าง ระดับกลาง ระดับความเข้าใจ ตามลำดับ.
+$\bm{v}^C_i$ เป็นข้อมูลความเข้าใจบริบท.
+
+\textit{ค่าความสนใจที่ตระหนักรู้ตัวเต็มที่} (fully-aware attention)
+ได้จากการหลอมรวม\textit{ความเข้าใจบริบท}และ\textit{ความสนใจ}ผ่านคำถามและการเสริมตนเข้าไป
+นั่นคือ
+$\bm{\hat{v}}^C_i = \sum_j \alpha^s_{ij} \bm{v}^C_j$
+เมื่อ $\alpha^s_{ij} \propto \exp(S^s(\bm{s}^C_i, \bm{s}^C_j))$.
+ในกระบวนการนี้จะมี\textit{ค่าน้ำหนัก} $\bm{W}_s$ ที่ต้องผ่าน\textit{กระบวนการฝึก}อยู่.
+\textit{ความเข้าใจบริบททั้งหมด}จะหาได้จาก
+\begin{equation}
+\bm{U}^C = \{ \bm{u}^C_1, \ldots, \bm{u}^C_m \} = \mathrm{BiLSTM}([\bm{v}^C_1;\bm{\hat{v}}^C_1], \ldots, [\bm{v}^C_m;\bm{\hat{v}}^C_m]; \bm{\phi}_u)
+\label{eq: opt fusion net context understanding}
+\end{equation}
+เมื่อ $\bm{\phi}_u$ เป็นพารามิเตอร์ที่ได้จาก\textit{กระบวนการเรียนรู้}
+และ $\bm{u}^C_i \in \mathbb{R}^{250}$.
+
+\paragraph{กระบวนการฝึก.}
+จากกรอบปัญหาของ\textit{ฮวงและคณะ} และโครงสร้างของ\textit{ฟิวชั่นเน็ต}
+มีค่าพารามิเตอร์ต่างๆ ที่ต้องหาในกระบวนการฝึก 
+ได้แก่ $\bm{W}_B$, $\bm{W}_E$, $\bm{w}$,
+$\bm{\phi}_{vq}$, $\bm{\phi}_{Ql}$, 
+$\bm{\phi}_{Qh}$, $\bm{\phi}_{UQ}$,
+$\bm{W}$, 
+$\bm{\phi}_{Cl}$, $\bm{\phi}_{Ch}$,
+$\bm{W}_l$, $\bm{W}_h$, $\bm{W}_u$,
+$\bm{\phi}_v$, $\bm{W}_s$,
+และ $\bm{\phi}_u$.
+เพื่อความกระชับ พารามิเตอร์ทั้งหมดนี้จะถูกรวมเรียกเป็น $\bm{\theta}$.
+\textit{ฮวงและคณะ}ฝึก\textit{ฟิวชั่นเน็ต} ด้วย
+\begin{eqnarray}
+\max_{\bm{\theta}}
+ \sum_{i=1}^N \left( 
+ \log (\tilde{P}^{\bm{\theta}}[b=j^b_i|\bm{C}_i, \bm{Q}_i])
+ +
+ \log (\tilde{P}^{\bm{\theta}}[e=j^e_i|\bm{C}_i, \bm{Q}_i])
+ \right)
+\end{eqnarray}
+เมื่อ $N$ คือจำนวนตัวอย่างการฝึกทั้งหมด
+และ
+$\bm{C}_i$ กับ $\bm{Q}_i$ 
+คือ บริบทและคำถามของตัวอย่างที่ $i^{th}$
+และ
+$j^b_i$ กับ $j^e_i$
+คือ ตำแหน่งจุดเริ่มและจุดจบของคำตอบสำหรับตัวอย่างที่ $i^{th}$.
+
+%LATER
+%\section{การรู้จำใบหน้า (เฟซเน็ต)}.
+%\textit{เฟซเน็ต} (FaceNet)

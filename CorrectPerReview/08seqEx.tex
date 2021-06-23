@@ -1,0 +1,187 @@
+\section{แบบฝึกหัด}
+\label{section: seq exercises}
+
+\begin{Parallel}[c]{0.48\textwidth}{0.47\textwidth}
+	\selectlanguage{english}
+	\ParallelLText{
+		``Life is an opportunity, benefit from it. Life is beauty, admire it. Life is a dream, realize it. Life is a challenge, meet it. Life is a duty, complete it. Life is a game, play it. Life is a promise, fulfill it. Life is sorrow, overcome it. Life is a song, sing it. Life is a struggle, accept it. Life is a tragedy, confront it. Life is an adventure, dare it. Life is luck, make it. Life is too precious, do not destroy it. Life is life, fight for it.''
+		\begin{flushright}
+			---Mother Teresa
+		\end{flushright}
+	}
+	\selectlanguage{thai}
+	\ParallelRText{
+		``ชีวิต เป็นโอกาส ใช้ประโยชน์จากมัน.
+		ชีวิต เป็นความสวยงาม ชื่นชมมัน.
+		ชีวิต เป็นความฝัน ทำมันให้เป็นจริง.
+		ชีวิต เป็นความท้าทาย ต้อนรับมัน.
+		ชีวิต เป็นหน้าที่ ทำมันให้สมบูรณ์.
+		ชีวิต เป็นเกมส์ เล่นมัน.
+		ชีวิต เป็นคำสัญญา รักษามัน.
+		ชีวิต เป็นความเศร้า ผ่านมันให้ได้.
+		ชีวิต เป็นเพลง ร้องมัน.
+		ชีวิต เป็นการดิ้นรน ยอมรับมัน.
+		ชีวิต เป็นโศกนาฏกรรม เผชิญหน้ามัน.
+		ชีวิต เป็นความท้าทาย กล้าผจญมัน.
+		ชีวิต เป็นโชค ทำมันให้เกิด.
+		ชีวิต มีค่ามาก อย่าทำลายมัน.
+		ชีวิต คือชีวิต สู้มัน.''
+		\begin{flushright}
+			---แม่ชีเทเรซา
+		\end{flushright}
+	}
+\end{Parallel}
+\index{english}{words of wisdom!Mother Teresa}
+\index{english}{quote!life}
+
+
+\begin{Exercise}
+	\label{ex: seq HMM M step}
+	
+	จากหัวข้อ~\ref{sec: seq HMM train} (สมการ~\ref{eq: seq HMM likelihood function M step})
+	จงแสดงให้เห็นว่า 
+	\begin{eqnarray}
+	\sum_{\bm{Z}} p(\bm{Z}|\bm{X}, \bm{\theta}_0) \cdot
+	\ln \left\{p(\bm{z}_1|\bm{\pi}) \cdot \left( \prod_{t=2}^T p(\bm{z}_t|\bm{z}_{t-1}, \bm{A}) \right)
+	\cdot \prod_{\tau=1}^T p(\bm{x}_\tau|\bm{z}_\tau, \bm{\phi}) \right\}
+	\nonumber \\
+=
+	\sum_{k=1}^K q_{1k} \cdot \ln p(\bm{z}_1|\bm{\pi}) +  \sum_{j=1}^K \sum_{k=1}^K \sum_{t=2}^T R^{(t-1,t)}_{j,k} \cdot \ln p(\bm{z}_t|\bm{z}_{t-1}, \bm{A})
+	+  \sum_{k=1}^K \sum_{\tau=1}^T q_{\tau k} \cdot \ln p(\bm{x}_\tau|\bm{z}_\tau, \bm{\phi})
+	\nonumber
+	\end{eqnarray}
+	เมื่อ $p(\bm{Z}|\bm{X}, \bm{\theta}_0) = p(\bm{z}_1, \ldots, \bm{z}_T|\bm{X}, \bm{\theta}_0)$
+	โดย $\bm{z}_t$ แสดงด้วยรหัสหนึ่งร้อน
+	และ $q_{tk} \equiv p(z_{tk} = 1|\bm{X}, \bm{\theta}_0)$
+	กับ $R^{(t-1,t)}_{j,k} \equiv p(z_{t-1,j} = 1, z_{t,k}=1|\bm{X}, \bm{\theta}_0)$.
+%	
+	\textit{คำใบ้} แบบจำลองนี้ อาศัยเงื่อนไข\atom{มาร์คอฟ}.
+	
+\end{Exercise}
+
+\begin{Exercise}
+\label{ex: seq HMM M step derivatives}
+	
+จงแสดงให้เห็นว่า ค่าของ $\pi_k$
+% = \frac{q_{1k}}{\sum_{j=1}^K q_{1j}}$ 
+และค่าของ $A_{jk}$
+% = \frac{\sum_{t=2}^T R^{(t-1,t)}_{jk} }{ \sum_{l=1}^K \sum_{t=2}^T R^{(t-1,t)}_{jl} }$ 
+ดังระบุในสมการ~\ref{eq: seq HMM pi_k} และ~\ref{eq: seq HMM A_jk} จะทำให้ฟังก์ชันควรจะเป็น (สมการ~\ref{eq: seq HMM likelihood function M step}) มีค่าสูงสุด ขณะที่ยังรักษาเงื่อนไขความน่าจะเป็น $\sum_k \pi_k = 1$ และ $\sum_k A_{jk} = 1$ ไว้ได้.
+
+\textit{คำใบ้} ฟังก์ชันจุดประสงค์ที่รวมเงื่อนไขแล้ว%
+\footnote{%
+ฟังก์ชันจุดประสงค์ที่รวมเงื่อนไข อาจตั้งแบบอื่น เช่น แบบที่ใช้\textit{วิธีการลงโทษ} (หัวข้อ~\ref{sec: opt contrained opt}) ได้
+แต่การวิเคราะห์อาจจะซับซ้อนขึ้น.
+}
+จะเป็นดังสมการ~\ref{eq: HMM M step constrained likelihood}.
+%
+\begin{eqnarray}
+\mathcal{G}(\bm{\theta})
+&=&
+\varepsilon (\bm{\theta}, \bm{\theta}_0) 
+- \lambda_1 \left( \sum_k \pi_k - 1 \right)
+- \lambda_2 \left( \sum_k A_{jk} - 1 \right)
+\label{eq: HMM M step constrained likelihood}
+\end{eqnarray}
+เมื่อ $\lambda_1 \geq 0$ และ $\lambda_2 \geq 0$ เป็น\textit{ลากรานจ์พารามิเตอร์} เพื่อช่วยรักษาเงื่อนไข
+$\sum_k \pi_k = 1$ และ $\sum_k A_{jk} = 1$.
+
+ตัวอย่างของการวิเคราะห์ 
+ค่า $\pi_k$ อาจแสดงดังนี้.
+ณ ที่ค่าทำให้มากที่สุด ค่าอนุพันธ์ $\partial \mathcal{G}(\bm{\theta})/\partial \pi_k = 0$.
+นั่นคือ
+\begin{eqnarray}
+%\frac{\partial \mathrm{objective}(\bm{\theta})}{\partial \pi_k} 
+%&=& 0
+%\nonumber \\
+\frac{\partial \varepsilon (\bm{\theta}, \bm{\theta}_0)}{\partial \pi_k}
+- \lambda_1 \frac{\partial \left( \sum_j \pi_j - 1 \right)}{\partial \pi_k}
+&=& 0
+\nonumber \\
+\frac{\partial \sum_j q_{1j} \cdot \ln \pi_j}{\partial \pi_k}
+- \lambda_1 
+&=& 0
+\nonumber \\
+\frac{q_{1k}}{\pi_k}
+&=& \lambda_1
+\nonumber \\
+\pi_k
+&=& 
+%\frac{q_{1k}}{2 \lambda_1 \cdot \left( \sum_k \pi_k - 1 \right)}
+\frac{q_{1k}}{\lambda_1}
+\label{eq: HMM M step pi_k lambda}.
+\end{eqnarray}
+
+ด้วยเงื่อนไข $\sum_j \pi_j = 1$ เมื่อแทนสมการ~\ref{eq: HMM M step pi_k lambda} ลงไปจะได้
+\begin{eqnarray}
+\sum_j \frac{q_{1j}}{\lambda_1} 
+&=& 1
+\nonumber \\
+\lambda_1 &=& \sum_j q_{1j}
+\label{eq: HMM M step pi_k constrained lambda}.
+\end{eqnarray}
+เมื่อนำผลจากสมการ~\ref{eq: HMM M step pi_k constrained lambda} กลับไปประมวลกับสมการ~\ref{eq: HMM M step pi_k lambda}
+จะได้ $\pi_k = \frac{q_{1k}}{\sum_j q_{1j}}$ ซึ่งคือสมการ~\ref{eq: seq HMM pi_k}.
+
+\end{Exercise}
+
+\begin{Exercise}
+	\label{ex: seq HMM conditional independence properties}
+	
+	ด้วยเงื่อนไขของแบบจำลองมาร์คอฟซ่อนเร้น
+	จงพิสูจน์คุณสมบัติในสมการ~\ref{eq: alpha-beta prelude property 1} ถึง~\ref{eq: alpha-beta prelude property 8}.
+
+\end{Exercise}
+
+\begin{Exercise}
+	\label{ex: seq music generation}
+	\index{thai}{ระบบแต่งเพลงอัตโนมัติ}
+	\index{english}{music generation}
+	
+	จงศึกษาระบบแต่งเพลงอัตโนมัติ แนวทางปฏิบัติ การวัดผล และข้อมูลที่นิยม
+	และสร้างระบบการจำแนกอารมณ์ พร้อมประเมินผล.
+	
+	
+\end{Exercise}
+
+
+\begin{Exercise}
+	\label{ex: seq overview}
+	
+	จงศึกษาศาสตร์การจำลองแบบ โดยเฉพาะสำหรับข้อมูลชุดลำดับ ในเชิงกว้าง
+	ถึงแบบจำลอง ขั้นตอนวิธี และกลไกที่เป็นศาสตร์และศิลป์ 
+	หรือคิดว่าน่าสนใจ
+	รวมไปถึง ปัจจัยหรือประเด็นที่ควรใส่ใจ การประยุกต์ใช้เด่น ๆ และภารกิจต่าง ๆ
+	และอภิปรายโอกาสการประยุกต์ใช้ต่าง ๆ 
+	และความท้าทายต่าง ๆ ในงานวิจัย 
+	แล้วสรุปและให้ความเห็น.
+	
+\end{Exercise}
+
+\begin{Exercise}
+	\label{ex: seq dig}
+	
+	จากแบบฝึกหัด~\ref{ex: seq overview}
+	จงเลือกประเด็น แบบจำลอง ขั้นตอนวิธี หรือกลไก
+	ที่สนใจ
+	แล้วศึกษาเรื่องดังกล่าว ตั้งคำถามที่เกี่ยวข้อง ดำเนินการหาคำตอบ และสรุปผล.
+	
+หมายเหตุ การตั้งคำถาม ควรเป็นคำถามปลายเปิด ซึ่งจะนำไปสู่คำตอบที่น่าสนใจ
+เช่น หากสนใจโครงสร้างของแบบจำลองความจำระยะสั้น
+แทนที่จะตั้งคำถามว่า 
+``หากตัดประตูลืมออกไปแล้ว แบบจำลองจะยังทำงานได้หรือไม่?''
+ซึ่งคำตอบจะเป็น แค่ ใช่หรือไม่ใช่.
+คำถามแบบนี้ ไม่น่าสนใจ.
+คำถามที่ดีกว่า 
+อาจจะเป็น
+``ประตูลืม ช่วยการทำงานในกรณีกับข้อมูลลักษณะแบบไหน และช่วยได้มากน้อยเท่าไรในแต่ละกรณี
+เมื่อวัดผลโดยสมบูรณ์ และเมื่อเปรียบเทียบกับประตูอื่น ๆ?''
+ซึ่งเป็นคำถามปลายเปิด 
+และจะนำไปสู่คำตอบที่เดาได้ยาก มีความลึก น่าสนใจ และตัวคำตอบเอง
+ก็จะมีประโยชน์มากกว่าด้วย.
+กฎทั่ว ๆ ไป คือ
+หากคำถามใด สามารถตอบได้เลย โดยไม่ต้องทำการศึกษาเพิ่มเติม หรือศึกษาเพียงเล็กน้อย
+หรือ เดาคำตอบได้ง่าย ๆ
+คำถามนั้นไม่น่าสนใจ.
+
+\end{Exercise}

@@ -1,0 +1,486 @@
+\section{แบบฝึกหัด}
+
+\begin{Parallel}[c]{0.48\textwidth}{0.45\textwidth}
+	\selectlanguage{english}
+	\ParallelLText{
+		``Try not to become a man of success,\\
+		but rather try to become a man of value.''
+		\begin{flushright}
+			---Albert Einstein
+		\end{flushright}
+	}
+	\selectlanguage{thai}
+	\ParallelRText{
+		``อย่าพยายามเป็นคนประสบความสำเร็จ\\
+		แต่ให้พยายามเป็นคนที่มีคุณค่า.''
+		\begin{flushright}
+			---อัลเบิร์ต ไอน์สไตน์
+		\end{flushright}
+	}
+\end{Parallel}
+\index{english}{words of wisdom!Albert Einstein}
+\index{english}{quote!value}
+\vspace{1cm}
+
+%
+%\begin{Parallel}[c]{0.52\textwidth}{0.44\textwidth}
+%	\selectlanguage{english}
+%	\ParallelLText{
+%		``Try not to become a man of success,
+%		but rather try to become a man of value.''\\
+%		---Albert Einstein
+%	}
+%	\selectlanguage{thai}
+%	\ParallelRText{
+%		``อย่าพยายามเป็นคนประสบความสำเร็จ
+%		แต่ให้พยายามเป็นคนที่มีคุณค่า'' \\
+%		---อัลเบิร์ต ไอน์สไตน์
+%	}
+%\end{Parallel}
+%\index{words of wisdom!Albert Einstein}
+%\index{quote!value}
+
+
+%\begin{Exercise}
+%	\label{ex: opencv read}
+%	
+%\end{Exercise}
+%
+%\begin{Exercise}
+%	\label{ex: opencv write}
+%	
+%\end{Exercise}
+%
+%\begin{Exercise}
+%	\label{ex: opencv vdo}
+%	
+%\end{Exercise}
+%
+%\begin{Exercise}
+%	\label{ex: hog}
+%	
+%\end{Exercise}
+
+%LATER
+%\begin{Exercise}
+%	\label{ex: sliding window}
+%	\index{sliding window}
+%	\index{วิธีหน้าต่างเลื่อน}
+%	
+%\end{Exercise}
+
+%LATER
+%\begin{Exercise}
+%	\label{ex: simple obj det}
+%	\index{การตรวจจับภาพวัตถุ}
+%	\index{object detection}
+%	
+%\end{Exercise}
+
+\begin{Exercise}
+	\label{ex: kde}
+	\index{english}{KDE}
+	\index{english}{Kernel Density Estimation}
+	\index{thai}{วิธีการประมาณความหนาแน่นแก่น}
+
+จงสร้างข้อมูลหนึ่งมิติขึ้นมา 
+(อาจใช้คำสั่ง เช่น \verb|np.random.normal|)
+และใช้\textit{วิธีการประมาณความหนาแน่นแก่น} (สมการ~\ref{eq: KDE shell} และ~\ref{eq: KDE kernel})
+เพื่อประมาณความหนาแน่นความน่าจะเป็น จากข้อมูลนั้น
+โดยทดลองค่า $\sigma$ หลาย ๆ ค่า.
+สังเกตผล อภิปราย และสรุป.
+
+รายการ~\ref{code: kde} แสดงโปรแกรมวิธีการประมาณความหนาแน่นแก่น.
+ตัวอย่างการเรียกใช้ เช่น
+\begin{Verbatim}[fontsize=\small]
+datax = np.random.normal(3, 2, 100).reshape((1,-1))
+xs = np.linspace(-2, 8, 50).reshape((1,-1))
+pdx = kde(xs, datax, sigma=1)
+plt.plot(xs[0,:], pdx[0,:], 'k')
+\end{Verbatim}
+บรรทัดแรกเป็นคำสั่งเพื่อสร้างข้อมูล \verb|datax| ขึ้นมา จากการแจกแจงแบบเกาส์เซียน จำนวน $100$ จุดข้อมูล โดยมีค่าเฉลี่ยเป็น $3$ และค่าเบี่ยงเบนมาตราฐานเป็น $2$.
+บรรทัดที่สอง สร้างค่า $x$ ที่ต้องการถาม และบรรทัดที่สาม คือการเรียกโปรแกรม \verb|kde| เพื่อประมาณความหนาแน่นความน่าจะเป็นของข้อมูล \verb|datax|.
+บรรทัดสุดท้ายเป็นการวาดกราฟแสดงความหนาแน่นที่ค่าอินพุตต่าง ๆ.
+%
+ดูตัวอย่างจากรูป~\ref{fig: kde sigma's}.
+
+\lstinputlisting[language=Python, caption={[วิธีการประมาณความหนาแน่นแก่น]โปรแกรมวิธีการประมาณความหนาแน่นแก่น}, label={code: kde}]{04Classic/code/code_kde.py}
+\index{english}{kernel density estimation!code}
+\index{thai}{วิธีการประมาณความหนาแน่นแก่น!โปรแกรม}
+
+\end{Exercise}
+
+
+\begin{Exercise}
+	\label{ex: kde 2D}
+	\index{english}{KDE}
+	\index{english}{Kernel Density Estimation}
+	\index{thai}{วิธีการประมาณความหนาแน่นแก่น}
+	
+	จงสร้างข้อมูลสองมิติขึ้นมา 
+	โดยอาจใช้คำสั่ง เช่น
+\begin{Verbatim}[fontsize=\small]
+mu = [6, 9]
+cov = [[8, -5], [-5, 9]]
+x = np.random.multivariate_normal(mu, cov, 500).reshape((2,-1))
+\end{Verbatim}
+เมื่อ \verb|mu| และ \verb|cov| แทนค่าเฉลี่ยและค่าความแปรปรวนร่วมเกี่ยว ตามลำดับ
+และสร้างเป็นข้อมูลสองมิติจำนวน $500$ จุดข้อมูล.
+และใช้\textit{วิธีการประมาณความหนาแน่นแก่น} (สมการ~\ref{eq: KDE shell} และ~\ref{eq: KDE kernel})
+เพื่อประมาณความหนาแน่นความน่าจะเป็น จากข้อมูลนั้น
+โดยทดลองค่า $\sigma$ หลาย ๆ ค่า.
+สังเกตผล อภิปราย และสรุป.
+
+รูป~\ref{fig: kde 2D} แสดงตัวอย่างข้อมูลสองมิติที่สร้างขึ้น และค่าความหนาแน่นที่ประมาณออกมา.
+%
+\begin{figure}[H]
+	\begin{center}
+	\begin{tabular}{cc}
+	\includegraphics[width=0.48\columnwidth]{04Classic/kde/data2D.png}
+&
+	\includegraphics[width=0.48\columnwidth]{04Classic/kde/kde_2D.png}
+	\end{tabular}
+	\end{center}
+	\caption[ตัวอย่างการประมาณค่าความหนาแน่นความน่าจะเป็นสำหรับข้อมูลสองมิติ]{ตัวอย่างการประมาณค่าความหนาแน่นความน่าจะเป็นสำหรับข้อมูลสองมิติ.
+ภาพซ้าย แสดงจุดข้อมูลตัวอย่าง.
+ภาพขวา แสดงค่าประมาณความหนาแน่นความน่าจะเป็นของข้อมูล.
+ระดับสีแทนค่าความหนาแน่นความน่าจะเป็น ซึ่งค่าแสดงด้วยแถบสีด้านข้าง.
+	}
+	\label{fig: kde 2D}
+\end{figure}
+	
+\end{Exercise}
+
+%LATER
+%\begin{Exercise}
+%	\label{ex: heatmap}
+%	\index{heatmap}
+%	\index{แผนที่ความร้อน}
+%	
+%In practice, it is more convenient for marketing personnel to be able to adjust a color scheme so that some ranges of visiting frequencies become more striking at desired degrees.
+%Instead of directly changing a color scheme,
+%this can be achieved easily by introducing another parameter to globally manipulate heat values.
+%Then, the manipulated heat values can be mapped on a same color scheme, but the resulting hot zone map appears as if it is produced on a different mapping color scale. 
+%A manipulated heat value is called ``heat intensity.''
+%One simple manipulation is to power a normalized heat value to a fraction of the manipulation parameter.
+%That is, given heat value $z$ and parameter $u$, heat intensity is calculated by, 
+%\begin{eqnarray}
+%z' = \left( \frac{z - z_{\min}}{z_{\max} - z_{\min}} \right)^{\frac{1}{u}}
+%\label{eq: hot zone intensity}.
+%\end{eqnarray}
+%
+%Fig.~\ref{fig: hot zone map} shows examples of hot zone maps produced from the same heat values, but different values of parameter $u$.
+%It should be noted that using $u > 1$ leads to a heat intensification effect, which allows lower visiting frequencies to be more noticeable.
+%The left most picture shows a hot zone map without intensification ($u=1$).
+%Without intensification, only the most frequently visited area, which is around cashier counter, is noticeable.
+%This is trivial and provides virtually no marketing insight.
+%With different degrees of intensification, the second most and other less frequently visited areas can be identified and examined, as shown in other pictures ($u=2, 3, 5, 8, 10$).
+%
+%\begin{figure}[H]
+%\begin{center}
+%	\begin{tabular}{cccccc}
+%		\includegraphics[width=0.15\textwidth]{04Classic/GTheatmap1b.png} &
+%		\includegraphics[width=0.15\textwidth]{04Classic/GTheatmap2b.png} &
+%		\includegraphics[width=0.15\textwidth]{04Classic/GTheatmap3b.png} &
+%		\includegraphics[width=0.15\textwidth]{04Classic/GTheatmap5b.png} &
+%		\includegraphics[width=0.15\textwidth]{04Classic/GTheatmap8b.png} &
+%		\includegraphics[width=0.15\textwidth]{04Classic/GTheatmap10b.png}
+%		%
+%		\\
+%		$u = 1$ &
+%		$u = 2$ &
+%		$u = 3$ &
+%		$u = 5$ &
+%		$u = 8$ &
+%		$u = 10$ 
+%	\end{tabular} 
+%\end{center}
+%	\caption{Hot zone maps at various intensities.}
+%	\label{fig: hot zone map}
+%\end{figure}
+%	
+%\end{Exercise}
+
+
+\begin{Exercise}
+	\label{ex: svm primal}
+	\index{english}{SVM}
+	\index{english}{Support Vector Machine}
+	\index{thai}{ซัพพอร์ตเวกเตอร์แมชชีน}
+แบบฝึกหัดนี้ เราจะศึกษา\textit{รูปปฐม}ของซัพพอร์ตเวกเตอร์แมชชีน.
+จงสร้างข้อมูลขึ้นมาจำนวน $200$ จุดข้อมูล โดยเป็นกลุ่มบวกและกลุ่มลบอย่างละครึ่ง
+จุดข้อมูลอยู่ในปริภูมิสองมิติ และข้อมูลสามารถแบ่งแยกได้อย่างสมบูรณ์เชิงเส้น
+เช่น ข้อมูลที่แสดงในรูป~\ref{fig: linearly separable datapoints}.
+แล้วแก้ปัญหาใน\textit{รูปปฐม}ของซัพพอร์ตเวกเตอร์แมชชีน 
+เพื่อหาอภิระนาบแบ่งแยก นั่นคือ หาค่าพารามิเตอร์ $\bm{w}$ และ $b$
+ดังแสดงในรูป~\ref{fig: linearly separable primal gd}.
+
+ทบทวนปัญหาปฐม สำหรับข้อมูลที่สามารถแบ่งแยกได้โดยสมบูรณ์เชิงเส้น
+คือ
+\begin{eqnarray}
+\underset{\bm{w}, b}{\mathrm{minimize}} &  \frac{1}{2} \bm{w}^T \bm{w} &
+\nonumber \\
+\mbox{s.t.} 
+& y_i (\bm{w}^T \bm{x}_i + b) \geq 1 & \mbox{ for } i =1, \ldots, N.
+%\label{eq: svm primal separable}
+\nonumber
+\end{eqnarray}
+
+หมายเหตุ ปัญหานี้ เราจะใช้ฟังก์ชันเอกลักษณ์เป็นลักษณะสำคัญ นั่นคือ $\bm{z} = \phi(\bm{x}) = \bm{x}$
+(ซึ่งเทียบเท่าการใช้เคอร์เนลเชิงเส้น $k(\bm{x}, \bm{x}') = \bm{x}^T \bm{x}'$).
+
+เราอาจสามารถแก้ปัญหาได้ด้วย\textit{วิธีการลงโทษ}
+เช่นอาจกำหนด\textit{ฟังก์ชันลงโทษ} เป็น
+\[
+P(\bm{w}, b) = \sum_i \mathrm{relu}\left(1 - y_i \cdot (\bm{w}^T \bm{x}_i + b)\right)
+\]
+เมื่อ 
+\begin{eqnarray}
+\mathrm{relu}(a) = \left\{ 
+\begin{array}{ll}
+a & \mbox{ เมื่อ } a \geq 0, \\
+0 & \mbox{ หากเป็นกรณีอื่น} .
+\end{array}
+\right.
+\nonumber
+\end{eqnarray}
+\index{english}{relu}
+\index{thai}{เรลู}
+
+จากปัญหาปฐมของซัพพอร์ตเวกเตอร์แมชชีน ตัวอย่างคำสั่งข้างล่าง
+\begin{Verbatim}[fontsize=\small]
+la = 100
+loss_adaptor = lambda wb: loss(wb[:2], wb[2], la)[0,0]
+dloss_adaptor = lambda wb: dloss(wb[:2], wb[2], la)
+wb0 = np.zeros((3,1))
+wbo, gd_losses, wbs = gd(dloss_adaptor, wb0, loss_adaptor, 
+    step_size = 0.0001, Nmax = 5000)
+\end{Verbatim}
+ใช้ค้นหาอภิระนาบ (ระบุด้วย $\bm{w}$ และ $b$ ซึ่งคือ \verb|wbo[:2]| และ \verb|wbo[2]| ตามลำดับ).
+โปรแกรม \verb|loss| และ \verb|dloss| 
+รวมถึงโปรแกรมอื่นที่เกี่ยวข้องกำหนดดังแสดงในรายการ~\ref{code: svm primal gd}.
+โปรแกรม \verb|gd| (แสดงในรายการ~\ref{code: gd as function}) คำนวณวิธีลงเกรเดียนต์.
+
+\lstinputlisting[language=Python, caption={[โปรแกรมค้นหาอภิระนาบ ในปัญหาปฐมของซัพพอร์ตเวกเตอร์แมชชีน]ตัวอย่างโปรแกรมการค้นหาอภิระนาบ จากปัญหาปฐมของซัพพอร์ตเวกเตอร์แมชชีน ด้วยวิธีลงเกรเดียนต์. 
+ตัวแปร \texttt{datax} และ \texttt{datay} แทนข้อมูลอินพุตและฉลากกลุ่ม ตามลำดับ
+โดยทั้งคู่เป็น \texttt{np.array} สัดส่วน \texttt{(2,N)} และ \texttt{(1,N)} เมื่อ \texttt{N} เป็นจำนวนจุดข้อมูล.
+หมายเหตุ ตัวแปร \texttt{datax} และ \texttt{datay} เป็น\textit{ตัวแปรส่วนกลาง} (global variables).
+ดูแบบฝึกหัด~\ref{ex: svm primal scipy.optimize} สำหรับตัวอย่างการทำเป็น\textit{โปรแกรมเชิงวัตถุ}
+ซึ่งมีการจัดการข้อมูลที่เป็นสัดเป็นส่วนมากกว่า.
+}, label={code: svm primal gd}]{04Classic/code/code_primal_gd.py}
+\index{english}{support vector machine!primal!code}
+\index{thai}{ซัพพอร์ตเวกเตอร์แมชชีน!ปัญหาปฐม!โปรแกรม}
+\index{english}{relu!code}
+\index{thai}{เรลู!โปรแกรม}
+
+
+\lstinputlisting[language=Python, caption={โปรแกรมวิธีลงเกรเดียนต์}, label={code: gd as function}]{02Background/code/code_gd_fn.py}
+\index{english}{gradient descend method!code}
+\index{thai}{วิธีลงเกรเดียนต์!โปรแกรม}
+
+\begin{figure}[H]
+	\begin{center}
+\includegraphics[width=0.5\textwidth]{04Classic/svm/ex_primal_separable.png}
+	\end{center}
+	\caption[ตัวอย่างข้อมูลที่สามารถแบ่งแยกได้โดยสมบูรณ์เชิงเส้น]{ตัวอย่างข้อมูลที่สามารถแบ่งแยกได้โดยสมบูรณ์เชิงเส้น.
+	}
+	\label{fig: linearly separable datapoints}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{04Classic/svm/ex_primal_separable_GD.png}
+	\end{center}
+	\caption[ตัวอย่างอภิระนาบที่หาได้จากรูปปฐม]{ตัวอย่างอภิระนาบที่หาได้จากรูปปฐม สำหรับข้อมูลที่สามารถแบ่งแยกได้โดยสมบูรณ์เชิงเส้น.
+	เส้นทึบสีน้ำเงิน แสดงอภิระนาบที่หาได้.
+	}
+	\label{fig: linearly separable primal gd}
+\end{figure}
+
+\end{Exercise}
+
+\paragraph{มอดูลไซไพ.}
+หัวข้อนี้ แนะนำมอดูล\textit{ไซไพ} (Scipy) ซึ่งมีเครื่องมือหลายอย่างสำหรับงานคำนวณทางวิทยาศาสตร์
+รวมถึงมอดูล \verb|optimize|. 
+มอดูล \verb|optimize| มีเครื่องมือการหาค่าดีที่สุดอยู่หลายวิธี.
+แม้วิธีลงเกรเดียนต์ (หัวข้อ~\ref{sec: opt grad desc}) เป็นวิธีการที่ใช้งานได้
+แต่ในทางปฏิบัติ มีวิธีที่มีประสิทธิภาพมากกว่าวิธีลงเกรเดียนต์อยู่มากมาย
+และด้วยแบบจำลอง \verb|optimize| เราสามารถไปใช้วิธีเหล่านั้นได้ โดยไม่ต้องใช้เวลาในการศึกษารายละเอียดของวิธีเหล่านั้นมากนั้น.
+มอดูล \verb|optimize| สามารถนำเข้าได้ด้วยคำสั่ง
+\begin{Verbatim}[fontsize=\small]
+from scipy import optimize
+\end{Verbatim}
+แบบฝึกหัด~\ref{ex: svm primal scipy.optimize} จะแก้ปัญหาเดียวกับแบบฝึกหัด~\ref{ex: svm primal} เพียงแต่จะใช้เครื่องมือจากแบบจำลอง \verb|optimize| แทนวิธีลงเกรเดียนต์.
+
+\begin{Exercise}
+	\label{ex: svm primal scipy.optimize}
+	\index{english}{SVM}
+	\index{english}{Support Vector Machine}
+	\index{thai}{ซัพพอร์ตเวกเตอร์แมชชีน}
+
+เช่นเดียวกับแบบฝึกหัด~\ref{ex: svm primal}
+จงสร้างข้อมูลขึ้นมาจำนวน $200$ จุดข้อมูล โดยเป็นกลุ่มบวกและกลุ่มลบอย่างละครึ่ง
+จุดข้อมูลอยู่ในปริภูมิสองมิติ และข้อมูลสามารถแบ่งแยกได้อย่างสมบูรณ์เชิงเส้น
+แล้วแก้ปัญหาใน\textit{รูปปฐม}ของซัพพอร์ตเวกเตอร์แมชชีน 
+เพื่อหาอภิระนาบแบ่งแยก.
+
+ศึกษาการเขียนโปรแกรมด้วยการใช้มอดูล \verb|optimize| (ดังแสดงในตัวอย่างของแบบฝึกหัดนี้) เปรียบเทียบกับด้วยวิธีลงเกรเดียนต์ (แบบฝึกหัด~\ref{ex: svm primal}) 
+ทดลองใช้งาน สังเกตผล อภิปราย และสรุป.
+
+ตัวอย่างคำสั่งข้างล่าง ฝึกแบบจำลอง และรายงานผลอภิระนาบที่พบ
+\begin{Verbatim}[fontsize=\small]
+svm = primal_SVM()
+svm.phi = lambda xq: xq # identity projection
+res = svm.train(datax, datay)
+print('w=', svm.wopt.T)
+print('b=', svm.bopt)
+\end{Verbatim}
+โดย
+บรรทัดแรก เป็นการสร้างตัวแปรวัตถุ \verb|svm|
+จาก\textit{คลาส} \verb|primal_SVM| ซึ่งแสดงในรายการ~\ref{code: primal SVM}.
+บรรทัดที่สอง กำหนดฟังก์ชันลักษณะสำคัญเป็นฟังก์ชันเอกลักษณ์.
+บรรทัดที่สาม เป็นการฝึกซัพพอร์ตเวกเตอร์แมชชีน ด้วยข้อมูล \verb|datax| และ \verb|datay|.
+ผลลัพธ์ที่ได้จากการฝึกจะสรุปออกมาเป็นค่าของพารามิเตอร์ \verb|svm.wopt| และ \verb|svm.bopt| ที่ใช้บรรยายอภิระนาบ.
+สังเกตว่า \textit{เมท็อด} \verb|train| มีการเรียกใช้
+\begin{Verbatim}[fontsize=\small]
+res = optimize.minimize(minf, wb0, method='SLSQP', jac=gradf,
+          constraints=ineq_cons, options=options)
+\end{Verbatim}
+ซึ่งเป็นเครื่องมือการหาค่าดีที่สุด โดยระบุวิธีเป็น \verb|'SLSQP'| (ศึกษารายละเอียดเพิ่มเติมจากเวปไซต์ของ\textit{ไซไพ} หากสนใจ)
+โดยภายใน \textit{เมท็อด} \verb|train| 
+ได้กำหนดค่า \verb|minf| และ \verb|gradf|
+ซึ่งคือ ฟังก์ชันจุดประสงค์ และฟังก์ชันเกรเดียนต์ ตามลำดับ
+พร้อมทั้ง\textit{ข้อจำกัด}แบบอสมการ \verb|ineq_cons|.
+
+หมายเหตุ การใช้งานจริง สิ่งที่ต้องการ คือการทำนายกลุ่มของข้อมูล.
+\textit{เมท็อด} \verb|decision_score| ใช้คำนวณค่า\textit{ฟังก์ชันแบ่งแยก}
+ซึ่งจะนำไปใช้ตัดสินกลุ่ม.
+ส่วนค่าของ $\bm{w}$ และ $b$ นั้น เป็นรายละเอียดภายใน ไม่จำเป็นต้องรายงาน
+และการใช้งานจริงของซัพพอร์ตเวกเตอร์แมชชีน ก็จะไม่มีการคำนวณค่า $\bm{w}$ ออกมา
+เพราะว่า รูปแบบการคำนวณถูกแปลงไป เพื่อใช้ประโยชน์จากฟังก์ชันเคอร์เนล.
+ดูแบบฝึกหัด~\ref{ex: svm dual} สำหรับโปรแกรมซัพพอร์ตเวกเตอร์แมชชีนที่ใช้งานจริง.
+
+\lstinputlisting[language=Python, caption={[ซัพพอร์ตเวกเตอร์แมชชีน ปัญหาปฐม กรณีแบ่งแยกได้โดยสมบูรณ์]โปรแกรมซัพพอร์ตเวกเตอร์แมชชีน จากปัญหาปฐม สำหรับกรณีแบ่งแยกได้โดยสมบูรณ์}, label={code: primal SVM}]{04Classic/code/primal_SVM.py}
+\index{english}{support vector machine!primal!code}
+\index{thai}{ซัพพอร์ตเวกเตอร์แมชชีน!ปัญหาปฐม!โปรแกรม}
+
+\end{Exercise}
+
+\begin{Exercise}
+	\label{ex: svm dual}
+	\index{english}{SVM}
+	\index{english}{Support Vector Machine}
+	\index{thai}{ซัพพอร์ตเวกเตอร์แมชชีน}
+
+ปัญหาเดียวกับแบบฝึกหัด~\ref{ex: svm primal scipy.optimize}
+แต่แก้ปัญหาจาก\textit{ปัญหาคู่}.
+\begin{eqnarray}
+\underset{\bm{\alpha}}{\mathrm{maximize}} &  \sum_{i=1}^N \alpha_i 
+- \frac{1}{2}\sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_j k(\bm{x}_i, \bm{x}_j) 
+\nonumber \\
+\mbox{s.t.} & 
+\nonumber \\
+&
+\begin{array}{ll}
+\sum_{i=1}^N \alpha_i y_i = 0, &  \\
+0 \leq \alpha_i \leq C & \mbox{ สำหรับ } i =1, \ldots, N.
+\end{array}
+\nonumber 
+\end{eqnarray}
+เนื่องจาก \textit{ปัญหาคู่} สำหรับกรณีแบ่งแยกได้โดยสมบูรณ์ กับกรณีทั่วไปต่างกัน เพียงข้อกำหนด $\alpha_i \leq C$ ซึ่งหากเลือกค่า $C$ ขนาดใหญ่ก็จะให้ผลแบบเดียวกับกรณีแบ่งแยกได้โดยสมบูรณ์
+ตัวอย่างข้างล่างนี้ จึงใช้รูปแบบที่มีอภิมานพารามิเตอร์ $C$.
+
+โปรแกรมในรายการ~\ref{code: cSVM}
+แสดงตัวอย่างโปรแกรมซัพพอร์ตเวกเตอร์แมชชีน.
+สังเกต วิธีการเขียนโปรแกรมจะใช้การทำ\textit{เวคตอไรเซชั่น}มากที่สุดเท่าที่จะทำได้
+เนื่องจากประสิทธิภาพการคำนวณและความยืดหยุ่น.
+ตัวอย่าง เช่น 
+หากการคำนวณค่าพารามิเตอร์ $b$ คือ
+$b_o = y_i  - \sum_{j \in S} \alpha_j y_j k(\bm{x}_j, \bm{x}_i)$ สำหรับ $i \in \{j: 0 < \alpha_j < C \}$.
+นั่นคือ เทียบเท่า
+$b_o = y_i - (\bm{\alpha}^T \odot \bm{y}) \cdot \bm{K}_{:,i}$ สำหรับ $i \in \{j: 0 < \alpha_j < C \}$.
+หมายเหตุ โปรแกรม~\ref{code: cSVM} คำนวณค่า $b$ ด้วยค่าเฉลี่ย ซึ่งจะซับซ้อนกว่าตัวอย่างการทำ\textit{เวคตอไรเซชั่น}ที่อภิปรายข้างต้นเล็กน้อย.
+
+%นอกจากนั้น สังเกตว่า โปรแกรมในรายการ~\ref{code: cSVM} ไม่มีการคำนวณค่า $\bm{w}$ ออกมา
+%และใช้\textit{เมท็อด} \verb|decision_score| ในการคำนวณค่าฟังก์ชันแบ่งแยกสำหรับข้อมูลที่สนใจ.
+
+คล้ายกับตัวอย่างในแบบฝึึกหัด~\ref{ex: svm primal scipy.optimize}
+คำสั่งข้างล่าง แสดงตัวอย่างการฝีก และการอนุมานด้วยซัพพอร์ตเวกเตอร์แมชชีน
+\begin{Verbatim}[fontsize=\small]
+svm = cSVM()
+svm.kernel = lambda xq, xp: np.dot(xq.T, xp) # linear kernel
+C = 1
+res = svm.train(datax, datay, C=C)
+svm.decision_score(testx)
+\end{Verbatim}
+ในตัวอย่าง ใช้อภิมานพารามิเตอร์ $C=1$ ฝึกด้วยข้อมูล \verb|datax| และ \verb|datay|
+ที่ต้องเป็นชนิด \verb|np.array| สัดส่วน \verb|(D, N)| และ \verb|(1, N)| ตามลำดับ
+เมื่อ \verb|D| และ \verb|N| แทนจำนวนมิติของอินพุต และจำนวนจุดข้อมูล ตามลำดับ.
+คำสั่งสุดท้าย ใช้คำนวณค่าฟังก์ชันแบ่งแยกสำหรับ ข้อมูลทดสอบ \verb|testx|.
+
+จงศึกษาวิธีการเขียนโปรแกรม ทดลองใช้งาน สังเกตผล อภิปราย และสรุป.
+ทดลองค่า $C$ ต่าง ๆ และรายงานดังตัวอย่างในรูป~\ref{fig: csvm different Cs}.
+
+
+\lstinputlisting[language=Python, caption={ซัพพอร์ตเวกเตอร์แมชชีน}, label={code: cSVM}]{04Classic/code/code_cSVM.py}
+\index{english}{support vector machine!code}
+\index{thai}{ซัพพอร์ตเวกเตอร์แมชชีน!โปรแกรม}
+
+\end{Exercise}
+
+\begin{Exercise}
+	\label{ex: svm dual gaussian}
+	\index{english}{SVM}
+	\index{english}{Support Vector Machine}
+	\index{thai}{ซัพพอร์ตเวกเตอร์แมชชีน}
+
+จงสร้างข้อมูลที่ไม่สามารถแบ่งแยกสมบูรณ์ได้เชิงเส้น
+โดยจะสร้างให้มีลักษณะใดก็ได้ แต่ควรทำให้สามารถตรวจดูได้สะดวก เช่น อินพุตควรจะเป็นสองมิติ.
+ตัวอย่างอาจจะเช่นที่แสดงในรูป~\ref{fig: non-linearly-separable datapoints}.
+ทดลองใช้ซัพพอร์ตเวกเตอร์แมชชีน กับเคอร์เนลเชิงเส้น และเคอร์เนลเกาส์เซียนที่ค่า $\sigma$ ต่าง ๆ.
+ดูรูป~\ref{fig: csvm linear kernel on wave datapoints} กับ~\ref{fig: csvm gaussian kernels} สำหรับตัวอย่าง.
+ออกแบบการทดลอง เพื่อศึกษาผลของ $C$ และ $\sigma$.
+ทดลอง สังเกตผล อภิปราย และสรุป.
+
+ตัวอย่าง คำสั่งข้างล่างแสดงการกำหนดค่าเคอร์เนลของ\textit{ตัวแปรวัตถุ} (จาก\texttt{cSVM})
+ให้เป็นเคอร์เนลเกาส์เซียน (ใช้ $\sigma = 2$)
+\begin{Verbatim}[fontsize=\small]
+svm.kernel = lambda xq, xp: gaussian(xq, xp, sigma=2)
+\end{Verbatim}
+โดยโปรแกรม \verb|gaussian| แสดงในรายการ~\ref{code: gaussain kernel}.
+
+\lstinputlisting[language=Python, caption={[เคอร์เนลเกาส์เซียน]โปรแกรมเคอร์เนลเกาส์เซียน สำหรับซัพพอร์ตเวกเตอร์แมชชีน}, label={code: gaussain kernel}]{04Classic/code/gaussian.py}
+\index{english}{support vector machine!gaussian kernel!code}
+\index{thai}{ซัพพอร์ตเวกเตอร์แมชชีน!เกาส์เซียนเคอร์เนล!โปรแกรม}
+
+%
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{./04Classic/svm/nonlinsep.png}
+		\caption[ตัวอย่างข้อมูลที่ไม่สามารถแบ่งแยกสมบูรณ์ได้เชิงเส้น]{ต้วอย่างข้อมูลที่ไม่สามารถแบ่งแยกสมบูรณ์ได้เชิงเส้น.}
+		\label{fig: non-linearly-separable datapoints}
+	\end{center}
+\end{figure}
+%
+	
+\end{Exercise}
+
+%LATER
+%\paragraph{มอดูลไซคิทเลิร์น.}
+
+% LATER
+%\begin{Exercise}
+%	\label{ex: svm pulsar}
+%	\index{SVM}
+%	\index{Support Vector Machine}
+%	\index{ซัพพอร์ตเวกเตอร์แมชชีน}
+%	
+%\end{Exercise}
+
+
+%\begin{Exercise}
+%	\label{ex: mAP}
+%
+%
+%
+%\end{Exercise}

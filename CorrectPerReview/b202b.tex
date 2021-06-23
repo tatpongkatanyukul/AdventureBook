@@ -1,0 +1,985 @@
+%คอมไพล์ด้วย
+
+%\begin{verbatim}
+%xelatex mlbook.tex
+%xelatex mlbook.tex
+%bibtex mlbook
+
+%makeindex mlbook % single index
+%makeindex english % separated index June 15, 2021.
+%makeindex thai % separated index June 15, 2021.
+
+%xelatex mlbook.tex
+%xelatex mlbook.tex
+%\end{verbatim}
+
+% 13pt (checked size upto Ch 7),
+% but, I felt that it is too small. Nov 4th, 2020.
+
+% 18pt w/ 1.75 scale is good, but equations seem comparatively small. Dec 1st, 2020.
+
+\documentclass[a4paper,14pt, oldfontcommands]{memoir}
+% oldfontcommands is to fix '\sc' font from bibtex, Mar 25th, 2018.
+
+\usepackage{fonts-tlwg}
+\usepackage[T1]{fontenc}
+
+
+
+\usepackage{float} % tested OK
+\usepackage{amsmath} % tested OK
+ \usepackage{polynom} % tested OK
+\usepackage{polyglossia} % tested OK
+\usepackage{color} % tested OK
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref} % tested OK
+\usepackage{paralist} % tested OK
+
+\usepackage{fontspec}  % tested OK
+
+
+%\usepackage{breqn} % for breaking equation to multiple lines if neccessary. Added on Oct 12th, 2017. -- not working. It screws others, e.g., \bm{\phi .. }
+
+\newcommand\hmmax{0}
+%\newcommand\bmmax{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math font family
+\usepackage{mathptmx} % tested OK
+%\usepackage{mathptm}
+%\usepackage{newtx}
+% make \mathrm and \mathbf look nice
+% but make symbols too thick
+% make \mathcal ugly
+
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+% to fix mathcal ugliness from mathptmx, May 7th, 2020.
+
+% For making bold greek letter seem more noticeable
+\usepackage{bm}
+%\newcommand{\bm}{\bf}
+
+% without this, I cannot bold the greek
+
+%\usepackage[OMLmathrm,OMLmathbf]{isomath}
+%\usepackage{isomath}
+% Oct 20, 2019. to bold greeks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% To do parallel quote
+\usepackage{parallel}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% For mathfonts, e.g., \mathbb
+\usepackage{amsfonts} % tested OK
+
+\usepackage{amsthm} % for end of example symbol. Apr 1, 2014.
+
+
+\usepackage[usenames,dvipsnames]{xcolor} % tested OK
+
+%\usepackage[top=25mm, bottom=20mm, left=20mm, right=20mm]{geometry} % tested OK
+\usepackage[top=25mm, bottom=20mm, left=25mm, right=15mm]{geometry} % adjusted Oct 2020 (for book binding)
+%\usepackage[top=20mm, bottom=20mm, left=25mm, right=10mm]{geometry} % Nov 4th, 2020
+
+\XeTeXlinebreaklocale "th"  % tested OK
+\XeTeXlinebreakskip = 0pt plus 1pt % tested OK
+%\sloppy % Jun 22nd, 2020. Ugly separation
+% See ugliness at มอดูลช่วยจัดหมู่ย่อย DeepEx
+%\defaultfontfeatures{Mapping=tex-text, Scale=1.23} % Jun 22, 2020.
+% July 20, 2020. (Remove this, since it causes curvy quote in the listing, but it will be ok if it appears after \lstset)
+
+\usepackage{framed,color}  % tested OK
+\definecolor{shadecolor}{rgb}{0.95, 0.95, 0.70} % for lighten shaded background, Mar 29th, 2016.
+
+\definecolor{darkbrown}{rgb}{0.35, 0.15, 0.05}
+\definecolor{oceanboatblue}{rgb}{0.0, 0.47, 0.75}
+\definecolor{palecarmine}{rgb}{0.69, 0.25, 0.21}
+\definecolor{persianred}{rgb}{0.8, 0.2, 0.2}
+
+
+
+\usepackage{mdframed}  % tested OK
+
+\usepackage[all]{xy}  % tested OK
+
+\usepackage{multicol}
+
+\usepackage{wrapfig} % May 19th, 2017 (for wrap text around figure) 
+
+\usepackage{mathtools} % Mar 25th, 2018 (for bmatrix*, to allow left-alignment)
+
+\usepackage{hyperref} % Aug 4th, 2018 (for url)
+
+% Oct 31st, 2017 (to make part to use arabic numbers)
+\renewcommand\thepart{\arabic{part}}
+
+% Jan 15th, 2019 (to fix ugly \mathrm)
+%\DeclareSymbolFont{letters}{OT1}{cmr}{m}{n} % set math to roman font / bad. I lost greek
+
+%\usepackage[math-style=upright]{unicode-math}  / bad. Things screwed up. I can't even compile it.
+
+
+%\usepackage[no-math, T1]{fontenc}
+%\usepackage{unicode-math}
+%\setmathrm{Latin Modern Roman}[Scale=MatchLowercase]
+%\setmathfont{Latin Modern Math}[Scale=MatchLowercase]
+%\setmathrm{Latin Modern Roman}[Scale=MatchLowercase]%
+% cause troubles and errors all over.
+
+%\DeclareFontFamily{Times New Roman}{}{\skewchar\font=127 }
+%\DeclareFontShape{Times New Roman}{}{m}{it}{<-> s*[.9] zavmri7m}{}
+%\DeclareFontShape{OML}{zavm}{b}{it}{<-> s*[.9] zavmbi7m}{}
+%\DeclareMathAlphabet{\mathrm}{Times New Roman}{}{m}{it}
+% doesn't work.
+
+\usepackage{exercise}
+% for exercise, so that it can be referenced. Dec 23rd, 2019.
+\counterwithin{Exercise}{chapter} % Jan 9, 2020
+\newtheorem{exercise}{แบบฝึกหัด}[chapter]
+\def\ExerciseName{แบบฝึกหัด}
+
+\usepackage{fancyvrb} 
+% to allow smaller verbatim
+% Jan 9, 2020
+
+\usepackage{fancyhdr}
+% to separate page numbering systems
+% Sep 21, 2020.
+
+\newcommand{\setfrontpagenumbering}{%
+	%	\pagestyle{fancy}
+	\pagenumbering{thai}
+}
+
+
+\newcommand{\setmainpagenumbering}{%
+%	\pagestyle{fancy}
+	\pagenumbering{arabic}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\title{\vspace{0.8in}\textbf{\color{oceanboatblue} การรู้จำรูปแบบและการเรียนรู้ของเครื่องเบื้องต้น}\\
+%\textbf{\Large\color{persianred} Introduction
+%	to 
+%	Pattern Recognition and Machine Learning}
+%}
+%\author{{\Large\color{yellow} ธัชพงศ์ กตัญญูกุล}}
+
+\title{\vspace{0.8in}\textbf{\color{oceanboatblue} 
+การผจญภัยของการเรียนรู้ของเครื่อง\\ในโลกการรู้จำรูปแบบ}\\
+	\textbf{\Large\color{persianred} 
+	The Adventures of Machine Learning\\
+    in The World of Pattern Recognition}
+}
+\author{{\Large\color{yellow} ธัชพงศ์ กตัญญูกุล}}
+
+
+\setdefaultlanguage{thai}  % to make default keyword thai, e.g., บทที่. Mar 27th, 2014.
+\setotherlanguage{english}
+%\newfontfamily\englishfont[Scale=1.1]{Times New Roman:Script=english}
+\newfontfamily\englishfont[Scale=1.2]{TH Sarabun New:Script=english} %Nov 4th, 2020.
+
+
+% Because latin font in Sarabun is Sans Serif, we prefer to use Serif font
+%\newfontfamily{\thaifont}[Scale=MatchUppercase,Mapping=tex-text]{TH Sarabun New}
+%\newfontfamily{\thaifont}[Scale=MatchLowercase,Mapping=tex-text]{TH Sarabun New} %Nov 4th, 2020.
+\newfontfamily{\thaifont}[Scale=1.2, Mapping=tex-text]{TH Sarabun New}
+% Tested on Nov 4th, 2020. scale=1.6 (too small). scale=1.8 (too large)
+
+%\newfontfamily{\thaifont}[Mapping=tex-text]{TH Sarabun New}
+%\setmainfont[Scale=1.0]{TH Sarabun New:Script=thai}
+%\setmainfont[Scale=MatchUppercase,Mapping=tex-text]{TH Sarabun New} % Jun 22, 2020.
+\setmainfont[Scale=MatchLowercase,Mapping=tex-text]{TH Sarabun New}
+% 7 Oct 2020
+
+% Set environment for Thai fonts
+%\newenvironment{thailang}
+%{\thaifont}
+%{}
+%
+% For automatic switching between languages
+\usepackage[Latin,Thai]{ucharclasses}
+%
+% When using Thai characters use thailang environment
+%\setTransitionTo{Thai}{\begin{thailang}}
+%	% For other characters, switch back to the original environment
+%\setTransitionFrom{Thai}{\end{thailang}}
+%
+% Jun 22, 2020.
+% July 21, 2020. This does not seem to help anything.
+
+
+%\setmainfont[Scale=1.0,
+% BoldFont={TH Sarabun New Bold},  
+% ItalicFont={TH Sarabun New Italic},
+% BoldItalicFont={TH Sarabun New Bold Italic}
+% ]{TH Sarabun New:Script=Thai}
+\newfontfamily{\thaifonttt}[Scale=1.2]{Consolas} % to fix polyglossia and verbatim, Mar 27, 2014.
+\newfontfamily{\englishfonttt}[Scale=1.2]{Consolas} % Jun 24, 2020.
+
+\usepackage{upquote} % for ' in code; " does not work though! Jun 24, 2020.
+
+\usepackage{listings} % for code listing. Mar 27, 2014.
+\renewcommand\lstlistingname{รายการ} % to change listing caption. Mar 27, 2014.
+
+\renewcommand\lstlistlistingname{สารบัญรายการ}
+%add list of listings and rename its title. Feb 13, 2020.
+
+%\newenvironment{myexample}[1][ตัวอย่าง]
+%    {    \begin{proof}[#1] \begin{small}         }
+%    {    \end{small} \end{proof} }
+
+
+\setcounter{secnumdepth}{3} %% for subsection numbering, Apr 4th, 2014.
+
+\usepackage{makeidx}  %% to allow indexing, Apr 8th, 2014.
+\makeindex
+
+\usepackage{sidecap} %% to allow side caption, Dec 22nd, 2014.
+
+\usepackage{graphicx} % for background image, Dec 23rd, 2014.
+%for subfigure, Mar 29th, 2015.
+\usepackage{subcaption} %for subcaption, Mar 29th, 2015.
+
+\usepackage[font=small,labelfont=bf]{caption} %for small size caption, Aug 11th, 2016.
+
+\usepackage{tabulary} %for nice tabular (wrap up over multiple rows) May 23rd, 2017.
+
+\usepackage{longtable} % to allow table span multi-pages
+% Dec 3rd, 2019.
+
+
+%\includeonly{01intro, 01introEx}
+%\includeonly{02Background}
+%\includeonly{02BEx}
+%\includeonly{03ann}
+%\includeonly{03annEx}
+%\includeonly{04classic}
+%\includeonly{04classicEx}
+%\includeonly{01intro, 02Background, 02BEx, 03ann, 03annEx, 04classic, 04classicEx}
+%\includeonly{05deep}
+%\includeonly{05deepEx}
+%\includeonly{06conv}
+%\includeonly{06convEx}
+%\includeonly{07convapp}
+%\includeonly{07convappEx}
+%\includeonly{08seq}
+%\includeonly{08seqEx}
+%\includeonly{09nlp}
+%\includeonly{09nlpEx}
+%\includeonly{Appendix01a}
+
+%To fix bad thai word segmentation Dec 7th, 2020.
+\newcommand\atom[1]{\noindent\mbox{#1}\noindent}
+% it works!
+
+
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{%
+	\put(0,0){%
+		\parbox[b][\paperheight]{\paperwidth}{%
+			\vfill
+			\centering
+%			\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{cover/ulm2.png}%
+			\includegraphics[height=\paperheight,keepaspectratio]{cover/ulm2.png}%
+			
+			\vfill
+}}}
+% To add background image 21 Oct 2019.
+
+
+%\def\tword{\penalty 10000} % to discourage break the thai word in the middle
+%\def\tword{\nobreak}
+% Sep 12, 2020. It didn't seem to work at all.
+
+%\renewcommand\thepart{\Alph{part}}
+\renewcommand\thepart{\roman{part}}
+% to change part numbering to alphabet, Nov 4, 2020. (need double compiling to see the effect)
+% http://joshua.smcvt.edu/latex2e/_005calph-_005cAlph-_005carabic-_005croman-_005cRoman-_005cfnsymbol.html
+
+
+\raggedbottom
+% May 13th, 2021.
+
+
+% For separated index
+\usepackage{multind} %https://ctan.org/pkg/multind?lang=en
+\makeindex{english}
+\makeindex{thai}
+% Jun 15th, 2021.
+% to separate index
+%
+% src: https://tex.stackexchange.com/questions/1137/where-do-i-place-my-own-sty-or-cls-files-to-make-them-available-to-all-my-te
+%
+%There are two parts to telling TeX about a new .sty file. First, you have to put it in the 'right' place and second you need to update the database TeX uses to find files. The place to put the file depends on your operating system. Assuming you have a standard installation, this will probably be:
+%
+%Windows 10 (and miktex)
+%   C:\Users\<user name>\Appdata\Local\MikTex\<number>\tex\latex\local\
+%Linux ~/texmf/tex/latex/local/
+%Mac OS X /Users/<user name>/Library/texmf/tex/latex/local/
+%
+% " you could just put your file inside texmf/tex/latex"
+% the way that works on all operating systems is to use the Command Prompt/Terminal and type texhash.
+%
+% put multind.sty in C:\texlive\texmf-local\tex\latex\local
+% run texhash
+
+
+\begin{document}
+\renewcommand\baselinestretch{1.5}\selectfont 
+% http://noodle.med.yale.edu/latex/latex2e-html/baselineskip.html
+% to fix unequal linespacing
+% note package setspace does not work with memoir
+% Nov 4, 2020.
+
+
+\pagenumbering{thai}
+\setfrontpagenumbering
+\frontmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\AddToShipoutPicture*{\BackgroundPic}
+% to add background 21 Oct 2019
+% remove * to allow background on multiple pages
+	
+%{
+%\usebackgroundtemplate{\includegraphics[width=\paperwidth]{cover/DSCF0947.JPG}}%
+{\color{white}
+\maketitle
+}
+%}
+
+%\begin{figure}
+%\begin{center}
+%\includegraphics[height=4.5in]{cover/DSCF0947.JPG}
+%%\includegraphics[width=4in]{cover/yinyangSqr.png}
+%\end{center}
+%%\caption{mountain car}
+%%\label{fig: mtncar}
+%\end{figure}
+
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%\section*{กิตติกรรมประกาศ}
+%%\nonumbering
+%
+%ตำราการผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรู้แบบ
+% แม่
+% โบ๊ต
+% นักศึกษา
+% คุณบี คุณสงกรานต์
+
+\begin{center}
+	หน้าว่าง
+\end{center}
+
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{gobble}
+\clearpage
+%\pagenumbering{arabic}
+
+\setmonofont{Consolas} % to have straight " in listing, July 2020
+
+\lstset{
+    language=Python,
+	frame=single, % to have straight " in listing, July 2020
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=lines,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+%    keywordstyle=\color{blue},
+    keywordstyle=\color{black},
+    emph={%  additional keywords
+    import, def, return, class, %
+    },
+    emphstyle={\color{red}},
+    stringstyle=\color{green!50!black},
+    commentstyle=\color{blue}\itshape,
+    numbers=left,
+    captionpos=t,
+    escapeinside={(*}{*)}
+%    ,
+%	emph={%  additional keywords
+%    exp, log, maximum, dot%
+%    },emphstyle={\color{blue}}
+%    ,
+%    deletekeywords={*, /}
+}
+
+
+\section*{คำนำ}
+%\nonumbering
+
+\vspace{-0.5cm}
+\begin{shaded}
+{\color{darkbrown}
+%``การสร้างงานศิลปะทุกอย่างทุกประเภท นอกจากจะต้องใช้ความฝึกหัดชัดเจนในทางปฏิบัติ ประกอบกับวิธีการที่ดีอย่างเหมาะสมแล้ว ศิลปินจำต้องมีความจริงใจและความบริสุทธิ์ใจในงานที่ทำด้วย จึงจะได้ผลงานที่มีค่าควรแก่การยอมรับนับถือ''\\
+%พระราชดำรัสของ พระบาทสมเด็จพระเจ้าอยู่หัว\\
+%(ในพิธีเปิดการแสดงศิลปกรรมแห่งชาติ ครั้งที่ 21 8 กันยายน 2515) 
+
+%การจะพัฒนาทุกสิ่งทุกอย่างให้เจริญนั้นจะต้องสร้างและเสริมขึ้นจากพื้นฐานเดิมที่มีอยู่ก่อนทั้งสิ้น ถ้าพื้นฐานไม่ดีหรือคลอนแคลนบกพร่องแล้ว ที่จะเพิ่มเติมเสริมต่อให้เจริญขึ้นไปอีกนั้น ยากนักที่จะทำได้ จึงควรจะเข้าใจให้แจ้งชัดว่า นอกจากจะมุ่งสร้างความเจริญแล้ว ยังต้องพยายามรักษาพื้นฐานให้มั่นคง ไม่บกพร่อง พร้อมๆ กันไปด้วย 
+%พระบรมราโชวาทของ พระบาทสมเด็จพระเจ้าอยู่หัว... (46)
+%(ในพิธีพระราชทานปริญญาบัตรแก่นิสิตจุฬาลงกรณ์มหาวิทยาลัย ณ จุฬาฯ 10 ก.ค.2523) 
+
+% Book 1 Quote
+%``หนังสือ เป็นเสมือนคลังที่รวบรวมเรื่องราว ความรู้ ความคิด วิทยาการทุกด้านทุกอย่าง ซึ่งมนุษย์ได้เรียนรู้ ได้คิดอ่าน และเพียรพยายามบันทึกภาษาไว้ด้วยลายลักษณ์อักษร หนังสือแพร่ไปถึงที่ใด ความรู้ความคิดก็แพร่ไปถึงที่นั่น หนังสือจึงเป็นสิ่งมีค่า และมีประโยชน์ที่จะประมาณมิได้ในแง่ที่เป็นบ่อเกิดการเรียนรู้ของมนุษย์'' \\
+
+% Book 2 Quote
+``การจะพัฒนาทุกสิ่งทุกอย่างให้เจริญนั้นจะต้องสร้างและเสริมขึ้นจาก{พื้นฐาน}เดิมที่มีอยู่ก่อนทั้งสิ้น ถ้า{พื้นฐาน}ไม่ดี หรือคลอนแคลนบกพร่องแล้ว ที่จะเพิ่มเติมเสริมต่อให้เจริญขึ้นไปอีกนั้น ยากนักที่จะทำได้ จึงควรจะเข้าใจให้แจ้งชัดว่า นอกจากจะมุ่งสร้างความเจริญแล้ว ยังต้องพยายามรักษา{พื้นฐาน}ให้มั่นคง ไม่บกพร่อง พร้อม ๆ กันไปด้วย'' \\
+%\hspace{1.5in} 
+\null\hfill
+---พระราชดำรัสของพระบาทสมเด็จพระเจ้าอยู่หัวรัชกาลที่เก้า
+}%color
+\end{shaded}
+\index{english}{words of wisdom!King Rama IX}
+\index{english}{quote!background}
+
+%\vspace{1cm}
+
+หนังสือ%\textit{การรู้จำรูปแบบและการเรียนรู้ของเครื่องเบื้องต้น}
+เล่มนี้ 
+อภิปรายเนื้อหาศาสตร์\textit{การรู้จำรูปแบบ}ด้วยวิทยาการ\textit{การเรียนรู้ของเครื่อง}
+โดยมีเนื้อหา ที่ปรับปรุง เปลี่ยนแปลง และเพิ่มเติม จากหนังสือ\textit{การเรียนรู้ของเครื่องเบื้องต้น}อยู่มาก.
+%
+เป้าหมายหลักของหนังสือ คือ
+%(1) 
+%เพื่อเรียบเรียงเนื้อหาให้ติดตามได้ง่ายขึ้น 
+%(2) 
+เพื่อครอบคลุมศาสตร์และศิลป์ใหม่ที่สำคัญ
+และ 
+%(3)
+เพื่ออภิปรายศาสตร์และศิลป์ในงาน\textit{การรู้จำรูปแบบ}
+พร้อมทบทวนพื้นฐานที่สำคัญ 
+%เพื่อช่วยให้ผู้อ่านสามารถเข้าใจเนื้อหาได้ 
+%โดยไม่จำเป็นต้องศึกษาหนังสือ\textit{การเรียนรู้ของเครื่องเบื้องต้น}มาก่อน
+
+ถึงแม้เป้าหนึ่ง คือ
+การอภิปรายศาสตร์และศิลป์ในงาน\textit{การรู้จำรูปแบบ}
+แต่จากความกว้างและลึก ทั้งในทางทฤษฎีและการประยุกต์ใช้ที่กว้างขวาง
+รวมถึงความก้าวหน้าที่เติบโตอย่างรวดเร็วและต่อเนื่องของศาสตร์
+การจะครอบคลุมเนื้อหาทั้งหมดนั้นเป็นไปไม่ได้เลย.
+ดังนั้นเช่นเดียวกับหนังสือ\textit\textit{การเรียนรู้ของเครื่องเบื้องต้น} หนังสือเล่มนี้จัดทำเนื้อหา โดยยึดแนวคิดในการวางตัวเพียงเป็นจุดเริ่มต้น
+ที่จะช่วยให้ผู้อ่านได้พอเข้าใจภาพรวม และเห็นคุณค่าของศาสตร์นี้ 
+รวมไปจนถึงอำนวยความสะดวกในกรณีที่ผู้อ่านต้องการแหล่งค้นคว้าเพิ่มเติม. 
+ผู้เขียนหวังว่า ผู้อ่านจะได้เข้าใจพื้นฐานและเหตุผลเบื้องหลัง เข้าใจทฤษฎีที่สำคัญ 
+ซาบซึ้งในความเพียรพยายามและความคิดสร้างสรรค์เบื้องหลังการพัฒนา
+มองเห็นการประยุกต์ใช้ ได้ทดลองลงมือปฏิบัติ ได้ฝึกคิด ทบทวน ตั้งข้อสังเกต อภิปรายลักษณะเด่น ประเด็นสำคัญ ข้อดีข้อเสีย โอกาสและความเสี่ยง ความเกี่ยวข้อง ความเชื่อมโยงของกลไกและแนวคิดต่าง ๆ มองเห็นความท้าทาย ตลอดจนรู้สึกเพลิดเพลิน 
+เกิดแรงบันดาลใจที่จะศึกษา และทำงานกับศาสตร์ด้านนี้ต่อไป
+
+แนวคิดในการจัดทำเนื้อหานี้
+ได้ออกแบบจากประสบการณ์การสอน
+และเพื่อใช้ประกอบการเรียน 
+วิชา\textit{โครงข่ายประสาทเทียม} 
+วิชา\textit{การเรียนรู้ของเครื่อง}
+และวิชา\textit{การรู้จำรูปแบบ} ระดับปริญญาตรีและบัณฑิตศึกษา ของ
+%ภาควิชาวิศวกรรมคอมพิวเตอร์ 
+คณะวิศวกรรมศาสตร์ มหาวิทยาลัยขอนแก่น.
+เนื้อหาจึงถูกเรียบเรียงจากสมมติฐานว่า
+ผู้อ่านมีพื้นฐานคณิตศาสตร์ ซึ่งรวมถึงพีชคณิตเชิงเส้น ความน่าจะเป็น และแคลคูลัส
+รวมถึงมีประสบการณ์การเขียนโปรแกรมคอมพิวเตอร์มาบ้าง.
+อย่างไรก็ตาม ผู้เขียนหวังว่า เนื้อหานี้จะเป็นประโยชน์กับผู้อ่านที่สนใจทั่วไปเช่นกัน
+%
+%
+%
+% ฉันทะ วิริยะ จิตตะ วิมังสา
+%
+%
+\vspace{-0.5cm}
+
+\vfill
+\pagebreak
+
+\section*{รูปแบบการเขียน}
+%\nonumbering
+
+
+
+%\vfill
+%\begin{minipage}{6in}
+%{\small %footnotesize
+%	\begin{shaded}
+		%หมายเหตุ 
+		เนื่องจากเนื้อหาของศาสตร์การเรียนรู้ของเครื่องและการรู้จำรูปแบบ เกี่ยวข้องกับคณิตศาสตร์และโปรแกรมคอมพิวเตอร์ มี\textit{คำศัพท์เฉพาะ}จำนวนมาก 
+		อภิปรายวิธีการ แนวคิด และแนวทางปฏิบัติที่หลาย ๆ ครั้งถูกพัฒนาขึ้นจากความคิดสร้างสรรค์และประสบการณ์ ซึ่งบางโอกาส ผู้อ่านอาจพบว่าขัดกับสัญชาตญาณ
+		ประเด็นต่าง ๆ เหล่านี้ อาจทำให้ผู้อ่านเข้าใจข้อความที่ผู้เขียนพยายามสื่อสารได้ยาก หรือเข้าใจไม่ถูกต้อง%
+%		 ตีความเนื้อหาในระดับวัจนปฏิบัติศาสตร์ทำได้ยาก%
+%		\footnote{%
+%		ภาษาไทยอาศัยการตีความในระดับ\textit{วัจนปฏิบัติศาสตร์}อยู่มาก.
+%การตีความในระดับ\textit{วัจนปฏิบัติศาสตร์} อาศัยสามัญสำนึก ความเข้าใจในบริบท และความรู้ธรรมเนียมดั่งเดิมอย่างมาก.
+%การอธิบายแนวคิดที่แตกต่างจากบริบทหรือความรู้เดิมอย่างมาก อาจทำให้ผู้อ่านไม่สามารถตีความในระดับ\textit{วัจนปฏิบัติศาสตร์}ได้.
+%ปัจจัยต่าง ๆ ที่ถูกอภิปราย\cite{ThaiNLPTalk}ว่า
+%เป็นส่วนหนึ่งที่ทำให้เนื้อหาในภาษาไทยหลาย ๆ ครั้งมีความกำกวมอย่างมาก
+%ได้แก่
+%การเป็นภาษาคำโดดที่มีรูปแบบไวยากรณ์ที่ซับซ้อนด้วยการใช้คำวิเศษณ์โดยไม่มีการผันวิภัตติปัจจัย
+%(นั่นคือ การสร้างคำที่มีความหมายซับซ้อนจากการประกอบคำที่มีหน่วยความหมายเล็ก ๆ เข้าด้วยกัน 
+%ที่อาจทำให้เกิดความสับสนระหว่าง นามวลีและประโยค. 
+%ทั้งนามวลีและประโยคอาจอยู่ในรูป นาม-กริยา-นามได้ 
+%เช่น คนกวาดถนน อาจเป็นนามวลี หมายถึง บุคคลผู้ทำหน้าที่ทำความสะอาดถนน หรืออาจเป็นประโยคก็ได้),
+%%และศาสตร์การเรียนรู้ของเครื่องและการรู้จำรูปแบบก็มีคำศัพท์ใหม่จำนวนมาก),
+%การไม่มีข้อบ่งบอกขอบเขตของคำที่แน่นอน
+%และการไม่มีข้อบ่งบอกขอบเขตของประโยคที่ชัดเจน เป็นต้น.
+%การใช้มหัพภาค เพื่อบอกการจบประโยคจะช่วยแก้ปัญหาขอบเขตของประโยค.
+%ในขณะที่ การใช้\textit{ฟอนต์ตัวเอียง}เพื่อเน้นคำศัพท์หรือกลุ่มคำ จะช่วยบรรเทาปัญหาขอบเขตของคำลง.
+%}%
+.
+%หากรูปแบบดังกล่าวทำให้ผู้อ่านบางท่านรู้สึกขัดเคือง ผู้เขี				
+%หัวข้อ~\ref{sec: Thai NLP Challenges} อภิปรายลักษณะพิเศษของภาษาไทย.}.		
+%		รวมทั้งหนังสือเล่มนี้จัดเตรียมด้วยโปรแกรมเลเท็กซ์.
+		% \LaTeX.
+		ดังนั้นเพื่อช่วยให้เนื้อหาอ่านง่ายขึ้น ข้อความที่ต้องการสื่อสารชัดเจนไม่คลุมเครือ ลดความกำกวม
+		รวมถึงการใช้ถ้อยคำไม่ฟุ่มเฟือยเยิ่นเย้อ หรือไม่มีการใช้ย่อหน้าที่มากจนเกินไป 
+%		และเพื่อช่วยการตัดประโยคของเลเท็กซ์ 
+%		รูปแบบการเขียนอาจจะมีการเว้นวรรคตอนมากกว่างานเขียนภาษาไทยโดยทั่วไป. 
+%		เพื่อลดความสับสนจากวรรคตอน 
+		ผู้เขียนใช้{มหัพภาค} เพื่อบ่งบอกการจบประโยค 
+		และใช้{จุลภาค} เพื่อคั่นรายการต่าง ๆ
+		รวมถึงบางครั้งอาจใช้\textit{ฟอนต์ตัวเอียง}
+		เพื่อเน้นคำศัพท์หรือกลุ่มคำให้ชัดเจนขึ้น
+		เช่น 
+		``วิธีที่ดีที่สุดในการเรียนรู้\textit{การรู้จำรูปแบบ}และ\textit{การเรียนรู้ของเครื่อง}ก็คือการลงมือทำ.''
+		ทั้งนี้ การใช้{มหัพภาค}และ{จุลภาค} แม้จะแตกต่างจากธรรมเนียมที่นิยมปฏิบัติเดิมไปบ้าง
+		แต่มิได้ผิดจากหลักการใช้ภาษาไทยที่ถูกต้องแต่อย่างใด ดังสะท้อนจากข้อความต่อไปนี้ ที่ยกจากราชบัณฑิตและสำนักงานราชบัณฑิตสภา
+%		ทั้งนี้ผู้เขียนต้องขออภัยสำหรับประเด็นดังกล่าวด้วย.
+		
+		%การเรียบเรียงจัดทำเนื้อหาของการเรียนรู้ของเครื่องเบื้องต้นเล่มนี้  ได้รับอิทธิพลหลักจากตำราการรู้จำรูปแบบและการเรียนรู้ของเครื่อง\cite{Bishop2006a} และ วิดีทัศน์สอนวิชาการเรียนรู้ของเครื่อง\cite{Ng2013a}
+		%โดยอาจมีแหล่งอื่นๆเพิ่มเติมอีกตามเนื้อหาเฉพาะ เช่น \textit{การหาค่าดีที่สุด}ได้รับอิทธิพลหลักจากตำราการหาค่าดีที่สุดเบื้องต้น\cite{ChongZak2ndEd}.
+%	\end{shaded}
+%}
+%\end{minipage}
+
+\begin{itemize}
+\item ``มหัพภาค (มะ-หับ-พาก)  คือ เครื่องหมาย จุด ซึ่งเขียนแสดงการจบประโยค. ในภาษาอังกฤษเรียกเครื่องหมายนี้ว่า full stop แสดงการจบประโยคโดยสมบูรณ์.
+ในภาษาไทยใช้เครื่องหมายมหัพภาคเพื่อแสดงว่าจบประโยคได้เช่นเดียวกับในภาษาอังกฤษ.''
+\\
+--- เครื่องหมายมหัพภาค โดย ศ. ดร.กาญจนา นาคสกุล ราชบัณฑิต  ประเภทวรรณศิลป์  สาขาวิชาภาษาไทย สำนักศิลปกรรม
+%\texttt{http://www.royin.go.th/?knowledges=เครื่องหมายมหัพภาค-โดย-ศ} 
+\url{http://www.royin.go.th} 
+(คลังความรู้ เครื่องหมายมหัพภาค. สืบค้น 21 กันยายน พ.ศ. 2563)
+
+\item ``จุลภาค (comma) หรือ จุดลูกน้ำ
+ชื่อเครื่องหมายวรรคตอน รูปดังนี้ ,
+มีหลักเกณฑ์การใช้ดังต่อไปนี้\\
+๑. ใช้แยกวลีหรืออนุประโยคเพื่อกันความเข้าใจสับสน\\
+$[$ตัวอย่าง ...$]$\\
+๒. ใช้คั่นคำในรายการ ที่เขียนต่อ ๆ กัน ตั้งแต่ ๓ รายการขึ้นไป โดยเขียนคั่นแต่ละรายการ ส่วนหน้าคำ “และ” หรือ “หรือ” ที่อยู่หน้ารายการสุดท้ายไม่จำเป็นต้องใส่เครื่องหมายจุลภาค\\
+$[$ตัวอย่าง ...$]$\\
+๓. ใช้ในการเขียนบรรณานุกรม ดรรชนี และนามานุกรม เป็นต้น\\
+$[$ตัวอย่าง ...$]$\\
+๔. ใช้คั่นจำนวนเลขนับจากหลักหน่วยไปทีละ ๓ หลัก''
+\\
+--- เครื่องหมายจุลภาค โดย สำนักงานราชบัณฑิตสภา \\ \url{http://www.royin.go.th/?page_id=10392} (สืบค้น 21 กันยายน พ.ศ. 2563)
+
+\item ``ปรัศนี (question mark)
+ชื่อเครื่องหมายวรรคตอน รูปดังนี้ ?
+มีหลักเกณฑ์การใช้ดังต่อไปนี้\\
+๑. ใช้เมื่อสิ้นสุดความหรือประโยคที่เป็นคำถาม หรือใช้แทนคำถาม\\
+$[$ตัวอย่าง ...$]$\\
+๒. ใช้หลังข้อความเพื่อแสดงความสงสัยหรือไม่แน่ใจ มักเขียนอยู่ในวงเล็บ\\
+$[$ตัวอย่าง ...$]$%
+%\\
+%ที่มา : หลักเกณฑ์การใช้เครื่องหมายวรรคตอนและเครื่องหมายอื่น ๆ ฯ ฉบับราชบัณฑิตยสถาน พิมพ์ครั้งที่ ๖ (แก้ไขเพิ่มเติม) หน้า ๒๓
+''\\
+--- ปรัศนี โดย สำนักงานราชบัณฑิตสภา \\
+\url{http://www.royin.go.th/?page_id=10418} (สืบค้น 28 กันยายน พ.ศ. 2563)
+\end{itemize}
+
+
+%		\footnote{%
+	ภาษาไทยอาศัยการตีความในระดับ\textit{วัจนปฏิบัติศาสตร์}อยู่มาก.
+	การตีความในระดับ\textit{วัจนปฏิบัติศาสตร์} อาศัยสามัญสำนึก ความเข้าใจในบริบท และความรู้เดิม.
+	การอธิบายแนวคิดที่แตกต่างจากบริบทหรือความรู้เดิมอย่างมาก อาจทำให้ผู้อ่านไม่สามารถตีความในระดับ\textit{วัจนปฏิบัติศาสตร์}ได้.
+	ปัจจัยต่าง ๆ ที่ถูกอภิปราย\cite{ThaiNLPTalk}
+	ว่าเป็นส่วนหนึ่ง ที่ทำให้ข้อความภาษาไทยหลาย ๆ ครั้งมีความกำกวมอย่างมาก
+	ได้แก่
+	การเป็นภาษาคำโดดที่มีรูปแบบไวยากรณ์ที่ดูง่าย แต่ซับซ้อนด้วยการใช้คำวิเศษณ์โดยไม่มีการผันวิภัตติปัจจัย
+	(นั่นคือ การสร้างคำที่มีความหมายซับซ้อนจากการประกอบคำบรรยายต่าง ๆ เข้าด้วยกัน 
+	ที่อาจทำให้เกิดความสับสนระหว่าง นามวลีและประโยค. 
+	ทั้งนามวลีและประโยคอาจอยู่ในรูป นาม-กริยา-นามได้ 
+	เช่น คนกวาดถนน อาจเป็นนามวลี หมายถึง บุคคลผู้ทำหน้าที่ทำความสะอาดถนน หรืออาจเป็นประโยคก็ได้),
+	%และศาสตร์การเรียนรู้ของเครื่องและการรู้จำรูปแบบก็มีคำศัพท์ใหม่จำนวนมาก),
+	การไม่มีข้อบ่งบอกขอบเขตของคำที่แน่นอน
+	และการไม่มีข้อบ่งบอกขอบเขตของประโยคที่ชัดเจน เป็นต้น.
+	การใช้มหัพภาค เพื่อบอกการจบประโยคจะช่วยแก้ปัญหาขอบเขตของประโยค.
+	ในขณะที่ การใช้\textit{ฟอนต์ตัวเอียง}เพื่อเน้นคำศัพท์หรือกลุ่มคำ จะช่วยบรรเทาปัญหาขอบเขตของคำลง.
+%}%
+
+\vfill
+\begin{Parallel}[c]{0.45\textwidth}{0.45\textwidth}
+	\selectlanguage{english}
+	\ParallelLText{
+		``Podr\'{a}n cortar todas las flores, \\
+		pero no podr\'{a}n detener la primavera.''
+		%		(You can cut alll the flowers but you cannot keep spring from coming.)
+		\begin{flushright}
+			(in spanish) ---Pablo Neruda
+		\end{flushright}
+	}
+	\selectlanguage{thai}
+	\ParallelRText{
+		``คุณอาจจะตัดดอกไม้ออกได้หมดทุกดอก \\
+		แต่คุณหยุดฤดูใบไม้ผลิที่กำลังมาไม่ได้หรอก.''
+		\begin{flushright}
+			---พาโบล เนรูดา
+		\end{flushright}
+	}
+\end{Parallel}
+\index{english}{words of wisdom!Pablo Neruda}
+\index{english}{quote!change}
+
+\pagebreak
+
+\section*{รูปแบบอักษร}
+\selectlanguage{thai}
+
+เนื่องจากเนื้อหาเกี่ยวข้องอย่างมาก
+กับทั้งคำศัพท์เฉพาะ คณิตศาสตร์ และโปรแกรมคอมพิวเตอร์
+ผู้เขียนต้องการสร้างการตระหนักรู้ถึงความต่าง
+ระหว่างคำศัพท์ภาษาอังกฤษ สัญลักษณ์ทางคณิตศาสตร์ และรหัสคอมพิวเตอร์
+เช่น ฟังก์ชันไซน์ เขียนเป็นภาษาอังกฤษด้วย sine function ในขณะที่สัญลักษณ์ทางคณิตศาสตร์นิยมใช้ $\sin$
+และรหัสโปรแกรมนิยมใช้ตัวปฏิบัติการ \texttt{*} สำหรับการคูณ 
+แต่สัญลักษณ์ \texttt{*} ไม่ใช่สัญลักษณ์ทางคณิตศาสตร์ที่ยอมรับในวงกว้าง สำหรับการคูณปกติ.
+ประเด็นเหล่านี้ ผู้เขียนพบว่า นักศึกษาในปัจจุบันมีความสับสนอย่างมาก 
+และผู้เขียนต้องการ อย่างน้อย เป็นส่วนหนึ่งของความพยายามในการช่วยแก้ไขความสับสนเหล่านี้.
+เพื่อลดความสับสนดังกล่าว
+รูปแบบอักษรที่ใช้ จะแยกตามประเภทดังนี้
+
+%
+ตัวอักษรภาษาอังกฤษทั่วไปจะใช้รูปแบบ เช่น %\textenglish{english, x, y, z}.
+cosine function.
+รูปแบบสำหรับโปรแกรมคอมพิวเตอร์ ตัวแปรที่อ้างถึงตัวแปรจากโปรแกรมคอมพิวเตอร์ จะใช้รูปแบบ เช่น \verb|cos(x, 'DEG')| 
+โดยตัวพิมพ์เล็กหรือตัวพิมพ์ใหญ่ขึ้นกับชื่อตัวแปรในโปรแกรม ไม่เกี่ยวข้องกับโครงสร้างชนิดข้อมูลของตัวแปร (ต่างจากรูปแบบที่ใช้กับสัญลักษณ์ทางคณิตศาสตร์ ที่ใช้รูปแบบดังอธิบายในหัวข้อสัญลักษณ์). 
+%เช่น
+%สเกล่าร์ $A = B + C$ อาจเขียนเป็นรหัสโปรแกรมด้วย $A 
+%เมทริกซ์ $\bm{A} = \bm{B} + \bm{C}$ อาจเขียนเป็นรหัสโปรแกรมด้วย $mat_a = mat_b + mat_c$. 
+%ซึ่งบรรยายด้วยรูปแบบทีี่ใช้แสดงสัญลักษณ์ทางคณิตศาสตร์.
+ตัวอย่างโปรแกรม อาจแสดงได้ดังนี้
+\\
+%ฟังก์ชัน \verb|rbf| นำไปปฎิบัติโดย \verb|rbf(x) = exp(-gamma*dist(x))|
+%โปรแกรมคอมพิวเตอร์ จะเขียนอยู่ในรูปแบบ ดังนี้
+%\vspace{0.5cm}
+รูปแบบที่ 1 ฟังก์ชันเรเดียลเบซิส (radial basis function) สัญกรณ์ $\mathrm{rbf}(\bm{x}, \bm{x}_c, \gamma)$
+\begin{Verbatim}[fontsize=\small]
+import numpy as np
+def rbf(x, xc, gamma):	
+    return np.exp(-gamma*np.linalg.norm(x - xc)**2)
+\end{Verbatim}
+
+%\vspace{0.5cm}
+%
+\noindent
+หรือรูปแบบที่ 2
+(รูปแบบนี้ บางครั้งอาจแสดงเลขบรรทัดออกมาด้วย)
+\begin{lstlisting}[language=Python, numbers=none]
+import numpy as np
+def rbf(x, xc, gamma):	
+    return np.exp(-gamma*np.linalg.norm(x - xc)**2)
+    
+# gamma is a scalar: (* {\color{blue} $\gamma \in \mathbb{R}$} *), but x is a vector: (* {\color{blue} $\bm{x} \in \mathbb{R}^D$} *)
+\end{lstlisting}
+
+นอกจากนี้ เพื่อช่วยอธิบายโปรแกรมคอมพิวเตอร์ คำอธิบายภายในส่วน\textit{ข้อคิดเห็น} (comment หรือ code comment ซึ่งมีไวยากรณ์ที่เด่นชัดตามภาษาโปรแกรมคอมพิวเตอร์ รวมถึงอาจได้จัดทำให้เห็นชัดเจนขึ้นอีกด้วยสีที่แตกต่าง) อาจจะใช้รูปแบบอักษรอื่นตามความเหมาะสม เพื่อให้การอธิบายทำได้ชัดเจนขึ้น ดังตัวอย่างข้างต้น
+
+รูปแบบการเขียนตัวเลข อาจขียนในรูปแบบปกติ เช่น พ.ศ. 2563 หรือในรูปคณิตศาสตร์ เช่น จำนวนพิกเซล $h = 1200$ พิกเซล 
+หรือในรูปรหัสโปรแกรม เช่น \texttt{width = 2400} ตามความเหมาะสม
+ทั้งนี้ การใช้รูปแบบที่แตกต่างกันนี้จะช่วยแยกแยะความหมายได้ชัดเจนขึ้น
+และช่วยลดความสับสนคลุมเครือลงได้มาก
+
+\vfill
+\begin{Parallel}[c]{0.45\textwidth}{0.45\textwidth}
+	\selectlanguage{english}
+	\ParallelLText{
+		``Form follows function.''
+		\begin{flushright}
+		---Louis Sullivan
+		\end{flushright}
+	}
+	\selectlanguage{thai}
+	\ParallelRText{
+		``รูปลักษณ์มาทีหลังประโยชน์หน้าที่''
+		\begin{flushright}
+		---หลุยส์ ซัลลิแวน
+		\end{flushright}
+	}
+\end{Parallel}
+\index{english}{word of wisdom!form-function}
+\index{english}{quote!form-function}
+
+
+%\pagebreak
+\clearpage
+
+\section*{สัญลักษณ์}
+%\selectlanguage{thai}
+
+ศาสตร์\textit{การรู้จำรูปแบบ}และ\textit{การเรียนรู้ของเครื่อง}อาศัยพื้นฐานทางคณิตศาสตร์ 
+ดังนั้นเพื่อให้ลดความสับสนของตัวแปรคณิตศาสตร์ที่ใช้ 
+สัญลักษณ์ของตัวแปรคณิตศาสตร์จะใช้ตามแนวทางดังตารางข้างล่าง ยกเว้นแต่จะระบุเป็นอื่น
+
+%\hspace{-0.5in}
+\begin{tabular}{ |>{\arraybackslash}m{1.6in}  |>{\arraybackslash}m{1.3in} 
+		|>{\arraybackslash}m{1.4in} |>{\arraybackslash}m{1.4in}|}
+	%\begin{tabular}{|c|c|c|c|}
+	\hline 
+	ชนิดตัวแปร & แบบอักษร & ตัวอย่างอักษรลาติน & ตัวอย่างอักษรกรีก \\ 
+	\hline 
+	สเกล่าร์ & พิมพ์ธรรมดา & $x$ $y$ $z$ $X$ $Y$ $Z$ & 
+	$\theta$ $\phi$ $\omega$ 
+	$\Theta$ $\Phi$ $\Omega$
+	\\ 
+	\hline 
+	เวกเตอร์ & พิมพ์เล็กหนา & 
+	$\bm{x}$ $\bm{y}$ $\bm{z}$ & 
+	$\bm{\theta}$ $\bm{\phi}$ $\bm{\omega}$ \\ 
+	%{\boldmath $\theta$} %$\boldsymbol{\phi}$ %$\boldsymbol{\omega}$ \\ 
+	\hline 
+	%เวกเตอร์ & พิมพ์เล็กตัวหนา & $\hm{x}$ & $\hm{\phi}$ \\
+	%\hline 
+	เมทริกซ์ หรือ เทนเซอร์
+	% หรือตัวแปรหลายชุดมิติ 
+	& พิมพ์ใหญ่หนา & $\bm{X}$ $\bm{Y}$ $\bm{Z}$ & 
+	$\bm{\Theta}$ $\bm{\Phi}$ $\bm{\Omega}$ \\  
+	\hline 
+	%เทนเซอร์
+	%% หรือตัวแปรหลายชุดมิติ 
+\end{tabular} 
+\vspace{0.5cm}
+
+ตัวอย่าง
+สเกล่าร์ $x \in \mathbb{R}$ เช่น
+$
+x = 32.4
+$
+\\
+%
+เวกเตอร์ $\bm{x} \in \mathbb{R}^4$ เช่น
+$\bm{x} = \begin{bmatrix}
+10.0 & 0.75 & -44.6 & 1203.8
+\end{bmatrix}^T
+$
+\\
+หมายเหตุ ถ้าไม่ระบุเป็นอย่างอื่น เวกเตอร์จะหมายถึง\textit{เวกเตอร์แนวตั้ง}
+\\
+%
+เมทริกซ์ $\bm{X} \in \mathbb{R}^{2 \times 3}$ เช่น
+\begin{eqnarray}
+\bm{X} = \begin{bmatrix}
+1.2 & 3.5 & -0.48 \\
+0.63 & 0.0 & 123.0
+\end{bmatrix}
+\nonumber
+\end{eqnarray}
+\\
+%
+และ
+%
+เทนเซอร์ 
+$\bm{X} \in \mathbb{R}^{2 \times 2 \times 3}$ เช่น
+\begin{eqnarray}
+\bm{X} = \begin{bmatrix}
+\begin{bmatrix}
+1.3 & 4.2 \\
+5 & -1
+\end{bmatrix}
+,
+\begin{bmatrix}
+1 & 6.2 \\
+1.8 & 0.3
+\end{bmatrix}
+,
+\begin{bmatrix}
+4.5 & -3.3 \\
+2.9 & 1.7
+\end{bmatrix}
+\end{bmatrix}
+\nonumber
+\end{eqnarray}
+
+หมายเหตุ สัญลักษณ์ที่ปรากฎในภาพประกอบ อาจไม่ได้ใช้รูปแบบอักษรดังนี้ ทั้งนี้คำบรรยายภาพ จะช่วยให้ความกระจ่างแทน
+
+
+
+
+%สัญลักษณ์อื่นๆใช้ หากไม่ได้ระบุ จะใช้ตามความนิยมทั่วไป เช่น $x^\ast$ หมายถึง ค่าตัวดีที่สุด เป็นต้น.
+
+\vfill
+\begin{Parallel}[c]{0.48\textwidth}{0.48\textwidth}
+	\selectlanguage{english}
+	\ParallelLText{
+		``Four basic premises of writing: 
+		clarity, brevity, simplicity, and humanity.''
+		%		\\
+		\begin{flushright}
+			---William Zinsser
+		\end{flushright}
+	}
+	\selectlanguage{thai}
+	\ParallelRText{
+		``ข้อตั้งสี่ประการของการเขียน คือ ความชัดเจน ความกระชับ ความเรียบง่าย และความเป็นมนุษย์''
+		\begin{flushright}
+			---วิลเลี่ยม ซินเซอร์
+		\end{flushright}		
+	}
+\end{Parallel}
+\index{english}{word of wisdom!writing}
+\index{english}{quote!writing}
+
+
+%\pagebreak
+\clearpage
+
+
+%\section*{เทียบคำศัพท์}
+%
+%\begin{longtable}{|p{0.25\textwidth}|p{0.35\textwidth}|p{0.4\textwidth}|}
+%	\hline
+%	English & ไทย  & หมายเหตุ \\
+%	\hline
+%	\hline
+%	\endhead
+%	autoencoder & ออโตเอนโคเดอร์ &
+%	\\ \hline
+%	bias & ไบอัส & ในความหมายของค่าไบอัส ในการคำนวณโครงข่ายประสาทเทียม
+%	\\ \hline 
+%\\ \hline 	
+%
+%\end{longtable}
+
+%\renewcommand\baselinestretch{1.5}\selectfont % Doesn't help! why?
+\tableofcontents
+\clearpage
+
+\listoffigures
+\clearpage
+
+\listoftables
+\clearpage
+
+\lstlistoflistings
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\pagenumbering{arabic}
+\setmainpagenumbering
+\mainmatter
+
+\part{การเรียนรู้ของเครื่อง}
+
+\include{01intro} %done Dec 24th, 2019.
+	% intro 
+
+\include{01introEx}
+
+\include{02Background} %to edit
+	% LATER: decision theory 
+	% LATER: information theory
+
+\include{02BEx}
+    % linear algebra
+    % probability
+	% optimization 
+	% * GD
+	% * penalty term
+	% * LATER: non-gradient optimization, e.g., Beam search, Sim Anneal, GA,
+
+\include{03ann}
+\include{03annEx}
+	% curve fitting 
+	% generalization
+	% ann
+	% ann app
+	% ann recommend
+	% LATER: regularization
+
+\include{04classic}
+\include{04classicEx}
+%% Betagro project	
+	% LATER PCA
+	% LATER K-Means
+	% LATER Reinforcement learning
+	% LATER Recommender
+
+\part{การเรียนรู้เชิงลึก}
+
+%
+\include{05deep}
+%% LATER: revise the entire chapter
+%% LATER: shallow vs deep
+\include{05deepEx}
+
+\include{06conv}
+\include{06convEx}
+
+
+
+\include{07convapp}
+\include{07convappEx}
+
+\part{การรู้จำรูปแบบเชิงลำดับ}
+
+\include{08seq}
+\include{08seqEx}
+
+
+\include{09nlp}
+\include{09nlpEx}
+
+
+
+% Potential additions
+	% Reinforcement learning
+
+%\part*{ภาคผนวก}
+\appendix
+
+% LATER
+%\include{Appendix01a}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{acm}   
+\bibliography{mybib}  
+
+% Single index
+%\printindex
+
+% Separated index
+\printindex{thai}{ดรรชนีภาษาไทย}
+\printindex{english}{ดรรชนีภาษาอังกฤษ}
+%
+%
+
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{แหล่งที่มาของภาพ}
+%\selectlanguage{thai}
+
+\begin{itemize}
+	\item ภาพปก ผู้เขียนจัดทำขึ้นเอง รวมถึงการวาดภาพนักประดาน้ำ และภาพทะเล.
+	\item ภาพปกใน ผู้เขียนจัดทำขึ้นเอง จากการแต่งภาพ โดยภาพที่นำมาแต่ง ประกอบด้วย ภาพถ่ายท้องฟ้าตอนกลางคืน 
+	และภาพถ่ายต้นเฟิร์น ซึ่งผู้เขียนถ่ายเองทั้งสองภาพ
+	โน๊ตดนตรีที่นำมาตกแต่งท้องฟ้า ก็ตัดมาจากส่วนหนึ่งของเพลงที่ผู้เขียนแต่งขึ้นเอง.
+	
+	\item ภาพต่าง ๆ ในเล่ม ผู้เขียนจัดทำขึ้นเอง ยกเว้นแต่จะระบุเป็นอื่น.
+\end{itemize}
+
+
+\end{document}
