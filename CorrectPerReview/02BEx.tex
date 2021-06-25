@@ -1653,14 +1653,26 @@ $L'$ ไม่ใช่ฟังก์ชันของ $\bm{x}$ แต่เ�
 การมองจากปัญหาจากมุมมองของ $\bm{\lambda}_1$
 จะทำให้ได้\textit{ปัญหาคู่} ซึ่งเขียนได้เป็น
 %พิจารณาบทบาทของ $\bm{\lambda}_1$ ใน $L$ ซึ่ง
-\begin{eqnarray}
-\underset{\bm{\lambda}_1}{\mathrm{maximize}} & \bm{\lambda}_1^T \bm{b} & 
-\nonumber \\
-\mbox{subject to} & \bm{\lambda}_1        & \geq \bm{0},
-\nonumber \\
-& \bm{\lambda}_1^T \bm{A}        & \leq \bm{c}^T.
-\nonumber
-\end{eqnarray}
+%\begin{eqnarray}
+%\underset{\bm{\lambda}_1}{\mathrm{maximize}} & \bm{\lambda}_1^T \bm{b} & 
+%\nonumber \\
+%\mbox{subject to} & \bm{\lambda}_1        & \geq \bm{0},
+%\nonumber \\
+%& \bm{\lambda}_1^T \bm{A}        & \leq \bm{c}^T.
+%\nonumber
+%\end{eqnarray}
+%
+\begin{center}
+\begin{tabular}{lrl}
+$\underset{\bm{\lambda}_1}{\mathrm{maximize}}$ & $\bm{\lambda}_1^T \bm{b}$ & 
+\\
+$\mbox{subject to}$ & $\bm{\lambda}_1$        & $\geq \bm{0}$,
+\\
+& $\bm{\lambda}_1^T \bm{A}$        & $\leq \bm{c}^T$.	
+\end{tabular}
+\end{center}
+
+
 สังเกต 
 ข้อจำกัด $\bm{\lambda}_1^T \bm{A} \leq \bm{c}^T$
 เปรียบเสมือน เงื่อนไขที่ควบคุมไม่ให้ $\bm{\lambda}_1$ มีค่าใหญ่เกินไปจนไปรบกวนจุุดประสงค์ดั้งเดิมในปัญหาปฐม.
@@ -1686,28 +1698,82 @@ $L'$ ไม่ใช่ฟังก์ชันของ $\bm{x}$ แต่เ�
 ค่าของ $\bm{x}^\ast$ สามารถวิเคราะห์ได้จากสมการที่ได้เหล่านี้.
 
 ตัวอย่างปัญหาเชิงเส้นข้างล่าง
-\begin{eqnarray}
-\underset{x_1, x_2}{\mathrm{minimize}} & 2 x_2 - x_1 & 
-\nonumber \\
-\mbox{subject to} & -4 x_1 - x_2 & \geq -2, 
-\nonumber \\
-& x_1        & \geq 0,
-\nonumber \\
-& x_2        & \geq 0.
-\nonumber
-\end{eqnarray}
+%\begin{eqnarray}
+%\underset{x_1, x_2}{\mathrm{minimize}} & 2 x_2 - x_1 & 
+%\nonumber \\
+%\mbox{subject to} & -4 x_1 - x_2 & \geq -2, 
+%\nonumber \\
+%& x_1        & \geq 0,
+%\nonumber \\
+%& x_2        & \geq 0.
+%\nonumber %
+%%%
+%%% START DEBUG
+%%\\
+%%& mytest0
+%%\\
+%%& \hfill x & ? 0.
+%%\\
+%%& \hfill mytest1
+%%\\
+%%& \hspace*{\fill} mytest2
+%%\\
+%%& \hspace*{\fill} x & ? 0.
+%%\\
+%%& \hspace*{\fill} x \hfilneg & ? 0.
+%%\\
+%%& \;\; x & ? 0.
+%%%\hspace{10000pt minus 1fil} \text{right} \hfilneg
+%%% END DEBUG
+%\end{eqnarray}
+%\begin{align}
+%\underset{x_1, x_2}{\mathrm{minimize}} & 2 x_2 - x_1 
+%\nonumber \\
+%\mbox{subject to}  -
+%4 x_1 - x_2 & \geq -2, 
+%\nonumber \\
+%x_1        & \geq 0,
+%\nonumber \\
+%x_2        & \geq 0.
+%\nonumber %
+%\end{align}
+%
+\begin{center}
+\begin{tabular}{lrl}
+$\underset{x_1, x_2}{\mathrm{minimize}}$ & $2 x_2 - x_1$ & 
+\\
+$\mbox{subject to}$ & $-4 x_1 - x_2$ & $\geq -2$, 
+\\
+& $x_1$        & $\geq 0$,
+\\
+& $x_2$        & $\geq 0$.
+\end{tabular} 
+\end{center}
+%\\
 ซึ่งอยู่ใน\textit{ปฐมรูป} (primal form).
 เปรียบเทียบกับแก้ปัญหา
-\begin{eqnarray}
-\underset{\lambda_1}{\mathrm{maximize}} & -2 \lambda_1 & 
-\nonumber \\
-\mbox{subject to} & \lambda_1 & \geq 0, 
-\nonumber \\
-& -4 \lambda_1        & \leq -1,
-\nonumber \\
-& -\lambda_1        & \leq 2.
-\nonumber
-\end{eqnarray}
+%\begin{eqnarray}
+%\underset{\lambda_1}{\mathrm{maximize}} & -2 \lambda_1 & 
+%\nonumber \\
+%\mbox{subject to} & \lambda_1 & \geq 0, 
+%\nonumber \\
+%& -4 \lambda_1        & \leq -1,
+%\nonumber \\
+%& -\lambda_1        & \leq 2.
+%\nonumber
+%\end{eqnarray}
+%
+\begin{center}
+\begin{tabular}{lrl}
+$\underset{\lambda_1}{\mathrm{maximize}}$ & $-2 \lambda_1$ & 
+\\
+$\mbox{subject to}$ & $\lambda_1$ & $\geq 0$, 
+\\
+& $-4 \lambda_1$        & $\leq -1$,
+\\
+& $-\lambda_1$        & $\leq 2$	
+\end{tabular}
+\end{center}
 ซึ่งเป็น\textit{รูปคู่} (dual form) ของปัญหาข้างต้น.
 
 เมื่อแก้ปัญหาคู่เสร็จ ผลลัพธ์คือ $\lambda_1^\ast = 0.25$.
@@ -1751,16 +1817,28 @@ $= [0, 2.25]^T$.
 
 จากปัญหาเชิงเส้นข้างล่าง 
 จงแปลงเป็นรูปคู่ แก้ปัญหาทั้งในรูปปฐม และรูปคู่ และตรวจสอบคำตอบ.
-\begin{eqnarray}
-\underset{x_1, x_2}{\mathrm{minimize}} & 2 x_2 + 2 x_1 & 
-\nonumber \\
-\mbox{subject to} & -4 x_1 - x_2 & \geq -2, 
-\nonumber \\
-& x_1        & \geq 0,
-\nonumber \\
-& x_2        & \geq 0.
-\nonumber
-\end{eqnarray}
+%\begin{eqnarray}
+%\underset{x_1, x_2}{\mathrm{minimize}} & 2 x_2 + 2 x_1 & 
+%\nonumber \\
+%\mbox{subject to} & -4 x_1 - x_2 & \geq -2, 
+%\nonumber \\
+%& x_1        & \geq 0,
+%\nonumber \\
+%& x_2        & \geq 0.
+%\nonumber
+%\end{eqnarray}
+%
+\begin{center}
+\begin{tabular}{lrl}
+$\underset{x_1, x_2}{\mathrm{minimize}}$ & $2 x_2 + 2 x_1$ & 
+\\
+$\mbox{subject to}$ & $-4 x_1 - x_2$ & $\geq -2$, 
+\\
+& $x_1$        & $\geq 0$,
+\\
+& $x_2$        & $\geq 0$.
+\end{tabular}
+\end{center}
 
 \textit{หมายเหตุ}
 วิธีลงเกรเดียนต์ และวิธีลงโทษสามารถใช้ช่วยหาคำตอบได้
