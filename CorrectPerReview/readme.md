@@ -31,6 +31,7 @@ C:\"Program Files"\gs\gs9.54.0\bin\gswin64c -dNOPAUSE -dBATCH -sDEVICE=pdfwrite 
 
 ระดับหนึ่ง
   * เพิ่มรูปของรูปแบบ ในหน้าหนึ่งบทที่หนึ่ง (เพื่อ แสดงความต่างจากเวอร์ชั่นบนเวป)
+    * ทำแล้ว เพิ่มรูป ภาพใหญ่ของการรู้จำรูปแบบและการเรียนรู้ของเครื่อง (2 พย 64) 
   * เพิ่ม Inception
   * เพิ่ม Transformer
   * CTC loss (Connectionist Temporal Classification Loss)
