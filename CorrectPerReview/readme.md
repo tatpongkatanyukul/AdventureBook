@@ -24,7 +24,7 @@ xelatex b202b.tex
 C:\"Program Files"\gs\gs9.54.0\bin\gswin64c -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -dEmbedAllFonts=true -sOutputFile=b202b_fixed.pdf -f b202b.pdf
 ```
 
-แต่ละคอมไพล์ ```xelatex b202b``` อาจใช้เวลา 1 - 17 นาที
+แต่ละคอมไพล์ ```xelatex b202b``` อาจใช้เวลา 1 - 19 นาที
 
 ปล. ฉบับนี้ไม่จำเป็นต้องตรงกับฉบับพิมพ์จริง 100%
 
