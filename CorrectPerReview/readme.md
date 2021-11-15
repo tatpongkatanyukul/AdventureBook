@@ -17,10 +17,11 @@
   * เพิ่มรูปของรูปแบบ ในหน้าหนึ่งบทที่หนึ่ง (เพื่อ แสดงความต่างจากเวอร์ชั่นบนเวป)
   * เพิ่ม Inception
   * เพิ่ม Transformer
+  * CTC loss (Connectionist Temporal Classification Loss)
 
 ระดับสอง
   * ทำ NLP ให้สมบูรณ์ (Andrew Ng's Sequence Model)
-  * เพิ่ม side stories: Quantum properties and computing, Entropy and life
+  * เพิ่ม side stories: Quantum properties and computing, Entropy and life, Pattern of Lives (trophic cascade)
   * เพิ่ม computing exercises: evolution
 
 ระดับสาม
