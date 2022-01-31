@@ -3,6 +3,10 @@
 
 ![Main Cover Image](https://github.com/tatpongkatanyukul/AdventureBook/blob/main/deep_learning2b.png)
 
+> "สิ่งที่น่านับถือในตัวจอมยุทธ์หาใช่วิชายุทธเลิศล้ำ
+> แต่เป็นคุณธรรม และความหาญกล้าเผชิญโลกของแม่น้ำกว้าง ทะเลสาบใหญ่ ภูเขาตระหง่าน"
+
+
 The book is written in **Thai**.
 Yah, there are plenty of ML books in English out there.
 My mission is to write a **Thai** ML book capturing the **adventurous spirits** of the ML community
