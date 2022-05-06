@@ -11,7 +11,8 @@
     * Central dogma: DNA -> RNA -> Protein -> Organism
       * reverse transcription: David Baltimore's work
     * Metabolic pathways
-    * (+ ? ... add regulation of cell differentiation / regulation of cell division)  
+    * (+ ? ... add regulation of cell differentiation / regulation of cell division) 
+    * (+ tree of life: bacteria, archaea, eukarya + ? quirkiness of virus)  
 
 > "สิ่งที่น่านับถือในตัวจอมยุทธ์หาใช่วิชายุทธเลิศล้ำ
 > แต่เป็นคุณธรรมที่หนักแน่น และความหาญกล้าเผชิญโลกของแม่น้ำ ทะเลสาบ ภูเขา อุปสรรค ความกลัว และสิ่งที่ไม่รู้"
