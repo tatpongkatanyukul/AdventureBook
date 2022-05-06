@@ -3,6 +3,16 @@
 
 ![Main Cover Image](https://github.com/tatpongkatanyukul/AdventureBook/blob/main/deep_learning2b.png)
 
+## To do
+
+  * Pattern of particles: Quantum Mechanics
+  * Pattern of life (src: Bozemanscience's Essential Characteristics of Life)
+    * Genetic code (i.e., dna)
+    * Central dogma: DNA -> RNA -> Protein -> Organism
+      * reverse transcription: David Baltimore's work
+    * Metabolic pathways
+    * (+ ? ... add regulation of cell differentiation / regulation of cell division)  
+
 > "สิ่งที่น่านับถือในตัวจอมยุทธ์หาใช่วิชายุทธเลิศล้ำ
 > แต่เป็นคุณธรรมที่หนักแน่น และความหาญกล้าเผชิญโลกของแม่น้ำ ทะเลสาบ ภูเขา อุปสรรค ความกลัว และสิ่งที่ไม่รู้"
 
