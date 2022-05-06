@@ -5,6 +5,7 @@
 
 ## To do
 
+  * NLP: + word embedding, transformer
   * Pattern of particles: Quantum Mechanics
   * Pattern of life (src: Bozemanscience's Essential Characteristics of Life)
     * Genetic code (i.e., dna)
