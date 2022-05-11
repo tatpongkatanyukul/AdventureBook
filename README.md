@@ -29,6 +29,8 @@ that a like-minded person, including myself both in this life and the next, will
 
 [Local wiki article of the book (in Thai)](http://degas.en.kku.ac.th/coewiki/doku.php?id=pr:advbook)
 
+[Online edition (draft) 2020]()
+
 ## Drafts
 
   * The first draft (submitted for my sabbatical leave, on Dec 8th, 2020)
