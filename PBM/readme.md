@@ -1,5 +1,5 @@
 
-# การผจญภัยของการคำนวณในโลกแบบจำลองเชิงกายภาพ (The Adventures of Computation in Physically-Based Modeling)
+# การผจญภัยของแบบจำลองเชิงกายภาพ (The Adventures of Physically-Based Modeling)
 
 * Old english title: "The Adventures of Computation in the World of Physically-Based Modeling"
 * title: การผจญภัยของแบบจำลองเชิงกายภาพ "The Adventures of Computation in Physically-Based Modeling"
