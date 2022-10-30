@@ -1,0 +1,1669 @@
+\chapter{อื่นๆของการเรียนรู้ของเครื่อง}
+\label{chapter: others}
+
+แม้ว่า โครงข่ายประสาทเทียม จะถูกพิสูจน์แล้วว่าเป็น universal approximator และ สามารถนำไปประยุกต์ใช้กับงานที่หลากหลาย.
+แต่การฝึกโครงข่ายประสาทเทียม ก็ยังทำได้ลำบากอยู่.
+ซึ่งเป็นสาเหตุหลักที่ทำให้ ความนิยมของโครงข่ายประสาทเทียม เสื่อมลงไป หลังจาก ช่วงปี 1995 ที่ วลาดิเมียร์ วาปนิค (Vladimir N. Vapnik) และโครินน่า โคทิส (Corinna Cortes) เสนอ Support Vector Machine (SVM) \cite{CortesVapnik1995a} ที่สามารถฝึกได้ง่ายกว่ามาก.
+หัวข้อ~\ref{sec: SVM} เราจะถกกันเรื่อง SVM.
+
+แต่ทิศทางของเทคโนโลยีเปลี่ยนตลอด 
+ช่วงหลังๆนี้ ทิศทางและความสนใจ เริ่มเปลี่ยนกลับมาหาโครงข่ายประสาทเทียมอีกครั้ง จากผลงานหลักๆ ของ กลุ่มของ เจฟฟรีย์ ฮินตัน (หนึ่งในผู้บุกเบิกการศึกษาโครงข่ายประสาทเทียม) ได้เสนอวิธีที่ช่วยในการฝึกโครงข่ายประสาทเทียมหลายๆชั้นที่มีประสิทธิภาพมากยิ่งขึ้น \cite{HintonSalakhutdinov2006a, HintonEtAl2006a} ซึ่ง ทำให้เกิดการตื่นตัวในการ ศึกษา ศักยภาพ และ การประยุกต์ใช้ ของ Deep Network ซึ่งคือการใช้โครงข่ายประสาทเทียมที่มีโครงสร้างหลายๆชั้น.
+หัวข้อ~\ref{sec: Deep Network} เราจะถกกันถึงโครงข่ายลึก (Deep Network) ที่ปัจจุบัน เป็นศาสตร์แห่งศิลป์ ของงานหลายๆด้าน เช่น image processing และ speech processing.
+
+\section{SVM}
+\label{sec: SVM}
+
+\section{Deep Network}
+\label{sec: Deep Network}
+
+\section{ระบบแนะนำสินค้า (Personalized Recommendation System)}
+
+\begin{eqnarray}
+E^{(i)} &=& \frac{1}{2 N_M} \sum_{m=1}^{N_m} 
+\left\{ 
+  \hat{y}^{(i)}_m - y^{(i)}_m
+\right\}^2
+\nonumber 
+\\
+\frac{\partial E^{(i)}}{\partial w_j} &=& \frac{1}{N_M} \sum_{m=1}^{N_m} 
+\left\{ 
+  (\hat{y}^{(i)}_m - y^{(i)}_m) \cdot \frac{\partial \hat{y}^{(i)}_m}{\partial w_j}
+\right\}
+\nonumber 
+\\
+&=& \frac{1}{N_M} \sum_{m=1}^{N_m} 
+\left\{ 
+  (\hat{y}^{(i)}_m - y^{(i)}_m) \cdot \frac{\partial (w_0 + w_1 \cdot f_{m,1}^{(i)} + w_2 \cdot f_{m,2}^{(i)} + w_3 \cdot f_{m,3}^{(i)}) + \ldots + w_K \cdot f_{m,K}^{(i)})}{\partial w_j}
+\right\}
+\nonumber \\
+&=& \frac{1}{N_M} \sum_{m=1}^{N_m} 
+\left\{ 
+  (\hat{y}^{(i)}_m - y^{(i)}_m) \cdot f_{m,j}^{(i)}
+\right\}
+\end{eqnarray}
+
+โดย $w_0, \ldots, w_K$ คือ น้ำหนักของลักษณะเด่นต่างๆ สำหรับ ลูกค้าคนที่ $i$,
+$f_{m,j}^{(i)}$ คือ ลักษณะเด่นที่ $j$ สำหรับ ลูกค้าคนที่ $i$ สำหรับ ภาพยนต์เรื่องที่ $m$.
+
+\pagebreak
+
+\section{การแจกแจงความน่าจะเป็น (Probability Distribution)}
+
+%\begin{verse}
+`` dummy quote '', dummy author
+%\end{verse}
+
+\subsection{Nonparametric Methods}
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{08KNN/replicateFig2_24.eps}
+\end{center}
+\caption{การใช้ฮิสโตแกรมประมาณการแจกแจง}
+\label{fig: ch03 nonparam histogram}
+\end{figure}
+
+\subsubsection{Kernel density estimators}
+
+เราลองมาดู ค่าข้อมูล จาก การแจกแจงความน่าจะเป็น $p(\mathbf{x})$ ซึ่ง เราไม่รู้ว่า $p(\mathbf{x})$ คือ อะไร
+โดย ต้วแปร $\mathbf{x}$ อยู่ในปริภูมิ $D$ มิติ
+($\mathbf{x} \in \Re^D$)
+๏ เราต้องการประมาณค่าของ $p(\mathbf{x})$ ---ค่าความน่าจะเป็นของตัวแปร $\mathbf{x}$
+๏ เราเริ่มจาก ลองดูบริเวณเล็กๆ $R$ ที่มี $\mathbf{x}$ อยู่
+๏ มวลของความน่าจะเป็น (probability mass) ของบริเวณ $R$ นี้ หาได้จาก
+
+\begin{eqnarray}
+  P = \int_R p(\mathbf{x}) d\mathbf{x}
+\label{eq: 03ProbDist prob mass}
+\end{eqnarray}
+
+ถ้า เรามี ค่าข้อมูล $N$ จุด จาก การแจกแจงความน่าจะเป็น $p(\mathbf{x})$ ซึ่ง ความน่าจะเป็น ที่ แต่ละจุด จะอยู่ภายในบริเวณ $R$ จะเป็น $P$
+ดังนั้น จำนวนจุด---แทน ด้วย $K$--- ที่จะอยู่ภายใน บริเวณ $R$ จะมีการกระจายแจกแจง เป็น การแจกแจงทวินาม (binomial distribution)
+
+\begin{equation}
+\mathrm{Bin}( K | N, P) = \frac{N!}{K! (N-K)!} P^K (1 - P)^{1-K}
+\label{eq: 03ProbDist bin prob}
+\end{equation}
+
+จาก คุณสมบัติ ของ การแจกแจงทวินาม, ค่าเฉลี่ย ของจำนวนจุด ที่อยู่ในบริเวณ $R$ จะเป็น $\mathbb{E}[K] = N \cdot P$
+และ ค่าความแปรปรวน (variance) จะเป็น $\mathrm{var}[K] = P \cdot (1 - P)$ 
+หรือ $\mathrm{var}[K/N] = P \cdot (1 - P)/N$ 
+๏ สำหรับ ค่า $N$ ใหญ่ๆ, การแจกแจงจะ กระจุกตัวอยู่แถวๆค่าเฉลี่ย (ดูรูป~\ref{fig: Binomial Prob} ประกอบ) ดังนั้น เราจะได้
+
+\begin{eqnarray}
+K \approx N \cdot P
+\label{eq: 03ProbDist most K of large N}
+\end{eqnarray}
+
+สมมติว่า ถ้าเราสามารถเลือก บริเวณ $R$ ให้ ขนาดเล็ก พอ ที่ ค่า $p(\mathbf{x})$ ภายในบริเวณ $R$ ประมาณได้ว่าคงที่ เราจะได้
+
+\begin{eqnarray}
+P \approx p(\mathbf{x}) \cdot V
+\label{eq: 03ProbDist approx prob}
+\end{eqnarray}
+
+เมื่อ $V$ เป็น ปริมาตร ของ บริเวณ $R$
+๏ จาก สมการ~\ref{eq: 03ProbDist most K of large N} และ~\ref{eq: 03ProbDist approx prob} เราจะได้
+
+\begin{equation}
+  p(\mathbf{x}) = \frac{K}{N V}
+\label{eq: 03ProbDist density estimate}
+\end{equation}
+
+สังเกตุ สมการ~\ref{eq: 03ProbDist density estimate} ได้มาจากสมมติฐานคือ บริเวณ $R$ จะต้องเล็ก พอที่ $p(\mathbf{x})$ ประมาณ ได้ว่า คงที่ ทั้งบริเวณ ในขณะที่ บริเวณนี้ ก็จะต้อง ใหญ่พอ ที่ จำนวน จุดข้อมูล ในบริเวณ $K$ จะ มากพอ สำหรับ สมมติฐานของสมการ~\ref{eq: 03ProbDist most K of large N}
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{08KNN/BinomialNKP.eps}
+\end{center}
+\caption{การแจกแจงความน่าจะเป็น แบบ ทวินาม}
+\label{fig: Binomial Prob}
+\end{figure}
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=3.5in]{08KNN/hypercube.eps}
+\end{center}
+\caption{ลูกบาศ์กสองมิติ กับค่าฟังชั่นแกน 
+๏ จุดที่อยู่ภายในบริเวณ มีค่าฟังชั่นแกน เป็น หนึ่ง 
+๏ จุดที่อยู่นอกบริเวณ มีค่าฟังชั่นแกน เป็น ศูนย์}
+\label{fig: hypercube}
+\end{figure}
+
+จากสมการ \ref{eq: 03ProbDist density estimate} เรา ทำต่อได้ 2 วิธี
+๏ วิธีที่หนึ่ง เราเลือกกำหนด ค่า $K$ แล้ว หาค่า $V$ จากข้อมูล ซึ่ง วิธีนี้คือ วิธี ``เค-เพื่อนบ้านที่ใกล้สุด'' (k-nearest-neighbor)
+๏ หรือ วิธีที่สอง เรากำหนด ค่า $V$ แล้ว หาค่า $K$ จากข้อมูล ซึ่ง วิธีนี้คือ วิธี ประมาณความหนาแน่นแก่น (kernel density estimator)
+๏ \cite{Bishop2007} อ้างถึง  \cite{DudaHart1973} ว่า เมื่อ $N \to \infty$ และ ค่า $K$ โตขึ้น อย่างพอเหมาะ กับค่า $N$ (วิธีที่ 1) และ ค่า $V$ หดลง อย่างเหมาะสม กับค่า $N$ (วิธีที่ 2) แล้ว ทั้ง 2 วิธี ผลลัพธ์ จะ ลู่เข้า สู่ การแจกแจง ที่ แท้จริง ของ ข้อมูล
+
+\paragraph{วิธีแก่น} สมมติเรา เลือก บริเวณ $R$ เป็น ลูกบาศก์หลายมิติ (hypercube) โดยมี จุดศูนย์กลาง อยู่ที่ จุดข้อมูล $\mathbf{x}$ ที่เราต้องการ จะหาค่าความน่าจะเป็น
+๏ ก่อนอื่น นิยามฟังชั่น
+
+\begin{eqnarray}
+ k(\mathbf{u}) = 
+ \left\{ 
+  \begin{array}{ll}
+    1, & \quad |u_i| \le 1/2, i = 1,\ldots, D, \\
+    0, & \quad \mbox{otherwise}
+  \end{array} 
+  %\right\} 
+  \right.
+\end{eqnarray}
+
+ฟังชั่นนี้ จะแทน ลูกบาศก์หลายมิติหนึ่งหน่วย (unit cube) โดยมีจุดศูนย์กลางอยู่ที่ จุดกำเนิด $\vec{0}$
+๏ ฟังชั่นนี้เป็น ตัวอย่างของฟังชั่นแก่น (kernel function)
+๏ ค่า $k((\mathbf{x} - \mathbf{x}_n)/h)$ จะเป็น หนึ่ง เมื่อ จุด $\mathbf{x}$ อยู่ในบริเวณ ของ ลูกบาศก์หลายมิติ ที่ แต่ละด้าน ยาว $h$ และ มีจุดศูนย์กลางอยู่ที่ $\mathbf{x}$
+๏ ถ้า จุดข้อมูล อยู่ นอกบริเวณ ค่าฟังชั่นแกน จะเป็น ศูนย์
+๏ ดังนั้น จำนวนจุดข้อมูล ที่อยู่ภายใน บริเวณลูกบาศก์ จะเป็น
+
+\begin{eqnarray}
+K = \sum_{n=1}^N k \left( \frac{\mathbf{x} - \mathbf{x}_n}{h} \right)
+\label{eq: 03ProbDist hypercube kernel density}
+\end{eqnarray}
+
+จาก สมการ~\ref{eq: 03ProbDist density estimate} และ~\ref{eq: 03ProbDist hypercube kernel density}, ค่าความหนาแน่นความน่าจะเป็น ที่ $\mathbf{x}$ จะหาได้จาก
+
+\begin{equation}
+p(\textbf{x}) = \frac{1}{N} \sum_{n=1}^N \frac{1}{h^D} k \left( \frac{\mathbf{x} - \mathbf{x}_n}{h} \right)
+\end{equation}
+
+เมื่อ ค่าปริมาตร $V = h^D$
+
+เนื่องจาก $k(\mathbf{x}-\mathbf{x}_n) = k(\mathbf{x}_n - \mathbf{x})$,
+เรา อาจจะมอง 
+สมการ~\ref{eq: 03ProbDist hypercube kernel density} นี้ ว่า ค่า ความหนาแน่นความน่าจะเป็น ของ $\mathbf{x}$ ขึ้นกับ ผลรวม ของฟังชั่นแก่น $N$ ค่า จาก ลูกบาศก์หลายมิติ $N$ ลูก ที่แต่ละลูก มีจุดศูนย์กลาง ที่ จุดข้อมูลแต่ละตัว ก็ได้
+
+การเลือกใช้ฟังชั่นแก่น เป็น ลูกบาศก์หลายมิติ อาจได้ ค่าความหนาแน่นความน่าจะเป็น ที่ไม่ต่อเนื่อง เช่นเดียวกับ กรณีของ ฮีสโตแกรม เนื่องจาก ลูกบาศก์ มีขอบเขต จำกัด
+๏ ดังนั้น ในการใช้งาน วิธีประมาณความหนาแน่นแก่น ส่วนใหญ่แล้ว เราจะเลือกใช้ ฟังชั่นแก่น เป็น เกาส์เซียน (Gaussian) 
+และ โมเดลความหนาแน่นแก่น ของเกาส์เซียน คือ
+
+\begin{equation}
+  p(\mathbf{x}) = \frac{1}{N} \sum_{n=1}^N \frac{1}{(2 \pi h^2)^{1/2}} \mathrm{exp} \left( - \frac{\| \mathbf{x} - \mathbf{x}_n \|^2}{2 h^2} \right)
+\label{eq: 03ProbDist gaussian kernel density} 
+\end{equation}
+
+เมื่อ $h$ คือ ค่าเบี่ยงเบนมาตราฐาน ของเกาส์เซียน
+๏
+โมเดลประมาณความหนาแน่นแก่น อาจมองได้ว่า เป็น เสมือน การวาง การแจกแจงแบบเกาส์เซียน บน จุดข้อมูล $\mathbf{x}_n$ แต่ละจุด แล้ว นำผลจากเกาส์เซียน ที่จุด $\mathbf{x}$ ทั้งหมด มารวมกัน เป็น ค่าความหนาแน่นความน่าจะเป็น ของ $\mathbf{x}$
+๏ รูป~\ref{fig: CH03 kernel density estimator h impact} แสดง ความหนาแน่นความน่าจะเป็น ที่ประมาณจาก วิธีแก่น ที่ค่า $h$ ต่างๆ โดย เส้นประ แสดง ความหนาแน่นความน่าจะเป็น ที่แท้จริง (ความหนาแน่นความน่าจะเป็น ที่ ใช้ สร้าง ข้อมูล)
+๏ สังเกตุ ว่า ค่าเบี่ยงเบนมาตราฐาน $h$ มีผล ใน การปรับเรียบ ของ ค่าประมาณ ความหนาแน่นความน่าจะเป็น
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=3.5in]{08KNN/replicateFig2_25.eps}
+\end{center}
+\caption{ผลจากการใช้ การประมาณความหนาแน่นแกน ที่ค่า $h$ ต่างๆกัน}
+\label{fig: CH03 kernel density estimator h impact}
+\end{figure}
+
+\subsubsection{วิธีเพื่อนบ้านที่ใกล้ที่สุด (Nearest-neighbor methods)}
+
+อุปสรรคอย่างหนึ่ง ของ การใช้วิธีเชิงแก่นในการประมาณ ความหนาแน่นความน่าจะเป็น คือ ค่าพารามิเตอร์ $h$ ที่ควบคุมบริเวณของแก่น จะมีค่าเท่ากันสำหรับทุกๆแก่น
+๏ สำหรับพื้นที่ ที่มีจุดข้อมูลอยู่หนาแน่น ค่า $h$ ที่ใหญ่อาจทำให้ได้การประมาณที่ราบเรียบมากเกินไป (over-smoothing) และทำให้มองไม่เห็น โครงสร้างของความหนาแน่นความน่าจะเป็น ที่น่าจะเห็นได้จากข้อมูลที่มี แต่ถ้าลดค่า $h$ ลง ก็อาจทำให้พื้นที่ที่มีจุดข้อมูลอยู่น้อยได้การประมาณที่ขาดช่วง
+๏ บางทีค่าพารามิเตอร์ $h$ ที่เหมาะสม อาจจะไม่ควรจะค่าที่เท่ากันทุกที่ มันอาจจะขึ้นอยู่กับตำแหน่งของแก่นก็เป็นได้
+๏ แนวคิดนี้สะท้อนออกมาเป็น วิธีเพื่อนบ้านที่ใกล้ที่สุด (Nearest-neighbor methods) สำหรับการประมาณความหนาแน่นความน่าจะเป็น
+
+จากสมการ~\ref{eq: 03ProbDist density estimate} แทนที่เราจะยึดค่า $V$ คงที่และหาค่า $K$ ตอนนี้เราจะยึดค่า $K$ คงที่และให้ข้อมูลที่มีหาค่า $V$
+๏ จินตนาการ เราหดหรือขยาย บริเวณรอบๆจุดข้อมูล $\mathbf{x}$ ที่เราต้องการประมาณค่า $p(\mathbf{x})$
+จนบริเวณสามารถครอบคลุมจุดข้อมูลอื่นได้ $K$ จุดพอดี (รูป~\ref{fig: ch03 KNN K=3})
+๏ ค่าความหนาแน่นความน่าจะเป็น (สมการ~~\ref{eq: 03ProbDist density estimate}) คำนวณได้โดย ให้ค่า $V$ เท่ากับปริมาตรของบริเวณที่ได้
+๏ วิธีนี้คือ วิธีเพื่อนบ้านที่ใกล้ที่สุด $K$ ค่า (K nearest neighbors)
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=3.5in]{08KNN/KNNhypercube.eps}
+\end{center}
+\caption{ยึดค่า $K$ คงที่และปรับบริเวณหาค่า $V$}
+\label{fig: ch03 KNN K=3}
+\end{figure}
+
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=3.5in]{08KNN/replicateFig2_26.eps}
+\end{center}
+\caption{K-nearest-neighbor density estimation}
+\label{fig: ch03 KNN density with different Ks}
+\end{figure}
+
+
+\section{Reinforcement Learning}
+
+\subsection{ปัญหารถติดก้นหุบเขา (Mountain Car Problem)}
+
+\paragraph{ปัญหารถติดก้นหุบเขา} 
+สถานะการณ์คือ เราจะต้องขับรถที่ไปติดอยู่ก้นหุบเขาให้ออกมาให้ได้
+๏
+แต่รถมีกำลังไม่มากพอ ที่จะออกจากหุบเขาไปได้ด้วยการเร่งเครื่องออกไปทีเดียว
+๏
+วิธีที่จะขึ้นไปได้ คือ แทนที่จะเร่งเครื่องแล้ว วิ่งไปทางที่จะออกอย่างเดียว เราจะวิ่งถอยหลังขึ้นไปเนินด้านหลัง เพื่อเพิ่มแรงส่ง และจะวิ่งโล้ไปโล้มา จนความเร็วมากพอที่จะออกจากหุบเขานี้ได้
+
+ลองดำเนินงานคำสั่ง%
+\footnote{ดูรหัสโปรแกรม ที่ภาคผนวก~\ref{sec: code MtnCarDemo.r}} 
+\verb|source(MtnCarDemo.r)|
+ของ\textbf{อาร์โปรเจค}
+
+แล้วทดลอง บังคับรถออกจากหุบเขา ด้วยปุ่มลูกศรซ้าย-ลง-ขวาบนคีย์บอร์ด จนสามารถนำรถ (แสดงด้วยวงกลมในโปรแกรมสาธิต) สามารถออกจากหุบเขาไปได้
+โดยทางออกอยู่ทางขวา
+
+ปุ่มลูกศรซ้ายแทนการเร่งถอยหลัง
+ปุ่มลูกศรลงแทนการไม่เร่ง (ปล่อยตามแรงดึงดูดอย่างเดียว)
+ปุ่มลูกศรขึ้นแทนการเร่งไปข้างหน้า
+%
+ดูรูปที่~\ref{fig: mtncar demo} ประกอบ
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]
+{05Reinforce/mtncardemo.png}
+\end{center}
+\caption{ภาพหน้าจอของการสาธิตปัญหารถติดก้นหุบเขา}
+\label{fig: mtncar demo}
+\end{figure}
+%
+
+รูปที่~\ref{fig: mtncar demo summary} แสดงกราฟของ\textbf{สถานะ} (state) และ \textbf{การกระทำ} (action) ต่อ\textbf{คาบ}เวลา (แสดงในแกนนอน) ๏
+โดย\textbf{สถานะ} ประกอบด้วย ตำแหน่ง (position) แสดงด้วยเส้นทึบ และ ความเร็ว (speed) แสดงด้วยเส้นประยาว และ \textbf{การกระทำ} แสดงด้วยเส้นประสั้น จะมีแค่ เร่งถอยหลัง ($action = -1$), ไม่เร่ง ($action = 0$), และ เร่งไปข้างหน้า ($action = 1$)
+๏
+สังเกตุ เราใช้ $0.6 action$ แทน $action$ เพื่อปรับขนาดภาพให้เหมาะสม โดยความหมายของประเด็นหลักยังคงเดิม
+
+แกนนอนแสดง คาบเวลา หรือ \textbf{คาบ} ซึ่งสำหรับปัญหาในลักษณะนี้ เราจะแบ่ง การควบคุม (หรือการตัดสินใจ) ออกเป็น ช่วงเวลาย่อยๆ เรียกว่า \textbf{คาบ} (epoch) 
+๏
+ในแต่ละ\textbf{คาบ}
+สิ่งที่เรารู้คือ \textbf{สถานะ}ของระบบ (เช่น ตำแหน่ง และ ความเร็ว ของรถ)
+และ เราจะต้องเลือก\textbf{การกระทำ} (เช่น เร่งถอยหลัง ไม่เร่ง เร่งไปข้างหน้า) 
+โดย \textbf{การกระทำ} จะมีผลต่อ การเปลี่ยน\textbf{สถานะ}ของระบบ (มีผลต่อ \textbf{สถานะ} ของ\textbf{คาบ}ถัดไป)
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]
+{05Reinforce/mtncardemoPlot.png}
+\end{center}
+\caption{กราฟแสดงความสัมพันธ์ ตำแหน่ง ความเร็ว \textbf{การกระทำ}ที่เลือก}
+\label{fig: mtncar demo summary}
+\end{figure}
+%
+
+ปัญหารถติดก้นหุบเขา เป็น ตัวอย่าง ของลักษณะ ปัญหา การควบคุม หรือ ตัดสินใจ ที่เป็นลำดับต่อเนื่อง โดยที่ บางครั้งเราต้องยอม ทำบางอย่าง ที่ระยะสั้นแล้ว อาจดูเหมือนว่า ทำให้เรายิ่งไกลไปจากเป้าหมาย แต่ การกระทำนั้น จะมีผล ช่วยให้ บรรลุเป้าหมายได้ ในที่สุด
+๏
+ดังเช่น การเร่งรถถอยหลัง ใน ปัญหารถติดก้นหุบเขา ที่ในระยะสั้น แล้ว ดูเหมือนว่า ยิ่งทำให้ รถ ห่างจาก เป้าหมาย ออกไปมากขึ้น แต่สิ่งนี้ทำให้ รถมีแรงส่งเพิ่มขึ้น และ ถ้า เร่งเครื่อง เสริมเข้าไป ก็จะทำให้ รถ มีแรง มากพอ ที่จะวิ่งขึ้นเขา ออกไปได้ ในที่สุด
+
+\paragraph{การเรียนรู้แบบเสริมกำลัง} 
+
+เราพอรู้วิธีขับรถออกมาจากหุบเขาได้แล้ว แต่ เราจะทำอย่างไร เพื่อ คอมพิวเตอร์เรียนรู้วิธีที่จะขับรถออกมาจากหุบเขาได้
+ย้อนกลับไปดูวิธีอื่นๆ ที่เราคุยกันไป
+
+การเรียนรู้แบบมีผู้สอน (supervised learning) เราจะใช้ตัวอย่างช่วยในการเรียนรู้ของเครื่อง
+๏ เช่น การให้ตัวอย่างรูปภาพ พร้อม\textbf{ฉลากเฉลย}ว่ารูปนั้นคือรูปของอะไร
+๏
+เครื่องสามารถเรียนรู้ได้ โดย การทดลองจำแนกรูป และ ประเมินผลเทียบกับ\textbf{ฉลากเฉลย}
+
+การเรียนรู้แบบไม่มีผู้สอน (unsupervised learning)
+เราจะบอกเป้าหมายที่ชัดเจนให้กับเครื่อง และ ให้เครื่องลองผิดลองถูกเองเพื่อบรรลุ หรือทำงานได้ใกล้เคียงกับเป้าหมายนั้น
+๏ เช่น การกำหนดจำนวนกลุ่ม และ บอกเป้าหมาย การจัดของเข้ากลุ่ม โดย ของในกลุ่มเดียวกัน ให้มีความคล้ายคลึงกันมากที่สุด
+%
+เครื่องสามารถเรียนรู้ได้โดยการทดลองจัดกลุ่ม และ ประเมินผลจากค่าความใกล้เคียงในกลุ่ม
+%
+
+
+
+
+
+
+
+
+\paragraph{สัญญาณเสริมกำลัง (reinforcement signal)}
+
+\paragraph{คำถาม} ปัญหา การควบคุม รถติดหุบเขา ต่างกับ ปัญหาทำนายค่า หรือ ปัญหาแบ่งกลุ่ม ข้างต้นอย่างไร?
+
+
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{05Reinforce/off120917a0.png}
+\end{center}
+%\caption{mountain car}
+%\label{fig: mtncar}
+\end{figure}
+%
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{05Reinforce/off120917a0learnedQ.png}
+\end{center}
+%\caption{mountain car}
+%\label{fig: mtncar}
+\end{figure}
+%
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{05Reinforce/off120917a0simovertime.png}
+\end{center}
+%\caption{mountain car}
+%\label{fig: mtncar}
+\end{figure}
+%
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{05Reinforce/off120917a2learnedQ.png}
+\end{center}
+%\caption{mountain car}
+\label{fig: mtncar learned Q}
+\end{figure}
+%
+
+รูปที่~\ref{fig: mtncar learned Q} แสดง ค่าเฉลี่ยของ \textbf{ค่าคิว} จาก \textbf{ค่าคิว} ของ ทางเลือก\textbf{การกระทำ} 3 แบบ
+โดยชื่อรูประบุจำนวน \textbf{คาบ} (epochs) หรือ \textbf{ตอน} (episodes) หลังจาก \textbf{ซาซ่า} ทำงานไปได้
+รูปซ้ายแถวบนสุด ค่าเริ่มต้นของ\textbf{ค่าคิว} ถัดมาจากซ้ายไปขวา-บนลงล่าง เป็น \textbf{ค่าคิว} หลัง\textbf{ซาซ่า}ทำงานไปแล้ว 100 \textbf{คาบ}, 1 \textbf{ตอน}, 10 \textbf{ตอน}, , 40 \textbf{ตอน}, 80 \textbf{ตอน}, 160 \textbf{ตอน}, 300 \textbf{ตอน}, และ 1,000 \textbf{ตอน} ตามลำดับ
+โดย สีอ่อนแสดง\textbf{ค่าคิว}มาก (ตัวเลขค่าลบน้อยๆ) และ สีเข้มแสดง\textbf{ค่าคิว}น้อย (ตัวเลขค่าลบมากๆ)
+เช่น รูปแถวล่างสุดขวา \textbf{ค่าคิว} ของ\textbf{สถานะ} $s = [-1, 0]$ เป็นสีขาว ค่าเฉลี่ยของ\textbf{ค่าคิว}เป็นศูนย์ (เนื่องจาก\textbf{ซาซ่า}ไม่เคยเข้า \textbf{สถานะ} $s = [-1, 0]$ และค่าเริ่มต้นของ\textbf{ค่าคิว}เป็นศูนย์)
+ทำนองเดียวกัน \textbf{ค่าคิว} ของ\textbf{สถานะ} $s = [0, 0]$ เป็นสีดำเข้มที่สุด
+
+
+\section{พักคุยท้ายบท}
+\paragraph{เราเรียน, ลงมือทำ, และก็เก่งขึ้นได้อย่างไร?}
+
+ในชีวิตคนเรา, (1) ระบบประสาทสัมผัส ต่างๆ บางครั้ง ก็รวมถึง ความคิด ของเราด้วย ส่งข้อมูล ของ สถานการณ์ ขณะนั้น มาให้กับเรา
+%
+(2) แล้ว เราก็ประเมิน สถานการณ์ นั้น (ไม่ว่า ทำโดย รู้ตัว หรือ ไม่ก็ตาม) โดย อาศัย ประสบการณ์ ในอดีต และ/หรือ สัญชาตญาณ ของเรา
+%
+(3) เรา ตอบสนอง / ตัดสินใจ / ลงมือทำ 
+%
+(4) แล้ว เราก็สังเกตุ ผล ของ การกระทำ ของเรา
+และ (5) เชื่องโยง ผลนั้น กับ การกระทำของเรา ภายใต้สถานการณ์นั้น
+
+\paragraph{จริงๆแล้ว เราเรียนอย่างไร?}
+การเรียนรู้ ของเรา มีหลายมิติ
+(1) มิติแนวตั้ง, เรา อาจสังเกตุ สิ่งต่างๆ เรื่องราวต่างๆ แล้ว เราก็ สรุป รายละเอียด ต่างๆนั้น รวบมาเป็น ความเข้าใจ ของเรา
+เป็นการเรียนรู้จาก ล่างขึ้นบน
+%
+หรือ เรา อาจเรียนจากบนลงล่าง: เรียนทฤษฎี (ความเข้าใจ ที่คนอื่น ถ่ายทอด ต่อ มาให้ เรา) ก่อน แล้ว ค่อยไปดู เรื่องแต่ละเรื่อง สิ่งแต่ละสิ่งทีหลัง
+%
+เรา รับรู้ สิ่งต่างๆ เรื่องราวๆ ต่างๆ เป็นลำดับชั้น เช่น คนใช้ชีวิต ทำงาน กิน อยู่ หลับนอน, เจาะจงขึ้น อัศวิน ดำเนินชีวิต ยึดกฎปฎิบัติ ของอัศวิน, และ เจาะจงขึ้นอีก ประวัติของ อัศวิน เฉพาะคน เช่น เซอร์ แลนเซอลอต
+
+(2) มิติ ของ ความคล้ายคลึง, เรา จัดกลุ่ม สิ่งต่างๆ เรื่องราวต่างๆ ที่มีลักษณะคล้ายกัน เช่น อัศวิน, จอมยุทธ์, และ ซามูไร ซึ่งทั้งสาม เป็น ชนชั้นนักรบ ที่มีเกียรติ์
+%
+และ เรา จำแนก ความแตกต่าง ของ สิ่ง/เรื่องราว ที่คล้าย หรือ เกี่ยวข้องกัน, เช่น อัศวิน อยู่ใน ยุโรปยุคกลาง, จอมยุทธ์ มีอยู่ใน นิยายกำลังภายในจีน,และ ซามูไร อยู่ใน สังคมญี่ปุ่น ยุคศักดินา
+
+แต่ ความ คล้ายคลึง ก็สามารถ มองได้ จากหลายอย่าง เช่น อัศวินพเนจร กับ นักเดินทาง พวก แบกเป้ เที่ยว ก็มี ความ คล้ายคลึง ที่ว่า ทั้งสอง เดินทาง ไปดินแดน ที่ไม่คุ้ยเคย เพื่อ แสวงหา การผจญภัย เช่นกัน แม้ คนหนึ่ง เป็น นักรบอาชีพ ขณะที่ อีกคน (ส่วนใหญ่แล้ว) ไม่ได้ หาเลี้ยงชีพ ด้วยการ เป็นนักเดินทาง
+
+(3) มิติ ของ ความเด่นชัด, เรา เลือก ประเด็นสำคัญ จาก สิ่ง/เรื่องราว ต่างๆ เช่น สิ่งสำคัญ ที่ทำให้ อัศวิน เป็น อัศวิน คือ กฎปฎิบัติ เกียรติยศ ของ อัศวิน รวมถึง ทักษะบนหลังม้า และ ความกล้าหาญ
+
+(4) มิติแนวนอน, เรา ขยาย เรื่องที่เรารู้ ไปกับ สิ่ง ที่ เรายังไม่รู้มาก่อน เช่น ถ้าเกราะเหล็ก สามารถ ป้องกัน อัศวิน ได้, มัน ก็น่า จะใช้ ป้องกัน ม้า ของเรา ได้เช่นกัน
+
+การขยาย เรื่องที่เรารู้ ออกไปนี้ บ่อยครั้ง เป็น สิ่งที่เกิดขึ้น โดยไม่รู้ตัว เช่น ตู้ไปรษณีย์ ในประเทศไทย เป็นสีแดง ทำให้ เมื่อตอนที่ ผมจะไป หาตู้ไปรษณีย์ ในประเทศจีน ผมหาไม่เจอ ทั้งๆที่ เดินผ่าน มัน ไป ตั้งหลายรอบ เพราะ ผม ได้แต่ มองหา ตู้สีแดง ขนาด และ รูปทรง พอๆกับ ตู้ไปรษณีย์ ที่คุ้ยเคย โดย ตอนนั้น ไม่ได้ตระหนัก เลยว่า ตู้ไปรษณีย์ ในต่างประเทศ ไม่จำเป็น ต้องเป็น สีแดง หรือ มีขนาด และ รูปทรง เหมือนกับ ที่เราคุ้นเคย\footnote{ตู้ไปรษณีย์ ในประเทศจีน สีเขียว, ในสหรัฐอเมริกา สีฟ้า, ในสวิสเซอร์แลนด์ สีเหลือง!}
+
+
+\subsection{Function Approximation}
+
+การเรียนรู้แบบเสริมกำลัง ใช้ตารางค้นหา (look-up table) ในการเก็บค่า $Q(s,a)$.
+แต่ การใช้ ตารางค้นหา อาจไม่เหมาะสม ถ้า state-action space มีขนาดใหญ่มาก หรือ มีค่าตัวแปรที่เป็น ตัวแปรต่อเนื่อง (continuous variable).
+เพื่อแก้ปัญหาดังกล่าว เราสามารถใช้ การประมาณค่าด้วยฟังชั่น (function approximation) แทน ตารางค้นหา.
+
+\subsubsection{Linear Methods}
+
+
+\paragraph{การเข้ารหัสกระเบื้อง}
+
+สำหรับ ตัวแปรสถานะการกระทำ\footnote{
+เขียนย่อ เป็น ตัวแปรสถานะฯ.} (state-action variable) ที่เป็น ตัวแปรต่อเนื่องหลายมิติ: $\textbf{x} = [\textbf{s},\textbf{a}] = [s_1, s_2, \ldots, s_{D'}, a_1, a_2, \ldots, a_{D''}] = [x_1, x_2, \ldots, x_D]$, โดย $D = D' + D''$, เราสามารถใช้ การประมาณค่าด้วยฟังชั่น แบบ การเข้ารหัสหยาบ (coarse coding) ได้.
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{05Reinforce/SB8_2a.eps}
+\end{center}
+\caption{Coarse coding. สามเซลล์ตัวรับถูกกระตุ้น จาก x}
+\label{fig: SuttonBarto 8.2 a}
+\end{figure}
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{05Reinforce/SB8_2b.eps}
+\end{center}
+\caption{Coarse coding. สองเซลล์ตัวรับถูกกระตุ้น จาก y}
+\label{fig: SuttonBarto 8.2 b}
+\end{figure}
+
+การเข้ารหัสหยาบ จะใช้ เซลล์ตัวรับ (receptor) หลายๆตัว กระจายครอบคลุม ปริภูมิสถานะ-การกระทำ (state-action space) โดย เซลล์ตัวรับ จะมีการซ้อนทับกันบ้าง ดัง ตัวอย่าง สำหรับ ตัวแปรสองมิติ ในรูป \ref{fig: SuttonBarto 8.2 a} และ \ref{fig: SuttonBarto 8.2 b}.
+ถ้าตัวแปร อยู่ภายในวงกลม ซึ่งเป็น อาณาเขตของเซลล์ตัวรับ เซลล์ตัวรับตัว ตัวนั้น จะถูกกระตุ้น เช่น รูปที่ \ref{fig: SuttonBarto 8.2 a} ตัวแปร $\textbf{x}$ จะทำให้ เซลล์ตัวรับตัว 3 ตัวถูกกระตุ้น (เน้นด้วยพื้นสี ในรูป)
+รูปที่ \ref{fig: SuttonBarto 8.2 b} ตัวแปร $\textbf{y}$ จะทำให้ เซลล์ตัวรับตัว 2 ตัวถูกกระตุ้น.
+เราสามารถจำลองแบบเซลล์ตัวรับนี้เป็น ตัวแปรลักษณะ หรือ ลักษณะ (feature) ได้โดย ให้ ตัวแปรลักษณะ มีค่าเป็น $1$ เมื่อ ตัวแปรสถานะ-การกระทำ อยู่ในอาณาเขต และ เป็น $0$ เมื่อ ตัวแปรสถานะ-การกระทำ ไม่อยู่ในอาณาเขต.
+การที่ ตัวแปรลักษณะ มีค่าแค่ $0$ หรือ $1$ นี้จะเรียนว่า เป็น ลักษณะฐานสอง (binary feature).
+%
+การที่ ลักษณะฐานสอง ของแต่ละเซลล์ตัวรับ สามารถบอก ที่อยู่ แบบคร่าวๆ (หยาบๆ) ของ ตัวแปรสถานะฯ ได้ เราจึงเรียกมันว่า .
+
+%ถ้าเราใช้ การประมาณฟังชั่นเกรเดียนต์ลดลงเชิงเส้น (linear gradient-descent function approximation) 
+ขนาด รูปทรง และ ความหนาแน่น ของ อาณาเขต ของ เซลล์ตัวรับ ของ การเข้ารหัสหยาบ มีผลต่อ ความละเอียด (resolution)  การวางนัยทั่วไป (generalization) ของการแทนตัวแปรสถานะฯ:
+ถ้าขนาดของวงกลมในรูป \ref{fig: SuttonBarto 8.2 a} เล็กลง และ ใช้ความหนาแน่น ของ เซลล์ตัวรับ มากขึ้น เราจะได้ความละเอียด ของ ตัวแปรสถานะฯ ดีขึ้น
+แต่ การวางนัยทั่วไป จะลดลง เช่น x กับ y อาจไม่มีเซลล์ตัวรับร่วมกันอีก.
+การใช้อาณาเขตของเซลล์ตัวรับใหญ่ ทำให้เราได้ การวางนัยทั่วไป ดีขึ้น.
+และ การใช้เซลล์ตัวรับจำนวนมาก จะทำให้ เราได้ความละเอียดมากขึ้น
+
+รูปทรง ของ อาณาเขตเซลล์ตัวรับ ไม่จำเป็น ต้องเป็น วงกลม.
+ทางปฏิบัติแล้ว การตรวจสอบตำแหน่ง ในอาณาเขตทรงกลม ใช้การคำนวณมาก.
+การตรวจสอบ อาณาเขตที่เป็นทรงเหลี่ยม จะทำได้ง่ายกว่า.
+
+\paragraph{การเข้ารหัสกระเบื้อง} 
+หรือ tile coding ใช้แนวคิดเดียวกับ การเข้ารหัสหยาบ,
+เพียงแต่กำหนด ลักษณะ อาณาเขต ของ เซลล์ตัวรับ ให้สามารถ คำนวณ ตรวจสอบ และเขียนโปรแกรม ได้ง่าย.
+%
+การเข้ารหัสกระเบื้อง กำหนดเซลล์ตัวรับ (หรือ เรียกว่า เซลล์กระเบื้อง) จากการแบ่ง ปริภูมิสถานะฯ ออกเป็นหลายๆส่วนตามมิติ.
+และใช้ การแบ่งหลายๆชุด มา เหลื่อมซ้อนทับกัน เพื่อ ให้เกิดผลดีทั้งกับ การวางนัยทั่วไป และ ความละเอียด ของการแทนตัวแปรสถานะฯ.
+เช่น การเข้ารหัสกระเบื้อง ของตัวแปรสถานะฯ สองมิติ $\textbf{x} = [x_1, x_2]$.
+การแบ่งแต่ละชุด ซึ่งเรียกว่า ชุดกระเบื้อง (tilings) จะแบ่งระนาบสองมิติ ของ ตัวแปร $\textbf{x}$ ออกเป็น หลายๆส่วน.
+รูปที่~\ref{fig: tile coding tiling0} แสดง ตัวอย่าง ของ ชุดกระเบื้อง สำหรับ ระนาบสองมิติ โดย แบ่ง มิติแรก และ มิติที่สอง ออก 4 และ 3 ส่วน ตามลำดับ.
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=2in]{05Reinforce/tilings0.eps}
+\end{center}
+\caption{Tile coding. ชุดกระเบื้อง $3 \times 4$ หนึ่งชุด}
+\label{fig: tile coding tiling0}
+\end{figure}
+
+การแบ่งปริภูมิสถานะฯ ตาม แบบกระเบื้อง นี้ จะช่วยให้ สามารถ ระบุ เซลล์กระเบื้อง ที่ตัวแปรสถานะฯ อยู่ ได้ง่าย.
+และ เราสามารถ เพิ่ม ความละเอียด ของรหัสกระเบื้อง ขณะที่ยังรักษา การวางนัยทั่วไป ได้โดย เพิ่มชุดกระเบื้อง ที่เลื่อมล่ำกัน เข้าไป.
+รูป~\ref{fig: two tilings} แสดง การใช้ ชุดกระเบื้อง 2 ชุด เพื่อเพิ่มความละเอียด.
+แต่ละ ตัวแปรสถานะฯ จะกระตุ้น เซลล์กระเบื้อง 1 ตัว ใน แต่ละ ชุดกระเบื้อง.
+
+ทางปฏิบัติ แต่ละชุดกระเบื้องจะเลื่อมกัน อย่างซุ่ม โดย อาณาเขตครอบคลุม ของชุดกระเบื้อง จะเลือกให้ ใหญ่กว่า ปริภูมิสถานะฯ เพื่อที่ว่า หลังจากเลื่อมชุดกระเบื้องแล้ว ชุดกระเบื้องทุกๆชุด ยังครอบคลุม ปริภูมิสถานะฯ ได้ทั่วถึง.
+รูป~\ref{fig: three tilings} ภาพ a แสดง ตัวแปรสองมิติ $\textbf{x}$, ปริภูมิสถานะฯ, และชุดกระเบื้อง 3 ชุด. 
+ขนาด ของ ชุดกระเบื้อง แต่ละชุด จะ ใหญ่กว่า ปริภูมิสถานะฯ พอที่ ทุกชุดกระเบื้อง จะครอบคลุม ปริภูมิสถานะฯ.
+ในรูป แต่ละชุดกระเบื้องจะมี 20 เซลล์ตัวรับ โดยกำหนด ดัชนี ตามภาพ b.
+แต่ละชุดกระเบื้อง จะมี 1 เซลล์กระเบื้องเท่านั้นที่ถูกกระตุ้น:
+ชุดกระเบื้องชุดที่ 0 มีเซลล์ที่ 12 ถูกกระตุ้น,
+ชุดกระเบื้องชุดที่ 1 มีเซลล์ที่ 11 ถูกกระตุ้น,
+ชุดกระเบื้องชุดที่ 2 มีเซลล์ที่ 6 ถูกกระตุ้น.
+
+ตัวแปรสองมิติ $\textbf{x} = [x_1, x_2]$ จะแปลงเป็น ดัชนีกระเบื้องที่ถูกกระตุ้น ของรหัสกระเบื้อง 3 ชุด เป็น $\vec{t} = [12, 11, 6]$ และ สุดท้าย ค่า $Q(\textbf{x}) = w_{0,12} + w_{1,11} + w_{2, 6}$, เมื่อ $w_{i,j}$ คือ ค่าน้ำหนักของ ชุดกระเบื้อง $i$ เซลล์ที่ $j$.
+
+การปรับค่าน้ำหนัก ของการเข้ารหัสกระเบื้อง อาจทำโดย $w_{i,j} \gets Q'/N$, เมื่อ $Q'$ คือ ค่าใหม่ที่ต้องการบันทึก และ $N$ คือ จำนวนชุดกระเบื้อง.
+
+การใช้ การเข้ารหัสกระเบื้อง กับ SARSA อาจทำได้โดย ปรับค่าน้ำหนักจาก
+%
+\begin{eqnarray}
+w_{i,t_i}^{(new)} \gets \frac{\alpha}{N} \cdot \{r(\textbf{x}) + \gamma Q(\textbf{x}')\} + (1 - \alpha) w_{i,t_i}^{(old)}
+\label{eq: SARSA tile coding update w}
+\end{eqnarray}
+สำหรับ $i = 0, \ldots, N$ 
+เมื่อ 
+$N$ คือ จำนวนชุดกระเบื้อง,
+$t_0, \ldots, t_{N-1}$ คือ ดัชนีกระเบื้อง ที่ถูกกระตุ้น จาก $\textbf{x}$ ของชุดกระเบื้อง $0$ ถึง $N-1$ ตามลำดับ,
+$\alpha$ คือ อัตราการเรียนรู้,
+$\textbf{x}$ คือ ตัวแปรสถานะฯ,
+$r(\textbf{x})$ คือ รางวัลของตัวแปรสถานะฯ,
+$\gamma$ คือ ตัวประกอบลดค่า (discount factor), 
+$Q(\textbf{x}')\}$ คือ ค่าประเมินของสถานะฯต่อไป, และ
+$w_{i,j}^{(old)}$ คือ ค่าน้ำหนัก ค่าปัจจุบัน.
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=3in]{05Reinforce/TwoTilings.eps}
+\end{center}
+\caption{Tile coding. ชุดกระเบื้อง 2 ชุด}
+\label{fig: two tilings}
+\end{figure}
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{05Reinforce/ThreeTilings.eps}
+\end{center}
+\caption{การเข้ารหัสกระเบื้อง ด้วยชุดกระเบื้อง 3 ชุด ชุดละ $4 \times 5$, พื้นที่แรเงาแสดงปริภูมิสถานะฯ; ภาพ a แสดง ตัวแปร $x$, ปริภูมิสถานะฯ, และชุดกระเบื้อง 3 ชุด; ตัวแปรสองมิติ $x$ ถูกแปลงเป็น รหัสกระเบื้อง $\vec{t} = [12, 11, 6]$ ตามดัชนีกระเบื้อง ที่แสดงใน ภาพ b; แต่ละชุดกระเบื้อง จะมีหนึ่งเซลล์ที่ถูกกระตุ้น, 
+ค่าแทนเซลล์ที่ถูกกระตุ้นจะเป็น $1$ เซลล์อื่นๆค่าเป็น $0$; ภาพ c แสดง $x$ และ ปริภูมิสถานะฯ บนชุดกระเบื้องแต่ละชุด และ ตัวแปรเซลล์กระเบื้องที่ถูกกระตุ้น}
+\label{fig: three tilings}
+\end{figure}
+
+\section{โมเดลผสม (Mixture Models)}
+
+%\begin{verse}
+`` dummy quote '', dummy author
+%\end{verse}
+
+\section{การจัดกลุ่มข้อมูล ด้วยวิธีเคเฉลี่ย (K-means Clustering)}
+\label{section: clustering}
+
+เราต้องการจัดกลุ่มของข้อมูลออกเป็น $K$ กลุ่ม โดยให้ข้อมูลในกลุ่มเดียวกันคล้ายกันที่สุด.
+สมมติว่า $K$ ถูกกำหนดมา,
+
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{05KMeans/kmeansIllus01.eps}
+\end{center}
+\caption{แสดงตัวอย่างการทำงานของอัลกอริทึ่มเคเฉลี่ย}
+\label{fig: kmeans illustration}
+\end{figure}
+
+
+
+
+\section{Image segmentation and compression}
+
+เราสามารถใช้ผลจาก อัลกอริทึ่มการจัดกลุ่ม (clustering algorithm) เพื่อทำการบีบอัดข้อมูลได้
+๏
+การบีบอัดข้อมูล อาจแบ่งได้เป็น สองแบบ คือ การบีบอัดแบบไม่มีการสูญเสีย (lossless data compression) และ การบีบอัดแบบมีการสูญเสีย (lossy data compression)
+๏
+การบีบอัดแบบไม่มีการสูญเสีย คือ เราสามารถ ที่ เอา ข้อมูลดั้งเดิม กลับมาได้ อย่างสมบูรณ์ จาก ข้อมูลที่ถูกบีบอัด
+๏
+ส่วน การบีบอัดแบบสูญเสีย เรายอมให้ ข้อมูลเพี้ยนไปจากข้อมูลดั้งเดิม บ้างเพื่อแลกกับ ที่เราจะสามารถบีบอัดมันได้มากขึ้น มากกว่า การบีบอัดแบบไม่สูญเสีย
+๏
+เราสามารถใช้ อัลกอริทึ่ม K-means ในการบีบอัดข้อมูล แบบสูญเสียได้ ดังนี้:
+สำหรับ ข้อมูล ทุกๆ จุด แทนที่เราจะเก็บ ค่าพิกัดของมัน ซึ่งอาจจะเป็น ค่าหลายมิติ เราจะเก็บ เบอร์ของกลุ่ม ที่จุดข้อมูล อยู่แทน
+แล้ว เราก็แค่เก็บค่าของเซนทรอยด์ $\mathbf{\mu}_k$ ของทุกๆกลุ่ม เอาไว้ด้วย
+โดย ส่วนใหญ่แล้ว $K << N$ ดังนั้น ปริมาณข้อมูลที่เราจะต้องเก็บจะลดลงได้มาก
+๏
+ค่าของจุดข้อมูล แต่ละจุด จะถูกประมาณ ด้วย ค่าของเซนทรอยด์ ของกลุ่ม
+๏
+แนวคิดการบีบอัดข้อมูลแบบนี้ เรียกว่า \textbf{การแบ่งนับ เวกเตอร์} (\textbf{Vector Quantization}) 
+และ ค่าเซนทรอยด์ จะเรียกว่า code-book vectors
+
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{04Unsupervised/childsheep.png}
+\end{center}
+\caption{Original Image}
+\label{fig: original child sheep}
+\end{figure}
+%
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{04Unsupervised/quantizedChildK3.png}
+\end{center}
+\caption{Quantized Image with 3 codes}
+\label{fig: child sheep 3 codes}
+\end{figure}
+%
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{04Unsupervised/quantizedChildK24.png}
+\end{center}
+\caption{Quantized Image with 24 codes}
+\label{fig: child sheep 24 codes}
+\end{figure}
+%
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{04Unsupervised/quantizedChildK240.png}
+\end{center}
+\caption{Quantized Image with 240 codes}
+\label{fig: child sheep 240 codes}
+\end{figure}
+%
+
+\section{แบบจำลองมาร์คอฟแฝง(Hidden Markov Models)}
+
+Sequential data.
+
+``One of the most powerful properties of hidden Markov models is their ability to exhibit some degree of invariance to local warping (compression and stretching) of the time axis.''
+
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{13HMM/Figure13p5.png}
+\end{center}
+\caption{Bishop 13.5's HMM model}
+\label{fig: Bishop 13.5}
+\end{figure}
+% Bishop's figure 13.5
+
+The latent variables are the discrete multinomial variables $\textbf{z}_n$ describing which component of the mixture is responsible for generating the corresponding observation $\textbf{x}_n$.
+
+\begin{equation}
+p(\textbf{z}_1 | \bm{\pi}) = \prod_{k=1}^{K} \pi_k^{z_{1k}}
+\label{eq: Bishop 13.8}
+\end{equation}
+โดยที่ $\sum_k \pi_k = 1$
+
+\paragraph{ตัวอย่าง}
+ถ้า $\bm{\pi} = [0.25 \; 0.32 \; 0.43]$, แล้ว ความน่าจะเป็นที่ จะเริ่มต้นด้วยสถานะที่สาม คือ $0.43$
+
+สมการที่~\ref{eq: Bishop 13.7} แสดง ความน่าจะเป็นของ\textbf{สถานะ} (แทนด้วยตัวแปร $\textbf{z}_n$) เมื่อรู้ \textbf{สถานะของคาบก่อนหน้า} (แทนด้วยตัวแปร $\textbf{z}_{n-1}$) และ \textbf{เมทริกซ์ความน่าจะเป็นของการเปลี่ยนสถานะ} (แทนด้วยตัวแปร \textbf{A})
+
+\begin{equation}
+p(\textbf{z}_n | \textbf{z}_{n-1}, \textbf{A}) = \prod_{k=1}^K \prod_{j=1}^K \textit{A}_{jk}^{z_{n-1, j} z_{nk}}
+\label{eq: Bishop 13.7}
+\end{equation}
+
+\paragraph{ตัวอย่าง}
+ถ้า เมทริกซ์ความน่าจะเป็นของการเปลี่ยนสถานะ (matrix of transition probabilities),
+\begin{eqnarray}
+\textbf{A} = \left[ 
+\begin{array}{ccc}
+0.4 & 0.35 & 0.25 \\
+0.2 & 0.5 & 0.3 \\
+0.14 & 0.26 & 0.6 
+\end{array} 
+\right]
+\nonumber
+\end{eqnarray}
+
+ค่าความน่าจะเป็นที่ จะมีสถานะเป็นสาม หรือ $\textbf{z}_n = `001'$ (เมื่อรู้ค่าสถานะก่อนหน้าเป็นสอง) 
+$p(\textbf{z}_n = `001' | \textbf{z}_{n-1} = `010', \textbf{A}) = 0.3$
+%
+%\hspace{\stretch{0.1}}๏
+๏ และ การแจกแจงของสถานะ เมื่อรู้ค่าสถานะก่อนหน้าเป็นสอง
+$p(\textbf{z}_n | \textbf{z}_{n-1} = `010', \textbf{A}) = [0.2 \; 0.5 \; 0.3]$
+
+ความน่าจะเป็นของค่าที่เราสังเกตุได้ (ค่าที่สังเกตุได้ แทนด้วยตัวแปร $\textbf{x}_n$) ซึ่งเรียกว่า \textbf{ความน่าจะเป็นการปล่อย} (emission probabilities) สามารถเขียนในรูปของสมการที่~\ref{eq: Bishop 13.9}
+
+\begin{eqnarray}
+p(\textbf{x}_n | \textbf{z}_n, \bm{\phi}) = \prod_{k=1}^K p(\textbf{x}_n| \bm{\phi}_k)^{z_{nk}}
+\label{eq: Bishop 13.9}
+\end{eqnarray}
+โดย $\bm{\phi}_k$ คือ พารามิเตอร์กำหนดความน่าจะเป็นเมื่ออยู่ในสถานะ $k$
+
+\paragraph{ตัวอย่าง}
+
+\begin{eqnarray}
+\bm{\phi} &=&
+\left[ 
+\begin{array}{ccc}
+\bm{\phi}_1 &
+\bm{\phi}_2 &
+\bm{\phi}_3  
+\end{array} 
+\right]
+\nonumber \\
+p(\textbf{x} | \bm{\phi}_1) &=& 
+\exp ( - x_1^2 - x_2^2 ) 
+\nonumber \\
+p(\textbf{x} | \bm{\phi}_2) &=& 
+\exp ( - 2 (x_1 - 0.5) ^2 - (x_2 + 0.7)^2 ) 
+\nonumber \\
+p(\textbf{x} | \bm{\phi}_3) &=& 
+\exp ( - (x_1 - 0.8) ^2 - 0.4 (x_2 + 0.3)^2 ) 
+\nonumber
+\end{eqnarray}
+
+ดู การแจกแจงความน่าจะเป็นร่วม (joint probability distribution) ของ $\textbf{Z}$ ซึ่งเป็น ตัวแปรแฝง (latent variables) และ $\textbf{X}$ ซึ่งเป็น ตัวแปรที่สังเกตุ (observed variables) สำหรับ $N=2$ ได้ว่า $p(\textbf{x}_1, \textbf{x}_2, \textbf{z}_1, \textbf{z}_2|\bm{\theta})$
+$= p(\textbf{x}_1, \textbf{x}_2|\textbf{z}_1, \textbf{z}_2, \bm{\theta}) \cdot p(\textbf{z}_1, \textbf{z}_2|\bm{\theta})$ 
+$=p(\textbf{x}_1|\textbf{z}_1, \bm{\theta}) \cdot p(\textbf{x}_2|\textbf{z}_2, \bm{\theta}) \cdot p(\textbf{z}_2|\textbf{z}_1,\bm{\theta}) \cdot p(\textbf{z}_1|\bm{\theta})$
+๏ กรณี $N$ ค่าอื่น แสดงดัง สมการ~\ref{eq: Bishop 13.10}
+
+\begin{eqnarray}
+p(\textbf{X}, \textbf{Z}|\bm{\theta}) &=& p(\textbf{x}_1, \textbf{x}_2, \ldots, \textbf{x}_N, \textbf{z}_1, \textbf{z}_2, \ldots , \textbf{z}_N|\bm{\pi}, \textbf{A}, \bm{\phi})
+\nonumber \\
+&=& p(\textbf{z}_1|\bm{\pi}) \left( \prod_{n=2}^N p(\textbf{z}_n | \textbf{z}_{n-1}, \textbf{A}) \right) \prod_{n=1}^N p(\textbf{x}_n|\textbf{z}_n, \bm{\phi})
+\label{eq: Bishop 13.10}
+\end{eqnarray}
+
+\subsection{Maximum likelihood of the HMM}
+
+ถ้าเรารู้ค่าชุดข้อมูล $\textbf{X} = \{ \textbf{x}_1, \textbf{x}_2, \ldots, \textbf{x}_N\}$ เราก็สามารถหาค่าของพารามิเตอร์ $\bm{\theta}$ ได้ โดยใช้วิธีหาค่าควรจะเป็นสูงสุด (maximum likelihood) ๏
+ฟังชั่นควรจะเป็น (likelihood function) หาได้จาก การทำมาร์จินอไลซ์ตัวแปรแฝง ของการแจกแจงความน่าจะเป็นร่วม (จากสมการ~\ref{eq: Bishop 13.10}) ดังสมการ~\ref{eq: Bishop 13.11}
+\begin{eqnarray}
+p(\textbf{X}|\bm{\theta}) = \sum_{\textbf{Z}} p (\textbf{X}, \textbf{Z}|\bm{\theta})
+\label{eq: Bishop 13.11}
+\end{eqnarray}
+แต่การคำนวณสมการ~\ref{eq: Bishop 13.11} โดยตรงทำได้ยาก
+๏ ตัวแปรแฝง ประกอบด้วย ค่าสถานะจากคาบแรกถึงคาบที่ $N$ และ สถานะของแต่ละคาบ ($z_n$)  เป็นไปได้ $K$ แบบ ดังนั้น $\textbf{Z} = \{\textbf{z}_1, \ldots, \textbf{z}_N\}$ มีค่าที่เป็นไปได้ทั้งหมด $K^N$ แบบ 
+๏ ดังนั้นจำนวนเทอมที่จะบวกเข้าด้วยกันจะโตแบบเลขชี้กำลัง (exponential growth) ตามจำนวนคาบ (ความยาวของชุดข้อมูล)
+
+แทนการคำนวณสมการ~\ref{eq: Bishop 13.11} เราจะใช้ แนวคิดของการคาดหมาย-การหาค่าสูงสุด (Expectation Maximization หรือ EM) เพื่อหาวิธีหาค่าพารามิเตอร์ของแบบจำลองมาร์คอฟแฝง
+
+\paragraph{เริ่มต้น} ตามแนวคิดของ EM เราจะเริ่มต้นด้วย การเลือก ค่าเริ่มต้นของพารามิเตอร์ ขึ้นมา ๏ เราจะใช้ $\bm{\theta}^{old}$ แทน ค่าเริ่มต้นของพารามิเตอร์
+
+\paragraph{ชั้นตอน E (Expectation Step)} เราจะหา \textbf{ค่าคาดหมายของลอการิทึมของฟังชั่นควรจะเป็น} $\mathbb{E}
+[\ln p(\textbf{X}, \textbf{Z}|\bm{\theta})]$ 
+%โดยอาศัย ค่าของ การแจกแจงภายหลังของตัวแปรแฝง %(posterior distribution) 
+%$p(\textbf{Z}|\textbf{X}, \bm{\theta}^{old})$
+๏ เพื่อความสะดวก เราจะเรียก \textbf{ค่าคาดหมาย}นี้ ด้วย  $Q(\bm{\theta}, \bm{\theta}^{old})$
+โดย
+\begin{eqnarray}
+Q(\bm{\theta}, \bm{\theta}^{old})
+%&=&
+%\mathbb{E}
+%[\ln p(\textbf{X}, \textbf{Z}|\bm{\theta})]
+%\nonumber \\
+&=& \sum_{\textbf{Z}} p(\textbf{Z}|\textbf{X}, \bm{\theta}^{old}) \ln p(\textbf{X}, \textbf{Z}|\bm{\theta})
+\label{eq: Bishop 13.12}
+\end{eqnarray}
+
+ค่า $p(\textbf{Z}|\textbf{X}, \bm{\theta}^{old})$ คือ การแจกแจงภายหลังของตัวแปรแฝง (posterior distribution of the latent variables) 
+๏ ส่วน ค่า $\ln p(\textbf{X}, \textbf{Z}|\bm{\theta})$ เราสามารถแทนค่าการแจกแจงร่วมจากสมการที่~\ref{eq: Bishop 13.10} เข้าไปได้
+\begin{eqnarray}
+\ln p(\textbf{X}, \textbf{Z}|\bm{\theta})
+=
+\ln p(\textbf{z}_1|\bm{\pi}) + \sum_{n=2}^N \ln p(\textbf{z}_n|\textbf{z}_{n-1}, \textbf{A}) + \sum_{m=1}^{N} \ln p(\textbf{x}_m|\textbf{z}_m, \bm{\phi})
+\label{eq: HMM log joint distribution 1}
+\end{eqnarray}
+
+แล้ว แทนค่าจากสมการ~\ref{eq: Bishop 13.7},~\ref{eq: Bishop 13.8},~และ~\ref{eq: Bishop 13.9} เข้าไปจะได้
+\begin{eqnarray}
+\ln p(\textbf{X}, \textbf{Z}|\bm{\theta})
+&=&
+\sum_{k=1}^K z_{1k} \ln \pi_k + \sum_{n=2}^N \sum_{j=1}^K \sum_{k=1}^K z_{n-1,j} z_{nk} \ln A_{jk} 
+\nonumber \\
+&\;&
++ \sum_{n=1}^{N} \sum_{k=1}^K z_{nk} \ln p(\textbf{x}_n|\bm{\phi}_k)
+\label{eq: HMM log joint distribution 2}
+\end{eqnarray}
+
+จากสมการ~\ref{eq: HMM log joint distribution 2} เราได้
+\begin{eqnarray}
+Q(\bm{\theta}, \bm{\theta}^{old})
+&=&
+\sum_{k=1}^K \gamma (z_{1k}) \ln \pi_k + \sum_{n=2}^N \sum_{j=1}^K \sum_{k=1}^K \xi (z_{n-1,j} z_{nk}) \ln A_{jk} 
+\nonumber \\
+&\;&
++ \sum_{n=1}^{N} \sum_{k=1}^K \gamma (z_{nk}) \ln p(\textbf{x}_n|\bm{\phi}_k)
+\label{eq: Bishop 13.17}
+\end{eqnarray}
+โดย 
+\begin{eqnarray}
+\gamma ( z_{nk} ) &=& \mathbb{E}[z_{nk}] = \sum_{\textbf{Z}} z_{nk} \cdot p(\textbf{Z}| \textbf{X}, \bm{\theta}^{old})
+\label{eq: Bishop 13.15a}
+\\
+\xi (z_{n-1,j}, z_{nk}) &=& \mathbb{E}[z_{n-1,j} \cdot z_{nk}] = \sum_{\textbf{Z}} z_{n-1,j} \cdot z_{nk} \cdot p(\textbf{Z}| \textbf{X}, \bm{\theta}^{old})
+\label{eq: Bishop 13.16a}
+\end{eqnarray}
+
+ข้อสังเกตุที่หนึ่ง จำนวนเทอมของสมการ~\ref{eq: Bishop 13.17} คือ $K + N K^2 + N K = N (K^2 + K) + K$ ซึ่งจำนวนเทอมจะเพิ่มขึ้นเป็นเชิงเส้นกับ $N$ (ซึ่งคือ ความยาวของชุดข้อมูล)
+และจำนวนเทอมจะเพิ่มขึ้นเป็นสมการกำลังสองกับ $K$ (ซึ่งคือจำนวนสถานะ)
+
+ข้อสังเกตุที่สอง ค่าของ $\sum_{\textbf{Z}} z_{nk} \cdot p(\textbf{Z}| \textbf{X}, \bm{\theta}^{old}) = \sum_{\textbf{z}_n} z_{nk} \cdot p(\textbf{z}_n| \textbf{X}, \bm{\theta}^{old})$ 
+๏ ตัวอย่าง%
+\footnote{เงื่อนไข $\textbf{X}$ และ $\bm{\theta}^{old}$ ละไว้ เพื่อความสะดวก} 
+สมมติค่าความน่าจะเป็นของเหตุการณ์แสดงดังตารางข้างล่าง:
+
+\begin{tabular}{|r|l|l|l|l|l|l|l|l|l|}
+%\caption{ตารางแสดง ความน่าจะเป็นของชุดเหตุการณ์ต่างๆ โดยเหตุการณ์มี 2 คาบ แต่ละคาบมีค่าสถานะ 3 แบบ}
+\hline
+$\textbf{z}_1$ & 
+`001' & `001' & `001' &
+`010' & `010' & `010' &
+`100' & `100' & `100' \\
+\hline
+$\textbf{z}_2$ & 
+`001' & `010' & `100' &
+`001' & `010' & `100' &
+`001' & `010' & `100' \\
+\hline
+ความน่าจะเป็น & 
+0.15 & 0.11 & 0.08 &
+0.07 & 0.14 & 0.08 &
+0.18 & 0.09 & 0.10 \\
+\hline
+\end{tabular}
+
+ชุดเหตุการณ์มีสองคาบ แต่ละคาบ สถานะเกิดได้ 3 แบบ คือ $\textbf{z}_n \in \{ `001', `010', `100' \}$
+ดังนั้น
+จาก $\sum_{\textbf{Z}} z_{nk} \cdot p(\textbf{Z})$,
+\begin{eqnarray}
+\sum_{\textbf{Z}} z_{11} \cdot p(\textbf{Z}) = 1 \cdot p([`001',`001']) + 1 \cdot p([`001',`010']) + 1 \cdot p([`001',`100']) 
++ 0 + \cdots + 0
+\nonumber \\
+=
+0.15 + 0.11 + 0.08 = 0.34
+\nonumber
+\end{eqnarray}
+
+เปรียบเทียบกับ
+$\sum_{\textbf{z}_n} z_{nk} \cdot p(\textbf{z}_n)$,
+\begin{eqnarray}
+\sum_{\textbf{z}_1} z_{11} \cdot p(\textbf{z}_1) = 1 \cdot p(`001') + 0 \cdot p(`010') + 0 \cdot p(`100') 
+\nonumber \\
+= p(`001')
+\nonumber
+\end{eqnarray}
+และ จากกฏของการบวกความน่าจะเป็น (นึกถึง $P(A) = P(A,B_1) + P(A,B_2) + \cdots + P(A,B_{\mathrm{last B}})$), เราจะได้
+$p(`001') = p([`001', `001']) + p([`001', `010']) + p([`001', `100']) = 0.15 + 0.11 + 0.08 = 0.34$ ซึ่งเท่ากับวิธีข้างต้น
+
+ในทำนองเดียวกัน $\sum_{\textbf{Z}} z_{n-1,j} \cdot z_{nk} \cdot p(\textbf{Z}| \textbf{X}, \bm{\theta}^{old}) = \sum_{\textbf{z}_{n-1}, \textbf{z}_n} z_{n-1,j} \cdot z_{nk} \cdot p(\textbf{z}_{n-1}, \textbf{z}_n| \textbf{X}, \bm{\theta}^{old})$
+๏ ดังนั้นเพื่อความกระชับ สมการ~\ref{eq: Bishop 13.15a}~และ~\ref{eq: Bishop 13.16a} สามารถเขียนได้เป็น
+\begin{eqnarray}
+\gamma ( z_{nk} ) &=& \sum_{\textbf{z}_n} z_{nk} \gamma (\textbf{z}_n)
+\label{eq: Bishop 13.15} \\
+\xi (z_{n-1,j}, z_{nk}) &=& \sum_{\textbf{z}_{n-1}, \textbf{z}_n} z_{n-1,j} z_{nk} \xi (\textbf{z}_{n-1}, \textbf{z}_n) 
+\label{eq: Bishop 13.16}
+\end{eqnarray}
+ตามลำดับ โดย
+\begin{eqnarray}
+\gamma (\textbf{z}_n) &=& p(\textbf{z}_n | \textbf{X}, \bm{\theta}^{old})
+\label{eq: Bishop 13.13} \\
+\xi (\textbf{z}_{n-1}, \textbf{z}_n) &=& p(\textbf{z}_{n-1}, \textbf{z}_n | \textbf{X}, \bm{\theta}^{old})
+\label{eq: Bishop 13.14}
+\end{eqnarray}
+
+สำหรับค่า $n$ แต่ละค่า, $\gamma (\textbf{z}_n)$ จะมี $K$ ค่า
+และ
+$\xi (\textbf{z}_{n-1}, \textbf{z}_n)$ จะมี $K \times K$ ค่า
+๏ ทั้ง $\gamma (\textbf{z}_n)$ และ $\xi (\textbf{z}_{n-1}, \textbf{z}_n)$ จะขึ้นกับค่า $\bm{\theta}^{old}$
+
+\paragraph{ขั้นตอน M (Maximization Step)} จากขั้นตอน E เราจะได้ $Q(\bm{\theta}, \bm{\theta}^{old})$ %ซึ่งเป็น ฟังชั่นของค่าพารามิเตอร์มา
+๏ ตอนนี้ เราจะหา ค่าสูงสุดของมัน ตามพารามิเตอร์ $\bm{\theta} = \{ \bm{\pi}, \textbf{A}, \bm{\phi} \}$
+๏ โดย เราจะทำเหมือนกับ $\gamma (\textbf{z}_n)$ และ $\xi (\textbf{z}_{n-1}, \textbf{z}_n)$ เป็นค่าคงที่
+๏ ขั้นตอนนี้สรุปได้ดังนิพจน์ที่~\ref{eq: HMM M step}
+\begin{eqnarray}
+\bm{\theta}^* &=& \arg\max_{\bm{\theta}} Q(\bm{\theta}, \bm{\theta}^{old})
+\nonumber \\
+\mbox{subject to } &\;&
+\bm{\theta} \mbox{'s conditions, e.g.,}
+\nonumber \\
+&\;& \sum_{k=1}^K \pi_k = 1
+\nonumber \\
+&\;& \sum_{k=1}^K A_{jk} = 1 \mbox{, for } j = 1, \ldots, K
+\label{eq: HMM M step}
+\end{eqnarray}
+
+เพื่อหา $\bm{\pi}^*$ และ $\textbf{A}^*$ เราจะใช้วิธีของตัวคูณของลากรองจ์ (Lagrange Multiplier) เพื่อบังคับ ข้อกำหนดของพารามิเตอร์
+๏ และสุดท้ายเราจะได้
+
+\begin{eqnarray}
+\pi_k &=& \frac{\gamma (z_{1k}) }{\sum_{j=1}^K \gamma (z_{1j})}
+\label{eq: Bishop 13.18} \\
+A_{jk} &=& \frac{\sum_{n=2}^N \xi (z_{n-1,j}, z_{nk})}{\sum_{i=1}^K \sum_{n=2}^N \xi (z_{n-1,j}, z_{ni})}
+\label{eq: Bishop 13.19}
+\end{eqnarray}
+
+\fcolorbox{Blue}{Apricot}{เบื้องหลังฉาก}
+เบื้องหลังสมการ~\ref{eq: Bishop 13.18} และ ~\ref{eq: Bishop 13.19}
+๏ จากนิพจน์~\ref{eq: HMM M step} เราจะได้ฟังก์ชันจุดประสงค์เป็น $Q(\bm{\theta},\bm{\theta}^{old}) - \lambda_0 \cdot(\sum_{k=1}^K \pi_k - 1) - \lambda_1 \cdot(\sum_{k=1}^K A_{1k} - 1) - \lambda_2 \cdot(\sum_{k=1}^K A_{2k} - 1) - \cdots - \lambda_K \cdot(\sum_{k=1}^K A_{Kk} - 1) = Q(\bm{\theta},\bm{\theta}^{old}) - \lambda_0 \cdot(\sum_{k=1}^K \pi_k - 1) - \sum_{j=1}^K \lambda_j \cdot(\sum_{k=1}^K A_{jk} - 1)$ โดย $\lambda_0, \ldots, \lambda_K$  เป็นสัมประสิทธิ์ของลากรองจ์
+๏ และค่า $\bm{\pi}^*$ หาได้จาก การแก้สมการค่าอนุพันธ์ย่อยของฟังก์ชันจุดประสงค์เท่ากับศูนย์ 
+ดังสมการที่~\ref{eq: HMM diff Q by pi} 
+
+\begin{eqnarray}
+\frac{\partial \left( Q(\bm{\theta},\bm{\theta}^{old}) - \lambda_0 \cdot(\sum_{i=1}^K \pi_i - 1) - \sum_{j=1}^K \lambda_j \cdot(\sum_{i=1}^K A_{ji} - 1) \right)}{\partial \pi_k} 
+\nonumber \\
+= 0
+\label{eq: HMM diff Q by pi}
+\end{eqnarray}
+แทนค่าสมการ~\ref{eq: Bishop 13.17} และหาค่าอนุพันธ์ ได้
+\begin{eqnarray}
+\frac{\partial \left( \sum_i \gamma (z_{1i}) \ln \pi_i\right)}{\partial \pi_k} + 0 + 0 - \lambda_0 - 0 
+= \frac{\gamma (z_{1k})}{\pi_k} - \lambda_0 = 0
+\nonumber
+\end{eqnarray}
+หรือ
+\begin{eqnarray}
+\pi_k = \frac{\gamma (z_{1k})}{\lambda_0}
+\label{eq: HMM pi_k}
+\end{eqnarray}
+แทนค่า $\pi_k$ ลงใน $\sum_k \pi_k = 1$ 
+แก้สมการได้ $\lambda_0 = \sum_{k=1}^K \gamma (z_{1k})$ ดังนั้น เราจะได้สมการ~\ref{eq: Bishop 13.18}
+
+ในทำนองเดียวกัน ก็จะได้สมการ~\ref{eq: Bishop 13.19}
+
+\fcolorbox{Blue}{Apricot}{ปิดเบื้องหลังฉาก} \\
+
+ส่วน ค่าสูงสุดของ $Q(\bm{\theta}, \bm{\theta}^{old})$ ตาม $\bm{\phi}_k$ จะขึ้นอยู่กับแค่เทอมสุดท้ายของสมการ~\ref{eq: Bishop 13.17}
+๏ ซึ่งคือ $\sum_n \sum_k \gamma (z_{nk}) \ln p(\textbf{x}_n|\bm{\phi}_k) $
+
+\paragraph{Multinomial emission} ถ้า ความน่าจะเป็นการปล่อย มีการแจกแจงเป็นแบบ	อเนกนาม แล้ว $p(\textbf{x}_n|\bm{\phi}_k) = \prod_{d=1}^D \mu_{dk}^{x_{nd}}$ โดย $\mu_{dk}$ แทนความน่าจะเป็นของตัวแปร $x_{nd}$ เมื่อ $z_{nk} = 1$ (ตัวแปรแฝงของคาบ $n$ เป็น $k$)
+๏ แล้ว อย่าลืมว่า (1) $\sum_{d=1}^D x_{nd} = 1$ เพราะ $\textbf{x}_n$ เป็นรหัสแบบ 1-of-K
+และ (2) $\sum_{d=1}^D \mu_{dk} = 1$ สำหรับ $k=1, \ldots, K$
+
+ค่า $\bm{\phi}$ ซึ่งคือเมตริกซ์ของ $\mu_{dk}$ หาได้จากการแก้สมการอนุพันธ์ย่อย~\ref{eq: HMM Q by phi multinomial}
+
+\begin{eqnarray}
+\frac{\partial \left( \sum_{n=1}^N \sum_{i=1}^K \gamma (z_{ni}) \ln \prod_{j=1}^D \mu_{ji}^{x_{nj}} - \sum_{i=1}^K \lambda_i (\sum_{j=1}^D \mu_{ji} - 1)\right)} {\partial \mu_{dk}} 
+\nonumber \\
+= 0
+\label{eq: HMM Q by phi multinomial} 
+\end{eqnarray}
+
+เราจะได้
+
+\begin{eqnarray}
+\mu_{dk} &=& \frac{\sum_{n=1}^N \gamma (z_{nk}) x_{nd}}{\sum_{n=1}^N \gamma (z_{nk})}
+\label{eq: Bishop 13.23}
+\end{eqnarray}
+
+\fcolorbox{Blue}{Apricot}{เบื้องหลังฉาก}
+เบื้องหลังสมการ~\ref{eq: Bishop 13.23}
+๏ จากสมการ~\ref{eq: HMM Q by phi multinomial} ทำอนุพันธ์แล้วจะได้
+\begin{eqnarray}
+\frac{1}{\mu_{dk}} \cdot \sum_{n=1}^N \gamma (z_{nk}) x_{nd} - \lambda_k 
+&=& 0
+\nonumber \\
+\mu_{dk} &=& \frac{\sum_{n=1}^N \gamma (z_{nk}) x_{nd}}{\lambda_k}
+\label{eq: HMM Q by phi multinomial lambda}
+\end{eqnarray}
+แทนค่าสมการ~\ref{eq: HMM Q by phi multinomial lambda} ลงใน $\sum_{d=1}^D \mu_{dk} = 1$ แล้วจะได้ $\lambda_k = \sum_{d=1}^D \sum_{n=1}^N \gamma (z_{nk}) x_{nd} =  \sum_{n=1}^N \gamma (z_{nk}) \sum_{d=1}^D x_{nd} = \sum_{n=1}^N \gamma (z_{nk})$
+๏ เมื่อแทนค่า $\lambda_k$ ลงไปในสมการ~\ref{eq: HMM Q by phi multinomial lambda} เราจะได้สมการ~\ref{eq: Bishop 13.23}
+
+\fcolorbox{Blue}{Apricot}{ปิดเบื้องหลังฉาก} \\
+
+\paragraph{Gaussian emission} ถ้า ความน่าจะเป็นการปล่อย มีการแจกแจงเป็นแบบ	เกาส์เซียน แล้ว $p(\textbf{x}|\bm{\phi}_k) = \mathcal{N}(\textbf{x}|\bm{\mu}_k, \bm{\Sigma}_k)$
+๏ และ หาค่าสูงสุดของ $Q(\bm{\theta}, \bm{\theta}^{old})$ จะได้
+
+\begin{eqnarray}
+\bm{\mu}_k &=& \frac{\sum_{n=1}^N \gamma (z_{nk}) \textbf{x}_n}{\sum_{n=1}^N \gamma (z_{nk})}
+\label{eq: Bishop 13.20} \\
+\bm{\Sigma}_k &=& \frac{\sum_{n=1}^N \gamma (z_{nk}) (\textbf{x}_n - \bm{\mu}_k)(\textbf{x}_n - \bm{\mu}_k)^T}{\sum_{n=1}^N \gamma (z_{nk})}
+\label{eq: Bishop 13.21}
+\end{eqnarray}
+
+พารามิเตอร์ $\bm{\mu}_k =[\mu_{k1} \; \mu_{k2} \; \ldots \; \mu_{kD}]$ และ $\bm{\Sigma}_k$ เป็น $D \times D$ เมตริกซ์
+\\
+
+\fcolorbox{Blue}{Apricot}{เบื้องหลังฉาก}
+
+เบื้องหลังสมการ~\ref{eq: Bishop 13.20} และ~\ref{eq: Bishop 13.21}
+๏ ค่าของ $\bm{\mu}_k$ และ ได้จากการแก้สมการ $\frac{\partial Q(\bm{\theta}, \bm{\theta}^{old})}{\partial \bm{\mu}_k} = \frac{\partial \sum_{n=1}^N \gamma (z_{nk}) \ln p(\textbf{x}_n|\bm{\phi}_k)}{\partial \bm{\mu}_k} = 0$ 
+๏ และ $p(\textbf{x}|\bm{\phi}_k) = \mathcal{N}(\textbf{x}|\bm{\mu}_k, \bm{\Sigma}_k)$
+๏ ดังนั้น
+\begin{eqnarray}
+\frac{\partial \sum_{n=1}^N \gamma (z_{nk}) \ln \left( (2 \pi)^{-\frac{D}{2}} | \bm{\Sigma}_k |^{-\frac{1}{2}} \exp\{ -\frac{1}{2} (\textbf{x}_n - \bm{\mu}_k)^T \bm{\Sigma}_k^{-1} (\textbf{x}_n - \bm{\mu}_k) \}\right)}{\partial \bm{\mu}_k} &=& 0
+\nonumber
+\end{eqnarray}
+ทำ $\ln$ ก่อนและทำอนุพันธ์จะได้
+\begin{eqnarray}
+-\frac{1}{2} \sum_{n=1}^N \gamma (z_{nk})  \frac{\partial (\textbf{x}_n - \bm{\mu}_k)^T \bm{\Sigma}_k^{-1} (\textbf{x}_n - \bm{\mu}_k)}{\partial \bm{\mu}_k}
+&=& 0
+\nonumber \\
+-\frac{1}{2} \sum_{n=1}^N \gamma (z_{nk})  (-2) \bm{\Sigma}_k^{-1} (\textbf{x}_n - \bm{\mu}_k)
+&=& 0
+\nonumber
+\end{eqnarray}
+ดึง $\bm{\Sigma}_k^{-1}$ ออกมานอกตัวกระทำการบวก เพราะ $\bm{\Sigma}_k^{-1}$ ไม่ขึ้นกับค่า $n$
+จัดรูปสมการใหม่จะได้
+\begin{eqnarray}
+\bm{\Sigma}_k^{-1} \cdot \left(\sum_{n=1}^N \gamma (z_{nk}) \textbf{x}_n - \sum_{n=1}^N \gamma (z_{nk}) \bm{\mu}_k \right) = 0
+\nonumber
+\end{eqnarray}
+ซึ่ง เมื่อแก้สมการนี้จะได้ ผลดังสมการ~\ref{eq: Bishop 13.20}
+
+สำหรับ $\bm{\Sigma}_k$ จะทำในทำนองคล้ายกัน
+แต่ ถ้าจะหาอนุพันธ์ตรงๆ 
+จะไม่ง่ายเหมือนข้างต้นแล้ว 
+ดังนั้น เราจะใช้เคล็ดวิธีของรอยเมตริกซ์ช่วย
+
+% จะหาจาก การแก้สมการ $\frac{\partial Q(\bm{\theta}, \bm{\theta}^{old})}{\partial \bm{\Sigma}_k} = 0$ 
+%\begin{eqnarray}
+%\frac{\partial \sum_{n=1}^N \gamma (z_{nk}) \left( -\frac{1}{2} \ln | \bm{\Sigma} | -\frac{1}{2} (\textbf{x}_n - \bm{\mu}_k)^T \bm{\Sigma}^{-1} (\textbf{x}_n - \bm{\mu}_k) \right)}{\partial \bm{\Sigma}_k} &=& 0
+%\label{eq: HMM likelihood by Sigma}
+%\end{eqnarray}
+%
+%ที่จะแสดงต่อไปนี้ ส่วนใหญ่ มาจากบทความ estimation of covariance matrices ของวิกิพีเดีย
+%(\url{http://en.wikipedia.org/wiki/Estimation_of_covariance_matrices#Maximum-likelihood_estimation_for_the_multivariate_normal_distribution} ได้มาเมื่อ วันที่ 5 ตุลาคม 2555)
+
+พิจารณา $Q(\bm{\theta}, \bm{\theta}^{old})$ ของสมการ~\ref{eq: Bishop 13.17} จะมีแค่เทอมสุดท้าย ที่เป็นฟังชั่นของ $\bm{\Sigma}_k$
+๏ ในสมการ~\ref{eq: HMM trace trick} แสดงเทอมสุดท้ายที่พูดถึง (นิพจน์~\ref{eq: HMM Q emission term})
+๏ สังเกตุ $(\textbf{x}_n - \bm{\mu}_k)^T \bm{\Sigma}_k^{-1} (\textbf{x}_n - \bm{\mu}_k)$ เป็น	สเกลาร์ หรือ อาจมองเป็น เมตริกซ์ $1 \times 1$ ก็ได้
+๏  เราจะแทน $(\textbf{x}_n - \bm{\mu}_k)^T \bm{\Sigma}_k^{-1} (\textbf{x}_n - \bm{\mu}_k)$ ด้วย รอยเมตริกซ์%
+\footnote{
+รอยเมตริกซ์ (trace of matrix) คือ ผลบวก ของสมาชิก บนเส้นทแยงมุม ของเมตริกซ์จัตุรัส เช่น
+$\mathrm{trace}(\textbf{A}) = a_{11} + a_{22} + a_{33} + a_{44}$ เมื่อ $\textbf{A}$ คือ เมตริกซ์ $4 \times 4$ และ $a_{11}, \ldots, a_{44}$ เป็น สมาชิก บนเส้นทแยงมุมของ $\textbf{A}$
+} ของตัวมันเอง ซึ่งเป็นเมตริกซ์ $1 \times 1$ (ดังนิพจน์~\ref{eq: HMM trace trick})
+และจัดรูปนิพจน์ใหม่ (นิพจน์~\ref{eq: HMM trace trick 2})
+\begin{eqnarray}
+\sum_{n=1}^N \gamma (z_{nk}) \left( -\frac{1}{2} \ln | \bm{\Sigma}_k | -\frac{1}{2}  (\textbf{x}_n - \bm{\mu}_k)^T \bm{\Sigma}_k^{-1} (\textbf{x}_n - \bm{\mu}_k) \right)
+\label{eq: HMM Q emission term} \\
+=
+\sum_{n=1}^N \gamma (z_{nk}) \left( -\frac{1}{2} \ln | \bm{\Sigma}_k | -\frac{1}{2} \mathrm{trace}\{  (\textbf{x}_n - \bm{\mu}_k)^T \bm{\Sigma}_k^{-1} (\textbf{x}_n - \bm{\mu}_k) \} \right)
+\label{eq: HMM trace trick} \\
+= -\frac{1}{2} \sum_{n=1}^N \gamma (z_{nk}) \ln | \bm{\Sigma}_k | -\frac{1}{2} \sum_{n=1}^N \gamma (z_{nk}) \mathrm{trace}\{  (\textbf{x}_n - \bm{\mu}_k)^T \bm{\Sigma}_k^{-1} (\textbf{x}_n - \bm{\mu}_k) \}
+\label{eq: HMM trace trick 2}
+\end{eqnarray}
+
+จากคุณสมบัติของรอยเมตริกซ์%
+\footnote{
+ทบทวนคุณสมบัติของรอยเมตริกซ์ ได้จาก ตำราทั่วไปเกี่ยวกับ พีชคณิตเชิงเส้น
+%บทความ Trace (linear algebra) ของวิกิพีเดีย
+%\url{http://en.wikipedia.org/wiki/Trace_%28linear_algebra%29#Properties}
+}%
+: $\mathrm{trace}(A B) = \mathrm{trace}(B A)$,
+$\mathrm{trace}(c \cdot A) = c \cdot  \mathrm{trace}(A)$,
+$\mathrm{trace}(A + B) = \mathrm{trace}(A) + \mathrm{trace}(B)$ เมื่อ $A, B$ เป็น เมตริกซ์ และ $c$ เป็น สเกลาร์
+๏ ดังนั้นนิพจน์~\ref{eq: HMM trace trick 2}
+\begin{eqnarray}
+= -\frac{1}{2} \sum_{n=1}^N \gamma (z_{nk}) \ln | \bm{\Sigma}_k | -\frac{1}{2} \sum_{n=1}^N \gamma (z_{nk}) \mathrm{trace}\{ 
+\bm{\Sigma}_k^{-1} (\textbf{x}_n - \bm{\mu}_k) (\textbf{x}_n - \bm{\mu}_k)^T \}
+\nonumber \\
+= -\frac{1}{2} \sum_{n=1}^N \gamma (z_{nk}) \ln | \bm{\Sigma}_k | -\frac{1}{2} \mathrm{trace}\{ 
+\bm{\Sigma}_k^{-1} \sum_{n=1}^N \gamma (z_{nk})(\textbf{x}_n - \bm{\mu}_k) (\textbf{x}_n - \bm{\mu}_k)^T \}
+\label{eq: HMM trace trick 3})
+\end{eqnarray}
+
+๏ ดังนั้น $\frac{\partial Q(\bm{\theta}, \bm{\theta}^{old})}{\partial \bm{\Sigma}_k^{-1}} = 0$ จะเขียนได้ดังสมการ~\ref{eq: HMM derivative Q by Sigma}
+
+\begin{eqnarray}
+\frac{\partial \sum_{n=1}^N \gamma (z_{nk}) \ln | \bm{\Sigma}_k |}{\partial \bm{\Sigma}_k^{-1}} +
+\frac{\partial \mathrm{trace}\{ 
+\bm{\Sigma}_k^{-1} \sum_{n=1}^N \gamma (z_{nk})(\textbf{x}_n - \bm{\mu}_k) (\textbf{x}_n - \bm{\mu}_k)^T \}}{\partial \bm{\Sigma}_k^{-1}}
+\nonumber \\
+= 0
+\label{eq: HMM derivative Q by Sigma}
+\end{eqnarray}
+
+
+จากคุณสมบัติของดีเทอร์มิแนนต์: $|A^{-1}| = 1/|A|$, 
+คุณสมบัติอนุพันธ์ของค่าดีเทอร์มิแนนต์: $\frac{d \ln |A|}{d A} = A^{-T}$,  
+และคุณสมบัติอนุพันธ์ของรอยเมตริกซ์: $\frac{d \mathrm{trace}(A B)}{d A} = B^T$
+๏ จะได้
+\begin{eqnarray}
+\frac{\partial \sum_{n=1}^N \gamma (z_{nk}) \ln |\bm{\Sigma}_k^{-1}|^{-1}}{\partial \bm{\Sigma}_k^{-1}} 
+&+&
+\frac{\partial \mathrm{trace}\{ 
+\bm{\Sigma}_k^{-1} \sum_{n=1}^N \gamma (z_{nk})(\textbf{x}_n - \bm{\mu}_k) (\textbf{x}_n - \bm{\mu}_k)^T \}}{\partial \bm{\Sigma}_k^{-1}} 
+\nonumber \\
+=
+-\sum_{n=1}^N \gamma (z_{nk}) \frac{\partial  \ln |\bm{\Sigma}_k^{-1}|}{\partial \bm{\Sigma}_k^{-1}} 
+&+&
+\{ 
+\sum_{n=1}^N \gamma (z_{nk})(\textbf{x}_n - \bm{\mu}_k) (\textbf{x}_n - \bm{\mu}_k)^T \}^T
+= 0
+\nonumber \\
+\sum_{n=1}^N \gamma (z_{nk}) (\bm{\Sigma}_k^{-1})^{-T} 
+&=& \{
+\sum_{n=1}^N \gamma (z_{nk})(\textbf{x}_n - \bm{\mu}_k) (\textbf{x}_n - \bm{\mu}_k)^T
+\}^T
+\nonumber \\
+\bm{\Sigma}_k^{T} \sum_{n=1}^N \gamma (z_{nk})  
+&=& \{
+\sum_{n=1}^N \gamma (z_{nk})(\textbf{x}_n - \bm{\mu}_k) (\textbf{x}_n - \bm{\mu}_k)^T
+\}^T
+\nonumber
+\end{eqnarray}
+และสุดท้ายก็จะได้สมการ~\ref{eq: Bishop 13.21}
+\\
+
+\fcolorbox{Blue}{Apricot}{ปิดเบื้องหลังฉาก}
+
+\subsection{ขั้นตอนวิธีก้าวหน้า-ถอยหลัง (The forward-backward algorithm)}
+
+ในขั้นตอน E เราใช้ค่า $\bm{\pi}$, $\bm{A}$, และ $\bm{\phi}$ เพื่อคำนวณค่า $\gamma (z_{nk})$ และ $\xi (z_{n-1,j}, z_{nk})$
+๏ โดย ตอนนี้ เราจะดู ขั้นตอนวิธีก้าวหน้า-ถอยหลัง (forward-backward algorithm, \cite{Rabiner1989a}) ที่สามารถใช้ คำนวณ ค่าเหล่านี้ ได้อย่างมีประสิทธิภาพ
+
+ดูรูป~\ref{fig: Bishop 13.5} ประกอบ และ ทบทวนคุณสมบัติความไม่พึ่งพิงแบบมีเงื่อนไข (conditional independence)
+
+\begin{eqnarray}
+p(\textbf{X} | \textbf{z}_n) 
+&=& p(\textbf{x}_1, \ldots, \textbf{x}_n | \textbf{z}_n)
+\nonumber \\
+&\;& 
+\cdot p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N | \textbf{z}_n)
+\label{eq: Bishop 13.24} \\
+p(\textbf{x}_1, \ldots, \textbf{x}_{n-1} | \textbf{x}_n, \textbf{z}_n) 
+&=& p(\textbf{x}_1, \ldots, \textbf{x}_{n-1} | \textbf{z}_n)
+\label{eq: Bishop 13.25} \\
+p(\textbf{x}_1, \ldots, \textbf{x}_{n-1}|\textbf{z}_{n-1}, \textbf{z}_n)
+&=& p(\textbf{x}_1, \ldots, \textbf{x}_{n-1}|\textbf{z}_{n-1})
+\label{eq: Bishop 13.26} \\
+p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N|\textbf{z}_n, \textbf{z}_{n+1})
+&=& p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N | \textbf{z}_{n+1})
+\label{eq: Bishop 13.27} \\
+p(\textbf{x}_{n+2}, \ldots, \textbf{x}_N | \textbf{z}_{n+1}, \textbf{x}_{n+1})
+&=& p(\textbf{x}_{n+2}, \ldots, \textbf{x}_N | \textbf{z}_{n+1})
+\label{eq: Bishop 13.28} \\
+p(\textbf{X}|\textbf{z}_{n-1}, \textbf{z}_n)
+&=& p(\textbf{x}_1, \ldots, \textbf{x}_{n-1}|\textbf{z}_{n-1})
+\nonumber \\
+&\;& 
+\cdot p(\textbf{x}_n|\textbf{z}_n) 
+\cdot p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N | \textbf{z}_n)
+\label{eq: Bishop 13.29} \\
+p(\textbf{x}_{N+1}|\textbf{X}, \textbf{z}_{N+1})
+&=& p(\textbf{x}_{N+1}|\textbf{z}_{N+1})
+\label{eq: Bishop 13.30} \\
+p(\textbf{z}_{N+1} | \textbf{z}_N, \textbf{X})
+&=& p(\textbf{z}_{N+1} | \textbf{z}_N)
+\label{eq: Bishop 13.31}
+\end{eqnarray}
+โดย $\textbf{X} = \{\textbf{x}_1, \ldots, \textbf{x}_N\}$
+
+ค่า $\gamma(\textbf{z}_n) = p(\textbf{z}_n | \textbf{X})$ โดยเราละ $\bm{\theta}$ เอาไว้เพื่อความกระชับ
+๏ จาก Bayes' theorem เราได้
+
+\begin{eqnarray}
+\gamma (\textbf{z}_n) = \frac{p(\textbf{X}|\textbf{z}_n) \cdot p(\textbf{z}_n)}{p(\textbf{X})}
+\label{eq: Bishop 13.32}
+\end{eqnarray}
+
+หมายเหตุ ค่า $p(\textbf{X})$ เขียนเต็มรูปคือ $p(\textbf{X}|\bm{\theta}^{old})$ ซึ่งคือ ฟังชั่นควรจะเป็น
+
+จากคุณสมบัติตาม สมการ~\ref{eq: Bishop 13.24} และ กฏการคูณความน่าจะเป็น (product rule of probability) เราจะได้
+
+\begin{eqnarray}
+\gamma (\textbf{z}_n) 
+&=& \frac{p(\textbf{x}_1, \ldots, \textbf{x}_n, \textbf{z}_n) \cdot p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N|\textbf{z}_n)}{p(\textbf{X})}
+\nonumber \\
+&=& \frac{\alpha(\textbf{z}_n) \beta(\textbf{z}_n)}{p(\textbf{X})}
+\label{eq: Bishop 13.33}
+\end{eqnarray}
+
+โดยนิยาม
+\begin{eqnarray}
+\alpha(\textbf{z}_n) 
+& \equiv & p(\textbf{x}_1, \ldots, \textbf{x}_n, \textbf{z}_n)
+\label{eq: Bishop 13.34} \\
+\beta(\textbf{z}_n)
+& \equiv & p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N | \textbf{z}_n)
+\label{eq: Bishop 13.35}
+\end{eqnarray}
+
+ค่า $\alpha(\textbf{z}_n)$ แทน ความน่าจะเป็นร่วมของตัวแปรที่สังเกตุ จนถึงลำดับที่ $n$ และค่าของตัวแปรแฝง $\textbf{z}_n$
+๏ ส่วนค่า $\beta(\textbf{z}_n)$ แทน ความน่าจะเป็นมีเงื่อนไข ของตัวแปรลำดับต่อจาก $n$ (ลำดับในอนาคต) บนเงื่อนไขของค่า $\textbf{z}_n$
+
+พิจารณา $\alpha(\textbf{z}_n)$,
+\begin{eqnarray}
+\alpha(\textbf{z}_n) 
+&=& p(\textbf{x}_1, \ldots, \textbf{x}_n, \textbf{z}_n)
+\nonumber \\
+&=& p(\textbf{x}_1, \ldots, \textbf{x}_n| \textbf{z}_n) p(\textbf{z}_n)
+\nonumber \\
+&=& p(\textbf{x}_n|\textbf{z}_n) p(\textbf{x}_1, \ldots, \textbf{x}_{n-1}|\textbf{z}_n) p(\textbf{z}_n)
+\nonumber \\
+&=& p(\textbf{x}_n|\textbf{z}_n) p (\textbf{x}_1, \ldots, \textbf{x}_{n-1}, \textbf{z}_n)
+\nonumber \\
+&=& p(\textbf{x}_n|\textbf{z}_n) \sum_{\textbf{z}_{n-1}} p (\textbf{x}_1, \ldots, \textbf{x}_{n-1}, \textbf{z}_{n-1}, \textbf{z}_n)
+\nonumber \\
+&=& p(\textbf{x}_n|\textbf{z}_n) \sum_{\textbf{z}_{n-1}} p (\textbf{x}_1, \ldots, \textbf{x}_{n-1}, \textbf{z}_n| \textbf{z}_{n-1}) p(\textbf{z}_{n-1})
+\nonumber \\
+&=& p(\textbf{x}_n|\textbf{z}_n) \sum_{\textbf{z}_{n-1}} p (\textbf{x}_1, \ldots, \textbf{x}_{n-1}| \textbf{z}_{n-1}) p(\textbf{z}_n|\textbf{z}_{n-1}) p(\textbf{z}_{n-1})
+\nonumber \\
+&=& p(\textbf{x}_n|\textbf{z}_n) \sum_{\textbf{z}_{n-1}} p (\textbf{x}_1, \ldots, \textbf{x}_{n-1},\textbf{z}_{n-1}) p(\textbf{z}_n|\textbf{z}_{n-1})
+\nonumber \\
+&=& p(\textbf{x}_n|\textbf{z}_n) \sum_{\textbf{z}_{n-1}} \alpha(\textbf{z}_{n-1}) p(\textbf{z}_n|\textbf{z}_{n-1})
+\label{eq: Bishop 13.36}
+\end{eqnarray}
+
+การคำนวณสมการ~\ref{eq: Bishop 13.36} แต่ละครั้งจะต้องทำการบวก $K$ ครั้ง (สำหรับ ทุกค่าที่เป็นไปได้ของ $\textbf{z}_{n-1}$) และสำหรับ แต่ละ $n$ เราจะต้องคำนวณค่า $\alpha(\textbf{z}_n)$ ทั้งหมด $K$ ครั้ง
+๏ ดังนั้น การคำนวณ $\alpha$ แต่ละครั้งจะมี ต้นทุนเชิงคำนวณ (computational cost) เป็น $O(K^2)$ สำหรับ $n$ แต่ละค่า
+๏ คิดเป็น $O(K^2 N)$ สำหรับ ทั้งชุดข้อมูลขนาดความยาว $N$ ลำดับ
+
+เราจะเริ่มต้นคำนวณค่า $\alpha$ จาก 
+\begin{eqnarray}
+\alpha(\textbf{z}_1) = p(\textbf{x}_1, \textbf{z}_1) = p(\textbf{z}_1) p(\textbf{x}_1|\textbf{z}_1)
+\label{eq: Bishop 13.37}
+\end{eqnarray}
+
+ในลักษณะคล้ายกัน พิจารณา
+
+\begin{eqnarray}
+\beta(\textbf{z}_n) 
+&=& p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N|\textbf{z}_n)
+\nonumber \\
+&=& \sum_{\textbf{z}_{n+1}} p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N, \textbf{z}_{n+1}|\textbf{z}_n)
+\nonumber \\
+&=& \sum_{\textbf{z}_{n+1}} p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N | \textbf{z}_{n+1}, \textbf{z}_n) p(\textbf{z}_{n+1}|\textbf{z}_n)
+\nonumber \\
+&=& \sum_{\textbf{z}_{n+1}} p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N | \textbf{z}_{n+1}) p(\textbf{z}_{n+1}|\textbf{z}_n)
+\nonumber \\
+&=& \sum_{\textbf{z}_{n+1}} p(\textbf{x}_{n+1}|\textbf{z}_{n+1}) p(\textbf{x}_{n+2}, \ldots, \textbf{x}_N | \textbf{z}_{n+1}) p(\textbf{z}_{n+1}|\textbf{z}_n)
+\nonumber \\
+&=& \sum_{\textbf{z}_{n+1}} \beta(\textbf{z}_{n+1})  p(\textbf{x}_{n+1}|\textbf{z}_{n+1}) p(\textbf{z}_{n+1}|\textbf{z}_n)
+\label{eq: Bishop 13.38}
+\end{eqnarray}
+
+และจากสมการ~\ref{eq: Bishop 13.33} เมื่อ เราแทน $n=N$ จะได้
+\begin{eqnarray}
+\gamma(\textbf{z}_N) = p(\textbf{z}_n|\textbf{X}) = \frac{p(\textbf{X}, \textbf{z}_n) \beta(\textbf{z}_N)}{p(\textbf{X})}
+\label{eq: Bishop 13.39}
+\end{eqnarray}
+
+และจาก คุณสมบัติความน่าจะเป็นแบบมีเงื่อนไข $p(\textbf{z}_n|\textbf{X}) = \frac{p(\textbf{X}, \textbf{z}_n)}{p(\textbf{X})}$
+๏ ดังนั้นเราจะได้ว่า
+\begin{eqnarray}
+\beta(\textbf{z}_N) = 1
+\label{eq: HMM beta 1}
+\end{eqnarray}
+สำหรับทุกๆค่าของ $\textbf{z}_N$
+
+ถึงตอนนี้ ถ้าเราต้องการหาค่า $p(\textbf{X})$, เราสามารถทำได้จาก สมการ~\ref{eq: Bishop 13.32} และ \ref{eq: Bishop 13.33}: $
+\gamma(\textbf{z}_n) = p(\textbf{z}_n|\textbf{X}) = \frac{\alpha(\textbf{z}_n) \beta(\textbf{z}_n}{p(\textbf{X})}$
+๏ ดังนั้น
+\begin{eqnarray}
+\sum_{\textbf{z}_n} p(\textbf{z}_n|\textbf{X}) = 1 
+&=& \sum_{\textbf{z}_n} \frac{\alpha(\textbf{z}_n) \beta(\textbf{z}_n)}{p(\textbf{X})}
+\nonumber \\
+p(\textbf{X})
+&=& \sum_{\textbf{z}_n} \alpha(\textbf{z}_n) \beta(\textbf{z}_n)
+\label{eq: Bishop 13.41}
+\end{eqnarray}
+
+สำหรับทุกๆค่าของ $n$
+๏ เพื่อความสะดวก เลือกพิจารณาที่ $n=N$ (เพราะ $\beta(\textbf{z}_N)=1$) เราจะได้
+\begin{eqnarray}
+p(\textbf{X}) = \sum_{\textbf{z}_N} \alpha(\textbf{z}_N)
+\label{eq: Bishop 13.42}
+\end{eqnarray}
+
+ตรงนี้จุดที่น่าสนใจคือ ถ้าเราหาค่า $p(\textbf{X})$ จากสมการ~\ref{eq: Bishop 13.11} ต้นทุนการคำนวณ (computational cost) จะเพิ่มเป็นแบบเลขยกกำลัง ตามความยาวของลำดับ (ทำการบวก ระดับ $O(K^N)$) แต่ตอนนี้พอเราได้สมการ~\ref{eq: Bishop 13.42} ต้นทุนการคำนวณจะแค่ระดับ $O(K^2 N)$
+๏ เช่น ถ้า $K=3$ (สถานะแฝงเป็นได้ 3 แบบ) และ $N=12$ (ความยาวของลำดับเป็น 12) การคำนวณจะลดจาก ระดับ $3^{12} = 531,441$ (คำนวณค่าความน่าจะเป็น $p(\textbf{X}, \textbf{Z})$ ทั้งหมด 531,441 ครั้ง แล้วก็นำ ค่าที่ได้ มาบวกกัน) เหลือเพียง ระดับ $3^2 \cdot 12 = 108$ (คำนวณค่า $\alpha(\textbf{z}_1)$ จนถึง $\alpha(\textbf{z}_N)$ ทั้งหมด 108 ครั้ง  และนำค่า $\alpha(\textbf{z}_N)$ ทั้งหมด 3 ค่าที่ได้มาบวกกัน)
+๏ จะเห็นว่า เราลด การคำนวณ ลงไปมหาศาล (โดยทั่วไป จำนวนสถานะแฝง จะน้อยกว่า จำนวนลำดับ: $K << N$)
+
+ค่า $\gamma(\textbf{z}_n)$ หาได้จาก สมการ~\ref{eq: Bishop 13.33}, 
+ส่วน ค่า $\xi (\textbf{z}_{n-1}, \textbf{z}_n)$ หาได้จาก
+
+\begin{eqnarray}
+\xi (\textbf{z}_{n-1}, \textbf{z}_n) 
+&=& p(\textbf{z}_{n-1}, \textbf{z}_n | \textbf{X})
+\nonumber \\
+&=& \frac{p(\textbf{X}|\textbf{z}_{n-1}, \textbf{z}_n) p(\textbf{z}_{n-1}, \textbf{z}_n)}{p(\textbf{X})}
+\nonumber \\
+&=& \frac{ p(\textbf{x}_1, \ldots, \textbf{x}_{n-1}|\textbf{z}_{n-1}) p(\textbf{x}_n|\textbf{z}_n) p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N) p(\textbf{z}_n|\textbf{z}_{n-1}) p(\textbf{z}_{n-1}) }{p(\textbf{X})}
+\nonumber \\
+&=& \frac{\alpha(\textbf{z}_{n-1}) p(\textbf{x}_n|\textbf{z}_n) p(\textbf{z}_n| \textbf{z}_{n-1}) \beta(\textbf{z}_n)}{p(\textbf{X})}
+\label{eq: Bishop 13.43}
+\end{eqnarray}
+
+โดยสรุปคือ คือเราจะหาค่าพารามิเตอร์ของแบบจำลองมาร์คอฟแฝง โดย 
+\begin{itemize}
+\item (1: initialization) เลือกค่าเริ่มต้นของพารามิเตอร์ $\bm{\theta} \equiv (\bm{\pi}, \textbf{A}, \bm{\phi})$
+๏ ค่าของ $\bm{\pi}$ และ $\textbf{A}$ อาจจะสุ่มมาจากการแจกแจงเอกรูป (uniform distribution) แต่ระวังว่า จะต้องรักษาไว้ซึ่ง เงื่อนไข ของ ค่าของ ความน่าจะเป็น
+๏ ค่าเริ่มต้นของ $\bm{\phi}$ ขึ้นกับ ความน่าจะเป็นของการปล่อย เช่น 
+%แบบอเนกนาม (multinomial emission) ... I can't find how. Perhaps, research topics
+% How to initialize multinomail emission efficiently?
+% How many latent states do we need?
+% idea: Do that AIC similar to K-means to determine latent variables.
+%๏ หรือ 
+ถ้าเป็นแบบเกาส์เซียน (Gaussian emission),
+ค่าเริ่มต้นของ $\bm{\mu}_k$ อาจจะให้เป็นค่า 	เซนทรอยด์ (centroid) ของแต่ละกลุ่ม (cluster) ที่เป็นผลมาจากวิธีของ K-means
+และ ค่าเริ่มต้นของ $\bm{\Sigma}_k$ อาจจะให้เป็นค่า ความแปรปรวนร่วมเกี่ยว (covariance) ของกลุ่มนั้นๆ เป็นต้น
+
+\item (2: forward-backward) คำนวณค่า $\alpha$ และ $\beta$
+
+\item (3: final E-step) คำนวณ $\gamma(\textbf{z}_n)$ และ $\xi(\textbf{z}_{n-1}, \textbf{z}_n)$
+๏ ตอนนี้ เราสามารถประเมินค่า ฟังชั่นควรจะเป็น $Q(\bm{\theta}, \bm{\theta}^{old})$ ได้
+
+\item (4: M-step) คำนวณค่าพารามิเตอร์ ($\bm{\pi}$, $\textbf{A}$, และ $\bm{\phi}$) ชุดใหม่
+
+\item (5: EM) ทำ ขั้นตอนเหล่านี้ จนจบเงื่อนไข (termination criteria)
+
+\end{itemize}
+
+\fcolorbox{Blue}{Apricot}{อธิบายเพิ่มเติม}
+
+การสอน (ซึ่งคือ การหาค่าหาพารามิเตอร์) แบบจำลองมาร์คอฟแฝง ที่เราดูกันไป เป็นวิธีสำหรับ เมื่อเรามีข้อมูลหนึ่งชุดที่มีลำดับยาวๆ แต่ เราสามารถดัดแปลงวิธีนี้ เพื่อ ให้สามารถสอน แบบจำลองมาร์คอฟแฝง หลายๆชุดข้อมูล ได้
+
+กลับมาดู \textbf{ค่าคาดหมายของลอการิทึมของฟังชั่นควรจะเป็น} อีกครั้ง
+$Q(\bm{\theta}, \bm{\theta}^{old}) = \mathbb{E} [\ln p(\textbf{X}, \textbf{Z}|\bm{\theta})]
+ = \sum_{\textbf{Z}} p(\textbf{Z}|\textbf{X}, \bm{\theta}^{old}) \ln p (\textbf{X}, \textbf{Z} | \bm{\theta})$
+๏ ดู ค่าการแจกแจงร่วม $p(\textbf{X}, \textbf{Z}|\bm{\theta})$ ซึ่ง ตัวแปรที่สังเกตุได้ประกอบด้วย ลำดับหลายๆชุด $\textbf{X} = \{ \textbf{X}^{(1)}, \ldots, \textbf{X}^{(R)} \}$ โดย $\textbf{X}^{(1)}, \ldots, \textbf{X}^{(R)}$ เป็น ตัวแปรที่สังเกตุได้ $R$ ชุด (แต่ละชุดจะมี $N$ ลำดับ)
+๏ และ ตัวแปรแต่ละชุดเป็นอิสระจากกัน (each $\textbf{X}^{(r)}$ is an independent sequence)
+
+\begin{eqnarray}
+p(\textbf{X}, \textbf{Z}|\bm{\theta})
+&=& p(\textbf{X}^{(1)}, \ldots, \textbf{X}^{(R)}, \textbf{Z}|\bm{\theta})
+\nonumber \\
+&=& p(\textbf{X}^{(1)}, \textbf{Z}|\bm{\theta}) \cdot p(\textbf{X}^{(2)}, \textbf{Z}|\bm{\theta}) \cdots
+p(\textbf{X}^{(R)}, \textbf{Z}|\bm{\theta})
+\label{eq: HMM Multiple Seq p(X,Z)}
+\end{eqnarray}
+
+ดังนั้น 
+
+\begin{eqnarray}
+Q(\bm{\theta}, \bm{\theta}^{old}) 
+&=& \mathbb{E} [\ln p(\textbf{X}, \textbf{Z}|\bm{\theta})]
+= \mathbb{E} \left[\sum_r \ln p(\textbf{X}^{(r)}, \textbf{Z}|\bm{\theta}) \right]
+\nonumber \\
+%\label{eq: HMM Multiple Seq ln p(X,Z)}
+%\end{eqnarray}
+%ค่าตัวกระทำ (operator) $\mathbb{E}[\cdot]$ เป็น ตัวกระทำค่าคาดหมาย ตามความน่าจะเป็นของตัวแปรแฝง $p(\textbf{Z}|\textbf{X}, \bm{\theta}^{old})$ โดย $\textbf{X}$ เป็นข้อมูลทั้งหมด (รวมทุกชุด)
+%๏ พูดง่ายๆ $p(\textbf{Z}|\textbf{X}, \bm{\theta}^{old})$ ไม่ขึ้นกับ $r$ และ เราจะได้เขียน สมการ~\ref{eq: HMM Multiple Seq ln p(X,Z)} ได้เป็น
+%\begin{eqnarray}
+%Q(\bm{\theta}, \bm{\theta}^{old}) 
+&=& \sum_r \mathbb{E} \left[ \ln p(\textbf{X}^{(r)}, \textbf{Z}|\bm{\theta}) \right]
+\label{eq: HMM Multiple Seq Q}
+\end{eqnarray}
+
+พิจารณา $\ln p(\textbf{X}^{(r)}, \textbf{Z}|\bm{\theta})$ (ดู สมการ~\ref{eq: Bishop 13.10}),
+
+\begin{eqnarray}
+\ln p(\textbf{X}^{(r)}, \textbf{Z}|\bm{\theta})
+&=& \ln p(\textbf{z}_1|\bm{\pi}) 
++ \sum_{n=2}^N \ln p(\textbf{z}_n | \textbf{z}_{n-1}, \textbf{A})
++ \sum_{m=1}^N \ln p(\textbf{x}_m^{(r)}|\textbf{z}_m, \bm{\phi})
+\nonumber \\
+\mbox{และ }
+Q(\bm{\theta}, \bm{\theta}^{old})
+&=&
+\sum_r \left\{ \mathbb{E} \ln p(\textbf{z}_1|\bm{\pi})
++ \sum_{n=2}^N \mathbb{E} \ln p(\textbf{z}_n | \textbf{z}_{n-1}, \textbf{A})
++ \sum_{m=1}^N \mathbb{E} \ln p(\textbf{x}_m^{(r)}|\textbf{z}_m, \bm{\phi}) \right\}
+\nonumber \\
+\label{eq: HMM Multiple P(X,Z) cf Bishop 13.10}
+\end{eqnarray}
+
+จาก สมการ \ref{eq: Bishop 13.8}, \ref{eq: Bishop 13.7}, และ \ref{eq: Bishop 13.9}, 
+เราจะได้
+
+\begin{eqnarray}
+Q(\bm{\theta}, \bm{\theta}^{old})
+&=&
+\sum_r \{ \mathbb{E} \left[ \sum_{k=1}^K z_{1k} \ln \pi_k \right]
++ \sum_{n=2}^N \mathbb{E} \left[ \sum_{k=1}^K \sum_{j=1}^K z_{n-1,j} z_{n,k} \ln A_{jk} \right]
+\nonumber \\
+&\;&
++ \sum_{n=1}^N \mathbb{E} \left[ \sum_{k=1}^K z_{nk} \ln p(\textbf{x}_n^{(r)}|\bm{\phi}_k) \right] \}
+\nonumber \\
+&=&
+\sum_r \{ \sum_{k=1}^K \ln \pi_k \mathbb{E} [ z_{1k} ]
++ \sum_{n=2}^N \sum_{k=1}^K \sum_{j=1}^K \ln A_{jk} \mathbb{E}[z_{n-1,j} z_{n,k}]  
+\nonumber \\
+&\;&
++ \sum_{n=1}^N \sum_{k=1}^K \ln p(\textbf{x}_n^{(r)}|\bm{\phi}_k) \mathbb{E}[z_{nk}] \}
+\label{eq: HMM Multiple Q}
+\end{eqnarray}
+
+%\begin{eqnarray}
+%Q(\bm{\theta}, \bm{\theta}^{old})
+%&=& \sum_{\textbf{Z}} p(\textbf{Z}|\textbf{X}, \bm{\theta}^{old}) 
+%\sum_r \ln p(\textbf{X}^{(r)}, \textbf{Z}|\bm{\theta})
+%\label{eq: HMM Multiple Seq ln p(X,Z)}
+%\end{eqnarray}
+
+%ดูค่า $p(\textbf{Z}|\textbf{X}, \bm{\theta}^{old}) = p(\textbf{Z}|\textbf{X}^{(1)}, \ldots, \textbf{X}^{(R)}, \bm{\theta}^{old})$
+%๏ เราจะละ $\bm{\theta}^{old}$ ไว้ก่อนเพื่อความกระชับ
+
+%\begin{eqnarray}
+%p(\textbf{Z}|\textbf{X}^{(1)}, \ldots, \textbf{X}^{(R)})
+%&=& \frac{p(\textbf{Z}, \textbf{X}^{(1)}, \ldots, \textbf{X}^{(R)})}{p( \textbf{X}^{(1)}, \ldots, \textbf{X}^{(R)})}
+%\nonumber \\
+%&=& \frac{p(\textbf{X}^{(1)}, \ldots, \textbf{X}^{(R)}|\textbf{Z})}{p(\textbf{X}^{(1)}) \cdots  p(\textbf{X}^{(R)})} \cdot p(\textbf{Z})
+%\nonumber \\
+%&=& \frac{p(\textbf{X}^{(1)}|
+%\textbf{Z}) \cdots p(\textbf{X}^{(R)}|\textbf{Z})}{p(\textbf{X}^{(1)}) \cdots  p(\textbf{X}^{(R)})} \cdot p(\textbf{Z})
+%\nonumber \\
+%&=& \frac{p(\textbf{Z} | \textbf{X}^{(1)}) \cdots p(\textbf{Z}|\textbf{X}^{(R)})}{ \left\{ p(\textbf{Z}) \right\}^{R-1}}
+%\label{eq: HMM Multiple Seq p(Z given X)}
+%\end{eqnarray}
+
+%ดูทบทวน 
+%สมการ~\ref{eq: Bishop 13.12}, \ref{eq: Bishop 13.17} รวมถึง  
+%สมการ~\ref{eq: Bishop 13.13},~\ref{eq: Bishop 13.14},~\ref{eq: Bishop 13.15},~และ~\ref{eq: Bishop 13.16}
+%แล้ว จะเห็นว่า $\gamma(\textbf{z}_n)$ และ $\xi(\textbf{z}_{n-1}, \textbf{z}_n)$
+
+\paragraph{I'm trying this.}
+ประมาณ $\mathbb{E}[z_{nk}] \approx \mathbb{E}^{(r)}[z_{nk}]$ หรือ $\sum_{\textbf{Z}} z_{nk} p(\textbf{Z}|\textbf{X}) \approx \sum_{\textbf{Z}} z_{nk} p(\textbf{Z}|\textbf{X}^{(r)})$
+
+๏ เราจะได้ 
+\begin{eqnarray}
+Q(\bm{\theta}, \bm{\theta}^{old})
+&\approx&
+\sum_r \{ \sum_{k=1}^K \ln \pi_k \mathbb{E}^{(r)} [ z_{1k} ]
++ \sum_{n=2}^N \sum_{k=1}^K \sum_{j=1}^K \ln A_{jk} \mathbb{E}^{(r)} [z_{n-1,j} z_{n,k}]  
+\nonumber \\
+&\;&
++ \sum_{n=1}^N \sum_{k=1}^K \ln p(\textbf{x}_n^{(r)}|\bm{\phi}_k) \mathbb{E}^{(r)} [z_{nk}] \}
+\label{eq: HMM Multiple Q approx}
+\end{eqnarray}
+
+สังเกตุ $\mathbb{E}^{(r)} [z_{nk}] = \gamma(z_{nk}^{(r)})$ และ 
+$\mathbb{E}^{(r)} [z_{n-1,j}  z_{n,k}] = \xi (z_{n-1,j}^{(r)}, z_{n,k}^{(r)})$
+
+จัดรูป สมการ~\ref{eq: HMM Multiple Q approx} ใหม่ได้เป็น
+
+\begin{eqnarray}
+Q(\bm{\theta}, \bm{\theta}^{old})
+&\approx&
+\sum_{k=1}^K \ln \pi_k \sum_r \gamma(z_{1k}^{(r)})
++ \sum_{n=2}^N \sum_{k=1}^K \sum_{j=1}^K \ln A_{jk} \sum_r \xi (z_{n-1,j}^{(r)}, z_{n,k}^{(r)})  
+\nonumber \\
+&\;&
++ \sum_r \sum_{n=1}^N \sum_{k=1}^K \ln p(\textbf{x}_n^{(r)}|\bm{\phi}_k) \gamma(z_{nk}^{(r)})
+\label{eq: HMM MultipleQ approx nice form}
+\end{eqnarray}
+
+ซึ่งฟังชั่นจุดประสงค์จะเป็น 
+$Q(\bm{\theta},\bm{\theta}^{old}) - \lambda_0 \cdot(\sum_{k=1}^K \pi_k - 1) - \sum_{j=1}^K \lambda_j \cdot(\sum_{k=1}^K A_{jk} - 1)$
+และ ทำนองเดียวกับสมการ~\ref{eq: HMM diff Q by pi} และ สมการ~\ref{eq: HMM pi_k}
+๏ แล้วเราจะได้
+
+\begin{eqnarray}
+\pi_k &=& \frac{\sum_{r=1}^R \gamma(z_{1k}^{(r)})}{\sum_{r=1}^R \sum_{j=1}^K \gamma(z_{1j}^{(r)})}
+\label{eq: Bishop 13.124} \\
+A_{jk} &=& \frac{\sum_{r=1}^R \sum_{n=2}^N \xi (z_{n-1,j}^{(r)}, z_{n,k}^{(r)})}{\sum_{r=1}^R \sum_{l=1}^K \sum_{n=2}^N \xi (z_{n-1,j}^{(r)}, z_{n,l}^{(r)})}
+\label{eq: Bishop 13.125}
+\end{eqnarray}
+
+การขยายสมการ~\ref{eq: Bishop 13.124} และ~\ref{eq: Bishop 13.125} สำหรับข้อมูลที่แต่ละชุดข้อมูลความยาวไม่เท่ากัน ก็สามารถทำได้ง่าย แค่เปลี่ยน $N$ เป็น $N_r$,
+ โดย $N_r$ เป็นความยาวของข้อมูลลำดับ ชุดที่ $r$
+
+ทำนองเดียวกัน เราจะหา ค่าพารามิเตอร์ ของ ความน่าจะเป็นการปล่อย ได้จาก
+\begin{eqnarray}
+\bm{\mu}_k &=& \frac{\sum_{r=1}^R \sum_{n=1}^N \gamma(z_{nk}^{(r)}) \textbf{x}_n^{(r)}}{\sum_{r=1}^R \sum_{n=1}^N \gamma(z_{nk}^{(r)})}
+\label{eq: Bishop 13.126} \\
+\bm{\Sigma}_k &=& \frac{\sum_{r=1}^R \sum_{n=1}^N \gamma(z_{nk}^{(r)}) (\textbf{x}_n - \bm{\mu}_k) (\textbf{x}_n - \bm{\mu}_k)^T}{\sum_{r=1}^R \sum_{n=1}^N \gamma(z_{nk}^{(r)})}
+\end{eqnarray}
+สำหรับ ความน่าจะเป็นการปล่อยแบบเกาส์เซียน
+
+และ
+\begin{eqnarray}
+\mu_{dk} &=& \frac{\sum_{r=1}^R \sum_{n=1}^N \gamma(z_{nk}^{(r)}) \textbf{x}_{dn}^{(r)}}{\sum_{r=1}^R \sum_{n=1}^N \gamma(z_{nk}^{(r)})}
+\end{eqnarray}
+สำหรับ ความน่าจะเป็นการปล่อยแบบอเนกนาม
+
+ค่าลอการิทึมของฟังชั่นควรจะเป็น ของข้อมูล $R$ ชุด
+\begin{eqnarray}
+p(\textbf{X}, \textbf{Z}|\bm{\theta}) &=&
+p(\textbf{X}^{(1)}, \textbf{Z}^{(1)}, \ldots, \textbf{X}^{(R)}, \textbf{Z}^{(R)}|\bm{\theta})
+\nonumber \\
+&=& 
+p(\textbf{X}^{(1)}, \textbf{Z}^{(1)}|\bm{\theta})  \cdots p(\textbf{X}^{(R)}, \textbf{Z}^{(R)}|\bm{\theta})
+\nonumber \\
+\ln p(\textbf{X}, \textbf{Z}|\bm{\theta}) 
+&=& \sum_{r=1}^R \ln p(\textbf{X}^{(r)}, \textbf{Z}^{(r)}|\bm{\theta})
+\nonumber \\
+&=& \sum_{r=1}^R \left\{ \ln p(\textbf{z}_1^{(r)}|\bm{\pi}) 
++ \sum_{n=2}^N \ln p(\textbf{z}_n^{(r)}|\textbf{z}_{n-1}^{(r)}, \textbf{A}) 
++ \sum_{m=1}^N \ln p(\textbf{x}_m^{(r)} | \textbf{z}_m^{(r)}, \bm{\phi}) \right\}
+\nonumber \\
+\label{eq: HMM multiple seq log-likelihood}
+\end{eqnarray}
+
+ค่าลอการิทึมของฟังชั่นควรจะเป็น (สมการ~\ref{eq: HMM multiple seq log-likelihood}) สามารถใช้ประเมิน โมเดล ได้ว่าแทนข้อมูลได้ดีขนาดไหน
+๏ แต่ เราต้องรู้ค่า ตัวแปรแฝง $\textbf{Z}$ ถึงจะสามารถใช้ สมการ~\ref{eq: HMM multiple seq log-likelihood} ได้
+๏ สำหรับกรณีที่เราไม่รู้ค่าตัวแปรแฝง, เราจะใช้ ค่าคาดหมายของลอการิทึมของฟังชั่นควรจะเป็น ดังสมการ~\ref{eq: HMM Multiple Q approx}
+
+%\begin{eqnarray}
+%\mathbb{E}
+%[\ln p(\textbf{X}, \textbf{Z}|\bm{\theta})] &=& \sum_{\textbf{Z}} p(\textbf{Z}|\textbf{X}, \bm{\theta}) \cdot \ln p(\textbf{X}, \textbf{Z}|\bm{\theta})
+%\nonumber \\
+%&=& 
+%\sum_{\textbf{Z}} p(\textbf{Z}^{(1)}, \ldots, \textbf{Z}^{(R)}|\textbf{X}^{(1)}, \ldots, \textbf{X}^{(R)}, \bm{\theta}) \cdot \ln p(\textbf{X}, \textbf{Z}|\bm{\theta})
+%\nonumber \\
+%&=& 
+%\sum_{\textbf{Z}} p(\textbf{Z}^{(1)}|\textbf{X}^{(1)}, \bm{\theta}) \cdots p(\textbf{Z}^{(R)}|\textbf{X}^{(R)}, \bm{\theta})
+%\cdot \ln p(\textbf{X}, \textbf{Z}|\bm{\theta})
+%\nonumber \\
+%\end{eqnarray}
+
+
+
+
+\fcolorbox{Blue}{Apricot}{จบอธิบายเพิ่มเติม}
+
+\subsection{Scaling factors}
+
+จากสมการ~\ref{eq: Bishop 13.36}, ค่าของ $\alpha(\textbf{z}_n)$ คำนวณจาก $\alpha(\textbf{z}_{n-1})$ โดย คูณค่า $p(\textbf{z}_n|\textbf{z}_{n-1})$ กับ $p(\textbf{x}_n|\textbf{z}_n)$ เข้าไป
+๏ เนื่องจาก ค่าความน่าจะเป็นเหล่านี้ มักมีค่าน้อยกว่าหนึ่งมาก
+๏ ดังนั้น ถ้า ข้อมูล มี ลำดับที่ยาวมาก อาจจะทำให้ ค่าของ $\alpha(\textbf{z}_n)$ เข้าใกล้ศูนย์มากๆ จนคอมพิวเตอร์รับไม่ได้
+%๏ ตัวอย่าง ถ้าลำดับของข้อมูลยาวๆ อาจจะยาวกว่า 100 ลำดับ และ อาจทำให้ค่าของ $\alpha$ ที่คำนวณน้อยได้มากๆ เช่น $\alpha(\textbf{z}_108) = 3.25779 \times 10^{-48}$  แต่ ตัวแปร แบบความเที่ยงสองเท่า (double precision) ที่ใช้เลขฐานสอง 32 บิตแทนเลขทศนิยม ตามมาตราฐาน IEEE 754 สามารถแทนค่าที่น้อยที่สุด แค่ $1.401298464324817 \times 10^{-45}$
+%แต่ถ้าค่า $\alpha$ นี้ถูกปัดเป็น $0$ เราก็ไม่สามารถที่จะใช้
+
+เพื่อแก้ปัญญาเกี่ยวกับ ข้อจำกัดการคำนวณของคอมพิวเตอร์ เราจะใช้ค่าของ $\hat{\alpha}(\textbf{z}_n)$ แทน โดย
+\begin{eqnarray}
+\hat{\alpha}(\textbf{z}_n) = p(\textbf{z}_n|\textbf{x}_1, \ldots, \textbf{x}_n) = \frac{\alpha(\textbf{z}_n)}{p(\textbf{x}_1, \ldots, \textbf{x}_n)}
+\label{eq: Bishop 13.55}
+\end{eqnarray}
+
+%ซึ่ง ค่าของ $\hat{\alpha}(\textbf{z}_n)$ น่าจะ ช่วยลดปัญหา จาก ข้อจำกัดทางการคำนวณของคอมพิวเตอร์ ลงไปได้
+ดังนั้น
+\begin{eqnarray}
+\alpha(\textbf{z}_n) 
+&=& p(\textbf{z}_n|\textbf{x}_1, \ldots, \textbf{x}_n) \cdot p(\textbf{x}_1, \ldots, \textbf{x}_n)
+\nonumber \\
+&=& \hat{\alpha}(\textbf{z}_n) \cdot \prod_{m=1}^n c_m
+\label{eq: Bishop 13.58}
+\end{eqnarray}
+เมื่อ
+\begin{eqnarray}
+c_n = p(\textbf{x}_n|\textbf{x}_1, \ldots, \textbf{x}_{n-1})
+\label{eq: Bishop 13.56}
+\end{eqnarray}
+
+และ เราสามารถเขียนสมการ~\ref{eq: Bishop 13.36} ได้ใหม่เป็น
+\begin{eqnarray}
+c_n \cdot \hat{\alpha}(\textbf{z}_n) =
+p(\textbf{x}_n|\textbf{z}_n) \cdot \sum_{\textbf{z}_{n-1}} \hat{\alpha}(\textbf{z}_{n-1}) \cdot p(\textbf{z}_n|\textbf{z}_{n-1})
+\label{eq: Bishop 13.59}
+\end{eqnarray}
+
+การคำนวณค่า $\hat{\alpha}(\textbf{z}_n)$ แต่ละครั้ง ต้องรู้ค่า $c_n$ ด้วย 
+๏ แต่ค่าของ $c_n$ สามารถหาง่ายๆ 
+๏ เนื่องจาก $\sum_{\textbf{z}_n} \hat{\alpha}(\textbf{z}_n) = \sum_{\textbf{z}_n} p(\textbf{z}_n|\textbf{x}_1, \ldots, \textbf{x}_n) = 1$ 
+ดังนั้น $c_n$ จะเท่ากับ ผลบวก ของ เทอมขวามือ ของสมการ~\ref{eq: Bishop 13.59} สำหรับทุกๆค่าของ $\textbf{z}_n$
+เช่น สมมติหลังคำนวณ แล้วได้
+$c_n \cdot \hat{\alpha}(\textbf{z}_n)$ เท่ากับ $0.23$, $0.07$, กับ $0.04$ สำหรับ $\textbf{z}_n$ เป็น $[100]$, $[010]$, และ $[001]$ ตามลำดับ
+๏ ดังนั้น คำนวณค่า $c_n = 0.23 + 0.07 + 0.04 = 0.34$ และ $\hat{\alpha}(\textbf{z}_n)$ เท่ากับ $0.676$, $0.206$ และ $0.118$ สำหรับ $\textbf{z}_n$ เป็น $[100]$, $[010]$, และ $[001]$ ตามลำดับ
+
+ในทำนองเดียวกัน เรานิยาม $\hat{\beta}(\textbf{z}_n)$ ว่า
+
+\begin{eqnarray}
+\beta (\textbf{z}_n) = \left( \prod_{m=n+1}^N c_m \right) \hat{\beta}(\textbf{z}_n)
+\label{eq: Bishop 13.60}
+\end{eqnarray}
+
+หรือ อาจมองว่า ค่า $\hat{\beta}(\textbf{z}_n)$ คือ อัตราส่วน ของ ความน่าจะเป็น ข้างล่างนี้
+
+\begin{eqnarray}
+\hat{\beta} (\textbf{z}_n) = \frac{p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N|\textbf{z}_n)}{p(\textbf{x}_{n+1}, \ldots, \textbf{x}_N|\textbf{x}_1, \ldots, \textbf{x}_n)}
+\label{eq: Bishop 13.61}
+\end{eqnarray}
+
+จาก สมการ~\ref{eq: Bishop 13.38} เราจะได้
+
+\begin{eqnarray}
+c_{n+1} \hat{\beta}(\textbf{z}_n) = \sum_{\textbf{z}_{n+1}} \hat{\beta}(\textbf{z}_{n+1}) p (\textbf{x}_{n+1}|\textbf{z}_{n+1}) p(\textbf{z}_{n+1}|\textbf{z}_n)
+\label{eq: Bishop 13.62}
+\end{eqnarray}
+
+ค่าของฟังชั่นควรจะเป็น เขียนในรูปของ $c_n$ ได้
+\begin{eqnarray}
+p(\textbf{X}) = \prod_{n=1}^N c_n
+\label{eq: Bishop 13.63}
+\end{eqnarray}
+
+และ จากสมการ~\ref{eq: Bishop 13.63} เราเขียนสมการ~\ref{eq: Bishop 13.33} และ \ref{eq: Bishop 13.43} ได้เป็น
+
+\begin{eqnarray}
+\gamma(\textbf{z}_n) &=& \hat{\alpha}(\textbf{z}_n) \hat{\beta} (\textbf{z}_n)
+\label{eq: Bishop 13.64} \\
+\xi(\textbf{z}_{n-1},\textbf{z}_n) &=& \frac{\hat{\alpha} (\textbf{z}_{n-1}) p (\textbf{x}_n|\textbf{z}_n) p(\textbf{z}_n|\textbf{z}_{n-1}) \hat{\beta}(\textbf{z}_n)}{c_n}
+\label{eq: Bishop 13.65}
+\end{eqnarray}
+
+สังเกตุ ค่า $\hat{\beta}(\textbf{z}_N) = \beta(\textbf{z}_N) = 1$ และ 
+$\gamma(\textbf{z}_N) =  \hat{\alpha}(\textbf{z}_N) = p(\textbf{z}_N|\textbf{X})$
+๏ ดังนั้นหลังจากได้ค่าพารามิเตอร์ $\bm{\pi}$, $\textbf{A}$, และ $\bm{\phi}$ แล้ว 
+เราสามารถทำนายค่าของตัวแปรที่สังเกตุ $\textbf{X}$ ได้จาก
+
+\begin{eqnarray}
+p(\textbf{x}_n|\textbf{X}) &=&
+\sum_{\textbf{z}_n}
+p(\textbf{x}_n|\textbf{z}_n) \cdot p(\textbf{z}_n|\textbf{X})
+\nonumber \\
+&=& 
+\sum_{\textbf{z}_n}
+p(\textbf{x}_n|\textbf{z}_n) \cdot \gamma(\textbf{z}_n)
+\label{eq: HMM projected x} \\
+p(\textbf{x}_N|\textbf{X}) &=& 
+\sum_{\textbf{z}_{N+1}}
+p(\textbf{x}_{N+1}|\textbf{z}_{N+1}) \cdot \sum_{\textbf{z}_N} p(\textbf{z}_N|\textbf{X}) \cdot p(\textbf{z}_{N+1}|\textbf{z}_N)
+\nonumber \\
+&=&
+\sum_{\textbf{z}_{N+1}}
+p(\textbf{x}_{N+1}|\textbf{z}_{N+1}) \cdot \sum_{\textbf{z}_N} \gamma(\textbf{z}_N) \cdot p(\textbf{z}_{N+1}|\textbf{z}_N)
+\label{eq: HMM projected x next}
+\end{eqnarray}
+
+%p(\textbf{x}_N|\textbf{X}) &=& 
+
+%p(\textbf{x}_{N+1}|\textbf{z}_{N+1}) \cdot \sum_{\textbf{z}_N} p(\textbf{z}_N|\textbf{X}) \cdot p(\textbf{z}_{N+1}|\textbf{z}_N)
+
+\subsection{ทดลอง}
+
+\textbf{my comments}
+
+เราใช้ Baum-Welch algorithm เพื่อหาค่า parameters ของ HMM ที่กำเนิดข้อมูลออกมา
+พอทำเสร็จ 
+เพื่อจะรู้ได้ว่า ค่า obtained parameters ถูกต้องขนาดไหน
+(1) เทียบกับ ค่า parameters จริง ที่รู้ค่า (ซึ่ง ในทางปฏิบัติ เราจะไม่รู้ค่านี้)
+(2) ใช้ model ที่ได้ลองทำนาย ค่าของ observed variable ว่าถูกต้องขนาดไหน
+ถูกมาก น่าจะแปลว่าได้ ค่าใกล้เคียง
+
+The second approach is practical.
+But results I got so far show little correlation between high rate of correct forecast and small parameter estimation error.
+See checkhmm09f.r
+
+Perhaps, I need to increase the validation size.
+
+\subsection{The Viterbi Algorithm}
+
+บ่อยครั้งที่ ตัวแปรแฝง ของ hidden Markov model มีความหมาย ที่เราสนใจ และ เราอยากที่จะหา ลำดับของตัวแปรแฝง ที่น่าเป็นไปได้ที่สุด จากข้อมูลตัวที่สังเกตุได้ที่มีอยู่ 
+๏ เช่น ระบบการรู้จำคำพูด (speech recognition) เราต้องการ หาลำดับของ หน่วยเสียงพื้นฐาน (phonemes) ที่เป็นไปได้ที่สุดจาก สัญญาณเสียงที่บันทึก (acoustic signals)
+ซึ่ง ลำดับของหน่วยเสียงพื้นฐาน  จะถูกนำไปหาคำที่นะจะเป็นไปได้ที่สุด
+เช่น สัญญาณเสียงที่บันทึก อาจจะอยู่ ในรูป ระดับสัญญาณไฟฟ้าต่อเวลา ซึ่งมี ลำดับของหน่วยเสียงพื้นฐาน เป็น ``M EY sp N AH M sp K OW NG sp'' ซึ่ง คือ ลำดับเสียงของคำว่า ``แม่น้ำโขง''%
+\footnote{สำหรับตัวอย่าง ระบบการรู้จำคำพูด แนะนำให้ทดลอง โอเพนซอร์สซอฟต์แวร์ CMU Sphinx}
+
+๏ ในทางปฎิบัติ เราสามารถ หา ลำดับของสถานะ ที่น่าจะเป็นได้ที่สุด อย่างมีประสิทธิภาพ ได้ด้วย ``Viterbi algorithm''
+๏ ลำดับที่น่าจะเป็นไปได้ที่สุด ของ ตัวแปรแฝง เขียนได้เป็น
+\begin{eqnarray}
+\textbf{Z}^* &=& \arg \max_{\textbf{Z}} p(\textbf{Z}|\textbf{X})
+\label{eq: HMM Viterbi 1} \\
+&=& \arg \max_{\textbf{Z}} \frac{p(\textbf{Z},\textbf{X})}{p(X)}
+\nonumber \\
+&=& \arg \max_{\textbf{Z}} p(\textbf{Z},\textbf{X})
+\label{eq: HMM Viterbi 2}
+\end{eqnarray}
+
+เพื่อจะหา $\textbf{Z}^*$ เราลองดู  ค่าความน่าจะเป็นของลำดับตัวแปร $k$ ลำดับ ก่อน
+%ซึ่งคือ $p(z_1, z_2, \ldots, z_k, x_1, x_2, \ldots, x_k$
+๏ นิยามฟังชั่น 
+\begin{eqnarray}
+\mu_k(z_k) = \max_{z_1, z_2, \ldots, z_{k-1}} p(z_1, z_2, \ldots, z_{k-1}, z_k, x_1, x_2, \ldots, x_k)
+\label{eq: HMM Viterbi mu_k def}
+\end{eqnarray}
+
+เพื่อความกระชับ เราจะเขียนสมการ \ref{eq: HMM Viterbi mu_k def} ย่อๆเป็น
+\begin{eqnarray}
+\mu_k(z_k) &=& \max_{z_{1:k-1}} p(z_{1:k}, x_{1:k})
+\label{eq: HMM Viterbi mu_k def short} \\
+&=& \max_{z_{1:k-1}} p(x_k|z_k) \cdot p(z_k|z_{k-1}) \cdot p(z_{1:k-1}, x_{1:k-1})
+\nonumber \\
+&=& \max_{z_{k-1}} p(x_k|z_k) \cdot p(z_k|z_{k-1}) \cdot \max_{z_{1:{k-2}}} p(z_{1:k-1}, x_{1:k-1})
+\label{eq: HMM Viterbi mu_k recursive temp} \\
+\mu_k (z_k) &=& \max_{z_{k-1}} p(x_k|z_k) \cdot p(z_k|z_{k-1}) \cdot \mu_{k-1} (z_{k-1})
+\label{eq: HMM Viterbi mu_k recursive}
+\end{eqnarray}
+
+๏ สมการที่ \ref{eq: HMM Viterbi mu_k recursive temp} มาจากคุณสมบัติของฟังชั่น:
+ถ้า $f(a) \geq 0, \forall a$ และ $g(a,b) \geq 0, \forall a,b$, ดังนั้น
+$\max_{a,b} f(a) g(a,b) = \max_a \lbrace f(a) \cdot \max_b g(a,b) \rbrace$
+
+๏ และ จากสมการที่ \ref{eq: HMM Viterbi mu_k recursive} เราสามารถหา ลำดับที่น่าจะเป็นไปได้ที่สุด $\textbf{Z}^*$ โดยเริ่มจาก $k=1$ ไปจนถึงลำดับสุดท้าย
+สำหรับ ลำดับที่ 1, $\mu_1(z_1) = p(z_1, x_1) = p(z_1) \cdot p(x_1|z_1)$
+
+\subsection{ตัวอย่างวิเทอร์บิอัลกอริธึม}

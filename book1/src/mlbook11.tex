@@ -1,0 +1,460 @@
+%คอมไพล์ด้วย
+%\begin{verbatim}
+%xelatex mlbook.tex
+%xelatex mlbook.tex
+%bibtex mlbook
+%makeindex mlbook
+%xelatex mlbook.tex
+%xelatex mlbook.tex
+%\end{verbatim}
+
+%\documentstyle{article}
+%\documentclass[12pt,a4paper]{book} % tested OK
+\documentclass[oldfontcommands,a4paper,14pt]{memoir}
+
+\usepackage{float} % tested OK
+\usepackage{amsmath} % tested OK
+ \usepackage{polynom} % tested OK
+\usepackage{polyglossia} % tested OK
+\usepackage{color} % tested OK
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref} % tested OK
+\usepackage{paralist} % tested OK
+
+\usepackage{fontspec}  % tested OK
+
+\usepackage{mathptmx} % tested OK
+
+\newcommand\hmmax{0}
+%\newcommand\bmmax{1}
+\usepackage{bm} % tested OK
+\usepackage{amsfonts} % tested OK
+\usepackage[usenames,dvipsnames]{xcolor} % tested OK
+
+\usepackage[top=25mm, bottom=20mm, left=20mm, right=20mm]{geometry} % tested OK
+\XeTeXlinebreaklocale "th"  % tested OK
+\XeTeXlinebreakskip = 0pt plus 1pt % tested OK
+\defaultfontfeatures{Scale=1.23}
+
+\usepackage{framed,color}  % tested OK
+\definecolor{shadecolor}{rgb}{1,0.8,0.3}   % tested OK
+
+\usepackage{mdframed}  % tested OK
+
+\usepackage[all]{xy}  % tested OK
+
+\usepackage{multicol}
+
+%\title{การประยุกต์ใช้การเรียนรู้ของเครื่อง\\
+%Introduction to Machine Learning Applications}
+%\title{การเรียนรู้ของเครื่องเบื้องต้น:\\
+%โครงข่ายประสาทเทียม และ การประยุกต์ใช้\\
+%Introduction to Machine Learning:\\
+%Artificial Neural Networks and Their Applications}
+\title{การเรียนรู้ของเครื่องเบื้องต้น\\
+Introduction to Machine Learning}
+\author{ธัชพงศ์ กตัญญูกุล}
+
+\setdefaultlanguage{thai}  % to make default keyword thai, e.g., บทที่. Mar 27th, 2014.
+
+%\newfontfamily{\thaifont}[Script=Thai]{TH Sarabun New:script=thai}
+%\newfontfamily{\thaifont}[Scale=MatchUppercase, Mapping=tex-text]{TH Sarabun New}
+\newfontfamily{\thaifont}[Mapping=tex-text]{TH Sarabun New}
+
+\setmainfont[Scale=1.0]{TH Sarabun New:Script=Thai}
+%\setmainfont[Scale=1.0,
+% BoldFont={TH Sarabun New Bold},  
+% ItalicFont={TH Sarabun New Italic},
+% BoldItalicFont={TH Sarabun New Bold Italic}
+% ]{TH Sarabun New:Script=Thai}
+
+
+\newfontfamily{\thaifonttt}[Scale=0.8]{Consolas} % to fix polyglossia and verbatim, Mar 27, 2014.
+
+\usepackage{listings} % for code listing. Mar 27, 2014.
+
+\renewcommand\lstlistingname{รายการ} % to change listing caption. Mar 27, 2014.
+
+\usepackage{amsthm} % for end of example symbol. Apr 1, 2014.
+\newenvironment{myexample}[1][ตัวอย่าง]
+    {    \begin{proof}[#1] \begin{small}         }
+    {    \end{small} \end{proof} }
+
+
+\setcounter{secnumdepth}{3} %% for subsection numbering, Apr 4th, 2014.
+
+\usepackage{makeidx}  %% to allow indexing, Apr 8th, 2014.
+\makeindex
+
+\usepackage{sidecap} %% to allow side caption, Dec 22nd, 2014.
+
+\usepackage{graphicx} % for background image, Dec 23rd, 2014.
+%for subfigure, Mar 29th, 2015.
+\usepackage{subcaption} %for subcaption, Mar 29th, 2015.
+
+\usepackage[font=small,labelfont=bf]{caption} %for small size caption, Aug 11th, 2016.
+
+\definecolor{shadecolor}{rgb}{0.95, 0.95, 0.95} % for lighten shaded background, Mar 29th, 2016.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\includeonly{MLAintro, MLAann, MLAannApp, MLAAnnTips} 
+%\includeonly{MLAintro} %fixed Jan 8th, 2017.
+%\includeonly{MLAopt} %fixed Jan 13th, 2017.
+%\includeonly{MLAcurvefitting} %fixed Jan 24th, 2017
+%\includeonly{MLAlinear} %fixed Jan 26th, 2017
+%\includeonly{MLAann} %fixed Sep 4th, 2016.
+%\includeonly{MLAannApp} %fixed Jan 2nd, 2017.
+%\includeonly{MLAAnnTips} %fixed Jan 6th, 2017.
+%\includeonly{MLADeep} %removed temporarily Nov 30th, 2016.
+
+
+
+\begin{document}
+
+%{
+%\usebackgroundtemplate{\includegraphics[width=\paperwidth]{mtncar.eps}}%
+\maketitle
+%}
+
+%
+\begin{figure}
+\begin{center}
+\includegraphics[width=5.5in]{mtnvalleyCar.png}
+\end{center}
+%\caption{mountain car}
+%\label{fig: mtncar}
+\end{figure}
+%
+
+\pagenumbering{gobble}
+\clearpage
+\pagenumbering{arabic}
+
+\tableofcontents
+\clearpage
+
+\lstset{
+    language=R,
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=lines,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    keywordstyle=\color{blue},
+    stringstyle=\color{green!50!black},
+    commentstyle=\color{gray}\itshape,
+    numbers=left,
+    captionpos=t,
+    escapeinside={(*}{*)}
+}
+
+\lstset{
+    language=Matlab,
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=lines,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    keywordstyle=\color{blue},
+    stringstyle=\color{green!50!black},
+    commentstyle=\color{gray}\itshape,
+    numbers=left,
+    captionpos=t,
+    escapeinside={\%\{}{\%\}}
+}
+
+%\lstinputlisting[language=R, caption={Sigmoid}]{test.R}
+
+%\begin{lstlisting}[language=R,caption={Hello World}]
+%## test
+%x$test <- v %*% q
+%## ##* เวกเตอร์ (vector) $x = \vec{v} \cdot \vec{q}$.*)
+%\end{lstlisting}
+
+%\begin{proof}[ตัวอย่าง]
+%Here is my important proof
+%\end{proof}
+
+%\begin{myexample}
+%Here is my example.
+%\end{myexample}
+
+%\begin{myexample}[ตัวอย่างพิเศษ]
+%Here is my example.
+%\end{myexample}
+
+\section*{สัญญลักษณ์}
+\selectlanguage{thai}
+
+ศาสตร์\textit{การเรียนรู้ของเครื่อง}อาศัยพื้นฐานทางคณิตศาสตร์ 
+ดังนั้นเพื่อให้ลดความสับสนของตัวแปรคณิตศาสตร์ที่ใช้ 
+สัญญลักษณ์ของตัวแปรคณิตศาสตร์จะใช้ตามแนวทางดังตารางข้างล่าง ยกเว้นแต่จะระบุเป็นอื่น
+\\
+
+\hspace{-0.5in}
+\begin{tabular}{ |>{\arraybackslash}m{1.3in}  |>{\arraybackslash}m{1.3in} 
+|>{\arraybackslash}m{1.4in} |>{\arraybackslash}m{1.4in}|}
+%\begin{tabular}{|c|c|c|c|}
+\hline 
+ชนิดตัวแปร & แบบอักษร & ตัวอย่างอักษรลาติน & ตัวอย่างอักษรกรีก \\ 
+\hline 
+สเกล่าร์ & พิมพ์เล็กธรรมดา & $x$ & $\phi$ \\ 
+\hline 
+เวคเตอร์ & พิมพ์เล็กตัวหนา & $\mathbf{x}$ & $\bm{\phi}$ \\
+\hline 
+%เวคเตอร์ & พิมพ์เล็กตัวหนา & $\hm{x}$ & $\hm{\phi}$ \\
+%\hline 
+เมตริกซ์ & พิมพ์ใหญ่ตัวหนา & $\mathbf{X}$ & $\bm{\Phi}$ \\
+\hline 
+\end{tabular} 
+\vspace{0.5cm}
+
+ตัวอย่าง
+เมตริกซ์ $\mathbf{X} \in \mathbb{R}^{2 \times 3}$ เช่น
+\begin{eqnarray}
+\mathbf{X} = \begin{bmatrix}
+1.2 & 3.5 & -0.48 \\
+0.63 & 0.0 & 123.0
+\end{bmatrix}
+\nonumber
+\end{eqnarray}
+
+เวคเตอร์ $\mathbf{x} \in \mathbb{R}^4$ เช่น
+$\mathbf{x} = \begin{bmatrix}
+10.0 & 0.75 & -44.6 & 1203.8
+\end{bmatrix}^T
+$\\
+(หมายเหตุ ถ้าไม่ระบุเป็นอย่างอื่น เวคเตอร์จะหมายถึง\textit{เวคเตอร์แบบคอลัมน์})
+\\
+และ
+สเกล่าร์ $x \in \mathbb{R}$ เช่น
+$
+x = 32.4
+$
+%สัญญลักษณ์อื่นๆใช้ หากไม่ได้ระบุ จะใช้ตามความนิยมทั่วไป เช่น $x^\ast$ หมายถึง ค่าตัวดีที่สุด เป็นต้น.
+
+%
+ตัวอักษรภาษาอังกฤษทั่วไปจะใช้รูปแบบ เช่น x, y, z.
+รูปแบบสำหรับโปรแกรมคอมพิวเตอร์ ตัวแปรที่อ้างถึงตัวแปรจากโปรแกรมคอมพิวเตอร์ จะใช้รูปแบบ เช่น \verb|x, y, z| 
+โดยตัวพิมพ์เล็กหรือตัวพิมพ์ใหญ่ขึ้นกับชื่อตัวแปรในโปรแกรม (ไม่เกี่ยวข้องกับโครงสร้างชนิดข้อมูลของตัวแปร) ดังนี้
+\\
+%ฟังชั่น \verb|rbf| นำไปปฎิบัติโดย \verb|rbf(x) = exp(-gamma*dist(x))|
+%โปรแกรมคอมพิวเตอร์ จะเขียนอยู่ในรูปแบบ ดังนี้
+%\vspace{0.5cm}
+รูปแบบที่ 1
+\begin{verbatim}
+## Radial Basis Function
+rbf <- function(x, gamma=0.1){
+    return exp(-gamma*dist(x))
+}
+\end{verbatim}
+
+\vspace{0.5cm}
+%
+หรือ รูปแบบที่ 2 (รูปแบบนี้ บางครั้งอาจแสดงเลขบรรทัดออกมาด้วย)
+\begin{lstlisting}[language=R, numbers=none]
+## Radial Basis Function
+rbf <- function(x, gamma=0.1){
+	exp(-gamma*dist(x))
+}
+\end{lstlisting}
+
+%โดยใน รูปแบบที่ 2 บางครั้ง (ตามความเหมาะสม) อาจแสดงเลขบรรทัด หรือ อักขระตั้งระยะ (tab) ออกมาด้วย เช่น
+%\begin{lstlisting}[language=R, showtabs=true]
+%## Gram Matrix
+%for i in np.arange(N):
+%	for j in np.arange(N):
+%		K[i,j] = rbf(x[:,i]) * rbf(x[:,j])
+%## ##* รูปแบบนี้ อักขระตั้งระยะ (tab) จะแสดงออกมาให้เห็นชัดเจน *)
+%\end{lstlisting}
+
+%\lstinputlisting[language=R, caption={Sigmoid}]{test.R}
+
+\pagebreak
+
+\begin{shaded}
+%``การสร้างงานศิลปะทุกอย่างทุกประเภท นอกจากจะต้องใช้ความฝึกหัดชัดเจนในทางปฏิบัติ ประกอบกับวิธีการที่ดีอย่างเหมาะสมแล้ว ศิลปินจำต้องมีความจริงใจและความบริสุทธิ์ใจในงานที่ทำด้วย จึงจะได้ผลงานที่มีค่าควรแก่การยอมรับนับถือ''\\
+%พระราชดำรัสของ พระบาทสมเด็จพระเจ้าอยู่หัว\\
+%(ในพิธีเปิดการแสดงศิลปกรรมแห่งชาติ ครั้งที่ 21 8 กันยายน 2515) 
+
+%การจะพัฒนาทุกสิ่งทุกอย่างให้เจริญนั้นจะต้องสร้างและเสริมขึ้นจากพื้นฐานเดิมที่มีอยู่ก่อนทั้งสิ้น ถ้าพื้นฐานไม่ดีหรือคลอนแคลนบกพร่องแล้ว ที่จะเพิ่มเติมเสริมต่อให้เจริญขึ้นไปอีกนั้น ยากนักที่จะทำได้ จึงควรจะเข้าใจให้แจ้งชัดว่า นอกจากจะมุ่งสร้างความเจริญแล้ว ยังต้องพยายามรักษาพื้นฐานให้มั่นคง ไม่บกพร่อง พร้อมๆ กันไปด้วย 
+%พระบรมราโชวาทของ พระบาทสมเด็จพระเจ้าอยู่หัว... (46)
+%(ในพิธีพระราชทานปริญญาบัตรแก่นิสิตจุฬาลงกรณ์มหาวิทยาลัย ณ จุฬาฯ 10 ก.ค.2523) 
+
+``หนังสือ เป็นเสมือนคลังที่รวบรวมเรื่องราว ความรู้ ความคิด วิทยาการทุกด้านทุกอย่าง ซึ่งมนุษย์ได้เรียนรู้ ได้คิดอ่าน และเพียรพยายามบันทึกภาษาไว้ด้วยลายลักษณ์อักษร หนังสือแพร่ไปถึงที่ใด ความรู้ความคิดก็แพร่ไปถึงที่นั่น หนังสือจึงเป็นสิ่งมีค่า และมีประโยชน์ที่จะประมาณมิได้ในแง่ที่เป็นบ่อเกิดการเรียนรู้ของมนุษย์'' \\
+%\hspace{1.5in} 
+---พระราชดำรัสของพระบาทสมเด็จพระเจ้าอยู่หัวรัชกาลที่เก้า
+\end{shaded}
+
+\vspace{-0.5in}
+\section*{คำนำ}
+%\nonumbering
+
+หนังสือ\textit{การเรียนรู้ของเครื่องเบื้องต้น}เล่มนี้ 
+อธิบายเนื้อหาที่เกี่ยวข้องกับวิทยาการ\textit{การเรียนรู้ของเครื่อง} โดยเฉพาะ\textit{โครงข่ายประสาทเทียม}.
+โดยมีวัตถุประสงค์ที่จะนำเสนอ ภาพรวม พื้นฐาน การประยุกต์ใช้  การนำทฤษฏีซึ่งอธิบายด้วยสมการคณิตศาสตร์ไปเขียนโปรแกรม
+รวมไปถึงการพัฒนาที่น่าสนใจ และแรงบันดาลใจที่เกี่ยวข้อง.
+อย่างไรก็ตาม แม้จุดประสงค์หลักอย่างหนึ่งคือการนำเสนอภาพรวมของศาสตร์
+แต่เนื่องจากความกว้างและลึก
+รวมถึงความก้าวหน้าที่เติบโตอย่างต่อเนื่องและรวดเร็วของศาสตร์นี้
+การจะครอบคลุมเนื้อหาทั้งหมดเป็นไปไม่ได้เลย.
+ดังนั้นหนังสือเล่มนี้จัดทำเนื้อหาโดยยึดแนวคิดในการวางตัวเพียงเป็นจุดเริ่มต้น
+ให้ผู้อ่านได้พอเข้าใจและเห็นคุณค่าของวิทยาการการเรียนรู้ของเครื่องและศาสตร์พื้นฐานเบื้องหลัง
+% ฉันทะ วิริยะ จิตตะ วิมังสา
+% และคุณค่าของการเรียนรู้ของเครื่อง  
+%ผู้อ่านได้พอเห็นภาพ ได้ชื่นชมการพัฒนา ได้เข้าใจคุณค่าและประสิทธิผลการประยุกต์ใช้ และได้เห็นศักยภาพของศาสตร์นี้
+รวมถึงการให้ผู้อ่านได้มีตัวอย่างโปรแกรมที่สามารถนำไปทดลองปฏิบัติได้ด้วยตนเอง
+ไปจนถึงอภิปรายข้อสังเกตุและประเด็นที่สำคัญ นำเสนอเกร็ดความรู้ ให้แบบฝึกหัด %ที่หวังว่าจะช่วยให้ผู้อ่านที่สนใจได้เกิดความคิดเชิงวิเคราะห์ หรือสร้างแรงบันดาลใจข
+และอำนวยความสะดวกในกรณีที่ผู้อ่านต้องการแหล่งค้นคว้าเพิ่มเติม. 
+แนวคิดของลำดับเนื้อหาดังกล่าวข้างต้นนี้ ออกแบบมาเพื่อใช้ประกอบการเรียนการสอน วิชา\textit{โครงข่ายประสาทเทียม} วิชา\textit{การเรียนรู้ของเครื่อง} และวิชา\textit{การรู้จำรูปแบบและการตรวจจับภาพวัตถุ} ระดับปริญญาตรีและบัณฑิตศึกษา ของ% 
+%ภาควิชาวิศวกรรมคอมพิวเตอร์ 
+คณะวิศวกรรมศาสตร์ มหาวิทยาลัยขอนแก่น
+
+
+% ซึ่งหวังว่าจะช่วยเสริมความเข้าใจของศาสตร์ได้ดียิ่งขึ้น %ไปจนถึง เกิดความคิด หรือ มีแรงบันดาลใจ ที่จะประยุกต์ใช้, พัฒนา, ปรับปรุง, หรือ ทำการศึกษาวิจัยในศาสตร์และศิลป์นี้ต่อไป.
+%และ 
+%ก็หวังว่า โดยอาศัยพื้นฐานบางส่วน จาก การเรียนรู้ของเครื่องเบื้องต้นเล่มนี้ 
+%ทั้งหมดนี้ หากผู้อ่าน ที่ชื่นชอบและสนใจที่จะศึกษาเพิ่มเติม ก็จะสามารถทำได้สะดวกยิ่งขึ้น.
+
+การเรียนรู้ของเครื่อง มีพื้นฐานมาจากหลากหลายศาสตร์ เช่น การหาค่าดีที่สุด ความน่าจะเป็น
+หนังสือเริ่มด้วยการอธิบายภาพรวมของการเรียนรู้ของเครื่อง 
+ตามด้วยการอธิบายศาสตร์พื้นฐานบางส่วน เพื่อให้ช่วยผู้อ่านสามารถทำความเข้าใจทฤษฎีเบื้องหลังได้ดียิ่งขึ้น 
+แล้วจึงอธิบายวิธีการเรียนรู้ของเครื่องอย่างง่าย (โมเดลเชิงเส้น) 
+ก่อนจะอธิบายวิธีโครงข่ายประสาทเทียม (ซึ่งเป็น หนึ่งในศาสตร์และศิลป์ของการเรียนรู้ของเครื่อง) 
+ไปจนถึงการนำวิธีโครงข่ายประสาทเทียมไปประยุกต์ใช้งาน
+
+%ผู้เขียนหวังว่า ตำราการประยุกต์ใช้การเรียนรู้ของเครื่องเล่มนี้ จะช่วยเป็นจุดเริ่มต้นให้ ผู้อ่านได้พอเห็นภาพ ได้ชื่นชมการพัฒนา ได้เข้าใจคุณค่าและประสิทธิผลการประยุกต์ใช้ และได้เห็นศักยภาพของศาสตร์นี้
+%รวมถึง หากผู้อ่านได้ทดลองลงมือปฏิบัติ ก็จะช่วยเสริมความเข้าใจของศาสตร์ได้ดียิ่งขึ้น %ไปจนถึง เกิดความคิด หรือ มีแรงบันดาลใจ ที่จะประยุกต์ใช้, พัฒนา, ปรับปรุง, หรือ ทำการศึกษาวิจัยในศาสตร์และศิลป์นี้ต่อไป.
+%และ 
+%ก็หวังว่า โดยอาศัยพื้นฐานบางส่วน จาก การเรียนรู้ของเครื่องเบื้องต้นเล่มนี้ 
+%หากผู้อ่าน ที่ชื่นชอบและสนใจที่จะศึกษาเพิ่มเติม ก็จะสามารถทำได้สะดวกยิ่งขึ้น.
+
+\pagebreak
+
+%\vfill
+\begin{minipage}{6in}
+{\small
+\begin{shaded}
+%หมายเหตุ 
+เนื่องจากเนื้อหาของหนังสือเกี่ยวข้องกับคณิตศาสตร์และมี\textit{คำศัพท์เฉพาะ}จำนวนมาก 
+รวมทั้งหนังสือเล่มนี้จัดเตรียมด้วยโปรแกรมเลเท็กซ์. 
+ดังนั้น เพื่อช่วยให้เนื้อหาอ่านง่ายขึ้น และเพื่อช่วยการตัดประโยคของเลเท็กซ์ รูปแบบการเขียนอาจจะมีการเว้นวรรคตอนมากกว่างานเขียนภาษาไทยโดยทั่วไป 
+และเพื่อลดความสับสนจากวรรคตอน ผู้เขียนใช้\textit{มหัพภาค}เพื่อช่วยบอกการจบประโยค
+รวมถึงบางครั้งผู้เขียนใช้\textit{ฟอนต์ตัวเอียง}เพื่อเน้นคำศัพท์หรือกลุ่มคำให้ชัดเจนขึ้น
+ตัวอย่างเช่น ``วิธีที่ดีที่สุดในการเรียนรู้\textit{ศาสตร์การเรียนรู้ของเครื่อง}ก็คือการลองลงมือทำ.''
+ทั้งนี้ผู้เขียนต้องขออภัยสำหรับประเด็นดังกล่าวด้วย.
+
+การเรียบเรียงจัดทำเนื้อหาของการเรียนรู้ของเครื่องเบื้องต้นเล่มนี้  ได้รับอิทธิพลหลักจากตำราการรู้จำรูปแบบและการเรียนรู้ของเครื่อง\cite{Bishop2006a} และ วิดีทัศน์สอนวิชาการเรียนรู้ของเครื่อง\cite{Ng2013a}
+โดยอาจมีแหล่งอื่นๆเพิ่มเติมอีกตามเนื้อหาเฉพาะ เช่น \textit{การหาค่าดีที่สุด}ได้รับอิทธิพลหลักจากตำราการหาค่าดีที่สุดเบื้องต้น\cite{ChongZak2ndEd}.
+\end{shaded}
+}
+\end{minipage}
+
+
+%คอมไพล์ด้วย
+%\begin{verbatim}
+%xelatex mlbook.tex
+%xelatex mlbook.tex
+%bibtex mlbook
+%makeindex mlbook
+%xelatex mlbook.tex
+%xelatex mlbook.tex
+%\end{verbatim}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% introduction Andrew Ng's Lecture 1 & Bishop Chapter 1
+\include{MLAintro} %done
+
+%% Optimization
+\include{MLAopt} %done
+
+%% Bishop's chapter 1
+%% (1) Basic Optimization: Line Search, Gradient Descend, Constraint Optimization
+%% (2) Polynomial Curve fitting
+%% (3) Probability
+%% (4) Logistic Regression
+
+\include{MLAcurvefitting}  % done
+
+%% probability
+%\include{MLAprob} 
+
+%%\input{MLA02Polynomial}
+
+%% Bishop's chapters 3 and 4
+%% (1) Linear Models for Regression
+%% (2) Linear Models for Classification
+
+\include{MLAlinear} % done
+
+%% Bishop's chapter 5 
+%% Neural Network
+
+\include{MLAann} % done
+
+%% examples
+
+\include{MLAannApp} % done
+
+%% advices on ANN: Andrew Ng's Lectures
+%% fast learning algorithm
+%% scg
+
+\include{MLAAnnTips} % done
+
+%% deep learning
+
+%\include{MLADeep}
+
+%\include{MLADeepDetails}
+
+%\include{logDoing}
+%\include{logDoing2}
+
+%% SVM
+%% K-means, 
+%% PCA, 
+%% Anomaly Detection, 
+%% Recommendation System,
+
+
+%% Reinforcement Learning,
+%% HMM
+
+%\input{MLAthai05.tex}
+
+%% Advanced Topics
+%% Active Learning, Transfer Learning, Deep Learning
+
+%%\input{MLAthai06.tex}
+
+%\input{MLA22others.tex}
+
+%% ADP
+
+%\input{MLAthai06ADP.tex}
+
+
+%\input{MLA20appendix.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{acm}   
+\bibliography{mybib}  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\printindex
+
+
+\end{document}
+
+
