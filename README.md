@@ -6,7 +6,7 @@
 * Possibly
   * [การคำนวณในแดนมหัศจรรย์ควอนตัม (Computation in Quantum Wonderland)](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/CinQWonder)
   * [การผจญภัยของการคำนวณในโลกแบบจำลองเชิงกายภาพ (The Adventures of Computation in Physically-Based Modeling)](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/PBM)
-  * [ท่องรอบโลกไพธอนใน 80+ แบบฝึกหัด (Around the Python World in 80+ Exercises)](https://github.com/tatpongkatanyukul/AroundAIin80/blob/main/README.md)
+  * [ท่องรอบไพธอนใน 80+ แบบฝึกหัด (Around Python in 80+ Exercises)](https://github.com/tatpongkatanyukul/AroundAIin80/blob/main/README.md)
 
 
 ---
