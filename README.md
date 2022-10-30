@@ -4,7 +4,7 @@
   * [คิดไพธอน (แปล)](https://github.com/tatpongkatanyukul/thinkpythonthai)
   * การผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรูปแบบ ([2022](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/CorrectPerReview))
 * Possibly
-  * การคำนวณในแดนมหัศจรรย์ควอนตัม (Computation in Quantum Wonderland)
+  * [การคำนวณในแดนมหัศจรรย์ควอนตัม (Computation in Quantum Wonderland)](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/CinQWonder)
   * [การผจญภัยของการคำนวณในโลกแบบจำลองเชิงกายภาพ (The Adventures of Computation in Physically-Based Modeling)](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/PBM)
   * ท่องรอบโลกไพธอนใน 80+ แบบฝึกหัด (Around the Python World in 80+ Exercises)
 
