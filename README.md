@@ -1,5 +1,5 @@
 # Books
-* การเรียนรู้ของเครื่องเบื้องต้น
+* [การเรียนรู้ของเครื่องเบื้องต้น](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/book1)
 * Coming soon!
   * คิดไพธอน (แปล)
   * การผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรูปแบบ
