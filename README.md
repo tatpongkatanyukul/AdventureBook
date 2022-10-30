@@ -3,8 +3,11 @@
 * Coming soon!
   * คิดไพธอน (แปล)
   * การผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรูปแบบ
-* Next
-  * การผจญภัยของการคำนวณในโลกแบบจำลองเชิงกายภาพ
+* Possibly
+  * การคำนวณในแดนมหัศจรรย์ควอนตัม (Computation in Quantum Wonderland)
+  * การผจญภัยของการคำนวณในโลกแบบจำลองเชิงกายภาพ (The Adventures of Computation in Physically-Based Modeling)
+  * ท่องรอบโลกไพธอนใน 80+ แบบฝึกหัด (Around the Python World in 80+ Exercises)
+
 
 ---
 
