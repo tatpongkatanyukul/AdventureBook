@@ -5,7 +5,7 @@
   * การผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรูปแบบ
 * Possibly
   * การคำนวณในแดนมหัศจรรย์ควอนตัม (Computation in Quantum Wonderland)
-  * การผจญภัยของการคำนวณในโลกแบบจำลองเชิงกายภาพ (The Adventures of Computation in Physically-Based Modeling)
+  * [การผจญภัยของการคำนวณในโลกแบบจำลองเชิงกายภาพ (The Adventures of Computation in Physically-Based Modeling)](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/PBM)
   * ท่องรอบโลกไพธอนใน 80+ แบบฝึกหัด (Around the Python World in 80+ Exercises)
 
 
