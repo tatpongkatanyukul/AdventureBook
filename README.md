@@ -1,8 +1,8 @@
 # Books
 * [การเรียนรู้ของเครื่องเบื้องต้น](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/book1)
 * Coming soon!
-  * คิดไพธอน (แปล)
-  * การผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรูปแบบ
+  * [คิดไพธอน (แปล)](https://github.com/tatpongkatanyukul/thinkpythonthai)
+  * การผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรูปแบบ ([2022](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/CorrectPerReview))
 * Possibly
   * การคำนวณในแดนมหัศจรรย์ควอนตัม (Computation in Quantum Wonderland)
   * [การผจญภัยของการคำนวณในโลกแบบจำลองเชิงกายภาพ (The Adventures of Computation in Physically-Based Modeling)](https://github.com/tatpongkatanyukul/AdventureBook/tree/main/PBM)
