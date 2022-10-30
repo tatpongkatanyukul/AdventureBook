@@ -1,3 +1,13 @@
+# Books
+* การเรียนรู้ของเครื่องเบื้องต้น
+* Coming soon!
+  * คิดไพธอน (แปล)
+  * การผจญภัยของการเรียนรู้ของเครื่องในโลกการรู้จำรูปแบบ
+* Next
+  * การผจญภัยของการคำนวณในโลกแบบจำลองเชิงกายภาพ
+
+---
+
 # The Adventures of Machine Learning in the World of Pattern Recognitiion 
 (a.k.a. The Adventure Book of Machine Learning)
 
