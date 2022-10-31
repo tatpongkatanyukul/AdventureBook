@@ -9,3 +9,9 @@ See [what I have learned](https://github.com/tatpongkatanyukul/QC)
   * Quantum Mechanics and its classical counterpart
 * Chapter 3
   
+---
+
+N & C:
+Postulates
+* (p 80) Associated to any isolated physical system is a complex vector space with inner product (that is, a Hilbert space) know as the _state space_ of the system. The system is completely described by its _state vector_, which is a unit vector in the system's state space.
+* 
