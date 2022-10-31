@@ -20,4 +20,4 @@ Postulates
 * (p 84) **Postulate 3**: Quantum measurements are described by a collection $\{M_m\}$ of _measurement operators_. These are operators acting on the state space of the system being measured. the index $m$ referfs to the measurement outcomes that may occur in the experiment. If the state of the quantum system is $|\psi\rangle$ immediately before the measurement then the probability that result $m$ occurs is given by $p(m) = \langle \psi | M_m^\dagger M_m | \psi \rangle$,
 and the state of the system after the measurement is
 $\frac{M_m | \psi \rangle }{\sqrt{\langle \psi | M_m^\dagger M_m | \psi \rangle}}$.
-
+* (p 94) **Postulate 4**: The state space of a composite physical system is the tensor product of the state spaces of the component physical systems. Moreover, if we have systems numbered 1 through $n$, and system namer $i$ is prepared in the state $| \psi \rangle$, then the joint state of the total system is $| \psi_1 \rangle \otimes | \psi_2 \rangle \otimes \cdots \otimes | \psi_n \rangle$.
