@@ -14,4 +14,4 @@ See [what I have learned](https://github.com/tatpongkatanyukul/QC)
 N & C:
 Postulates
 * (p 80) **Postulate 1**: Associated to any isolated physical system is a complex vector space with inner product (that is, a Hilbert space) know as the _state space_ of the system. The system is completely described by its _state vector_, which is a unit vector in the system's state space.
-* (p 81) **Postulate 2**: The evolution of a _closed_ quantum system is described by a _unitary transformation_. That is, the state $|\psi>$
+* (p 81) **Postulate 2**: The evolution of a _closed_ quantum system is described by a _unitary transformation_. That is, the state $|\psi\rangle$
