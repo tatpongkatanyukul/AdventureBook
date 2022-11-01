@@ -40,4 +40,4 @@ where the morphogen concentration $c$ (in molecules/$\mu m^3$) is a function of 
 Sometimes, instead of the degradation rate $k$, the half-life of molecule $\tau$ (in second) is used. This is the time after which the concentration has been reduced by half from the degradation effect alone:
 $\frac{1}{2} c_0 = c_0 e^{-k \tau}$.
 
-That is, $ k = \frac{1}{\tau} \log 2 $.
+That is, $k = \frac{1}{\tau} \log 2$.
