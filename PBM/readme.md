@@ -53,11 +53,11 @@ That is, $k = \frac{1}{\tau} \log 2$.
 > $\partial_t C = D \nabla^2 C - k C + 2 j_0 \delta(x)$ (1)
 > where $t$ is time, $x > 0$ is the distance to the source in the target tissue, $\nabla^2$ is the Laplace operator, and $\delta$ is the Dirac delta function.
 > The steady-staet solution for Eq. 1 is a single exponential gradient:
-> $ C(x) = C_0 e^{-x/\lambda}$
-> where the Dpp concentration $C(x)$ depends only on the distance $x$ from the source, the concentration $C_0$ at the source boundary, and the decay lenght $\lambda$.
+> $C(x) = C_0 e^{-x/\lambda}$
+> where the Dpp concentration $C(x)$ depends only on the distance $x$ from the source, the concentration $C_0$ at the source boundary, and the decay lenght $\lambda$ .
 > ... $\lambda = \sqrt{D/k}$
 > ... $C_0 = j_0 / \sqrt{D \cdot k}$
 > ... a decay length $\lambda$ = 20.2 $\pm$ 5.7 $\mu m$, ...
->  ... $C_0$ = 802 $\pm$ 312 molecules/$\mu m^2$ ...
+>  ... $C_0$ = 802 $\pm$ 312 molecules / $\mu m^2$ ...
 
 
