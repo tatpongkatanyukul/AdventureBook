@@ -71,3 +71,8 @@ That is, $k = \frac{1}{\tau} \log 2$.
 > ... Dpp was degraded at a rate $k=2.52 \times 10^{-4} \pm 1.29 \times 10^{-4} s^{-1}$ corresponding to a GFP-Dpp half-life of about 45 min...
 
 > ... We found $j_0 = 3.98 \pm 2.34$ molecules / ( $\mu m \times s$ ) ...
+
+**Hands-on**
+$D \nabla^2 C - \partial_t C - k C + 2 j_0 \delta(x) = 0$
+find approx. time to steady-state.
+
