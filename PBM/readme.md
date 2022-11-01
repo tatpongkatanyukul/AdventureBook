@@ -30,6 +30,6 @@ Ortrud Wartlick, Anna Kicheva, and Marcos González-Gaitán, Morphogen Gradient 
 
 Morphogen spreading can be described with an effective diffusion coefficient $D$ (in $\mu m^2/s$) and effective dddegradation rate $k$ (in $1/s$):
 
-$\frac{\partial c}{\partial t} = D \frac{\partial^2 c}{partial x^2} - k c$
+$\frac{\partial c}{\partial t} = D \frac{\partial^2 c}{\partial x^2} - k c$
 
 where the morphogen concentration $c$ (in molecules/$\mu m^3$) is a function of space and time, i.e., $c(x,t)$.
