@@ -1,9 +1,12 @@
 
-# การผจญภัยของแบบจำลองเชิงกายภาพ (The Adventures of Physically-Based Modeling)
+# การผจญภัยของแบบจำลองพลวัต (The Adventures of Dynamic Modeling)
 
 * Old english title: "The Adventures of Computation in the World of Physically-Based Modeling"
 * title: การผจญภัยของแบบจำลองเชิงกายภาพ "The Adventures of Computation in Physically-Based Modeling"
   * It is more concise
+
+* Alternative: **Physically-based modeling and dynamic simulation** แบบจำลองเชิงกายภาพและการจำลองพลวัตร
+* Alternative: การผจญภัยของแบบจำลองเชิงกายภาพ (The Adventures of Physically-Based Modeling)
 
 ## Structures
   * Chapter 1: Introduction
@@ -33,3 +36,8 @@ Morphogen spreading can be described with an effective diffusion coefficient $D$
 $\frac{\partial c}{\partial t} = D \frac{\partial^2 c}{\partial x^2} - k c$
 
 where the morphogen concentration $c$ (in molecules/$\mu m^3$) is a function of space and time, i.e., $c(x,t)$.
+
+Sometimes, instead of the degradation rate $k$, the half-life of molecule $\tau$ (in second) is used. This is the time after which the concentration has been reduced by half from the degradation effect alone:
+$\frac{1}{2} c_0 = c_0 e^{-k \tau}$.
+
+That is, $ k = \frac{1}{\tau} \log 2 $.
