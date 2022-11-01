@@ -29,7 +29,8 @@
 Ortrud Wartlick, Anna Kicheva, and Marcos González-Gaitán, Morphogen Gradient Formation. Cold Spring Harb Perspect Biol. 2009 Sep; 1(3)
 
 > "According to this model[Wolpert 1969], morphogen is secreted from a group of of source cells and forms a gradient of concentration in the target tissue. Different target genes are expressed above distinct concentration thresholds, i.e., at different distances to the source, hence generatign a spatial pattern of gene expression. ... Experiments in the 1970s and later confirmed that tissues are patterned by morphogen gradients."
-> "The most definitive example of a morphogen was provided with the identification of Bicoid function in the Drosophila embryo (Nuesslein teams in 1980s) ...
+> "The most definitive example of a morphogen was provided with the identification of Bicoid function in the Drosophila embryo (Nuesslein teams in 1980s) ..."
+ 
 
 Morphogen spreading can be described with an effective diffusion coefficient $D$ (in $\mu m^2/s$) and effective dddegradation rate $k$ (in $1/s$):
 
