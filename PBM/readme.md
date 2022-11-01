@@ -50,15 +50,23 @@ That is, $k = \frac{1}{\tau} \log 2$.
 [**Kicheva et al., Kinetics of morphogen gradient formation. Science. 2007 Jan 26;315(5811):521-5**](https://github.com/tatpongkatanyukul/AdventureBook/blob/main/PBM/raw/Kicheva_Science_2007.pdf)
 
 > "Dpp is produced at the anterior-posterior compartment boundary in the center of the wing imaginal disc of _Drosophila_(8). Dpp spreads nondirectionally, is degraded while spreading, and forms a gradient of concentration in the plane of the wing epithelim. Regardless of the actual transport mechanism, these facts imply that Dpp spreading can be captured by the physics of molecules that are producted in localized source, which generates a currrent $j_0$ [molecules / ( $\mu m \times s$ )] at the source boundary; that are degraded with a rate $k$ ( $s^{-1}$ ); and that spread in a nondirectional manner with an effective diffusion coefficient $D$ ( $\mu m^2 /s$ )". Thus, the rate of change of Dpp concentration in the $x-y$ plane, $C(x,y,t)$, is descript by the equation:"
+
 > $\partial_t C = D \nabla^2 C - k C + 2 j_0 \delta(x)$ (1)
 > where $t$ is time, $x > 0$ is the distance to the source in the target tissue, $\nabla^2$ is the Laplace operator, and $\delta$ is the Dirac delta function.
 > The steady-staet solution for Eq. 1 is a single exponential gradient:
 > $C(x) = C_0 e^{-x/\lambda}$
 > where the Dpp concentration $C(x)$ depends only on the distance $x$ from the source, the concentration $C_0$ at the source boundary, and the decay lenght $\lambda$ .
+
 > ... $\lambda = \sqrt{D/k}$
+
 > ... $C_0 = j_0 / \sqrt{D \cdot k}$
+
 > ... a decay length $\lambda$ = 20.2 $\pm$ 5.7 $\mu m$, ...
+
 >  ... the concentration of GFP-Dpp at the source boundary $C_0$ = 802 $\pm$ 312 molecules / $\mu m^2$ ...
+
 > ... the effective diffusion coefficient of GFP-Dpp was $D = 0.10 \pm 0.05 \mu m^2/s$ ...
+
 > ... Dpp was degraded at a rate $k=2.52 \times 10^{-4} \pm 1.29 \times 10^{-4} s^{-1}$ corresponding to a GFP-Dpp half-life of about 45 min...
+
 > ... We found $j_0 = 3.98 \pm 2.34 molecules / ( $\mu m \times s$ ) ...
