@@ -42,3 +42,11 @@ Sometimes, instead of the degradation rate $k$, the half-life of molecule $\tau$
 $\frac{1}{2} c_0 = c_0 e^{-k \tau}$.
 
 That is, $k = \frac{1}{\tau} \log 2$.
+
+**Example**
+
+> "The gradient of Decapentaplegic (Dpp) and Wingless (Wg) in _Drosophila_ imaginal discs, and Bicoid in the embryo have been analyzed considering effective diffusion and lienar degradation (Gregor et al. 2007; Kicheva et al. 2007). ... [the kinetic parameters of Dpp spreading] are consistent with the timescale of steady-state gradient formation (~8h). "
+
+**Kicheva et al., Kinetics of morphogen gradient formation. Science. 2007 Jan 26;315(5811):521-5**
+
+
