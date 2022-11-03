@@ -34,4 +34,13 @@ $A|v_j \rangle = \sum_i A_{ij} |w_i \rangle$.
 
 Example (Exercise 2.2). Suppose $V$ is a vector space with basis vectors $|0 \rangle$ and $|1 \rangle$,
 and $A$ is a linear operator from $V$ to $V$ such that $A |0 \rangle = |1 \rangle$ and $A |1 \rangle = |0 \rangle$.
-Give a matrix representation for $A$, with respect to the input basis $|0 \rangle $ , $|1 \rangle$, and the output basis $|0 \rangle $ , $|1 \rangle$. Find input and output bases which give rise to a different matrix representation of $A$.
+Give a matrix representation for $A$, with respect to the input basis $|0 \rangle$ , $|1 \rangle$, and the output basis $|0 \rangle$ , $|1 \rangle$. Find input and output bases which give rise to a different matrix representation of $A$.
+
+Soln:
+
+$A | 0 \rangle = A_{11} | 0 \rangle + A_{21} | 1 \rangle = | 1 \rangle$. Thus, $A_{11} = 0$, $A_{21} = 1$.
+
+$A | 1 \rangle = A_{12} | 0 \rangle + A_{22} | 1 \rangle = | 0 \rangle$. Thus, $A_{12} = 1$, $A_{22} = 0$.
+
+That is,
+$A = \begin{bmatrix}0 & 1\\ 1 & 0 \end{bmatrix}$. 
