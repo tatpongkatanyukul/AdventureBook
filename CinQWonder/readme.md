@@ -20,3 +20,11 @@ N & C: The postulates of quantum mechanics
 and the state of the system after the measurement is
 $\frac{M_m | \psi \rangle }{\sqrt{\langle \psi | M_m^\dagger M_m | \psi \rangle}}$.
 * (p 94) **Postulate 4**: The state space of a composite physical system is the tensor product of the state spaces of the component physical systems. Moreover, if we have systems numbered 1 through $n$, and system namer $i$ is prepared in the state $| \psi \rangle$, then the joint state of the total system is $| \psi_1 \rangle \otimes | \psi_2 \rangle \otimes \cdots \otimes | \psi_n \rangle$.
+
+
+N & C: Linear operators and matrices
+
+> "The most convenient way to understand linear operators is in terms of their _matrix representation_.
+> In fact, the linear operator and matrix viewpoints turn out to be completely equivalent."
+
+Suppose $A: V \rightarrow W$
