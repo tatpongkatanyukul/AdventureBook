@@ -32,4 +32,6 @@ Then for each $j$ in the range $1, \ldots, m$, there exists complex  numbers $A_
 
 $A|v_j \rangle = \sum_i A_{ij} |w_i \rangle$.
 
-Example (Exercise 2.2). Suppose $V$ is a vector space with basis vectors $|0 \rangle$ and $|1 \rangle$
+Example (Exercise 2.2). Suppose $V$ is a vector space with basis vectors $|0 \rangle$ and $|1 \rangle$,
+and $A$ is a linear operator from $V$ to $V$ such that $A |0 \rangle = |1 \rangle$ and $A |1 \rangle = |0 \rangle$.
+Give a matrix representation for $A$, with respect to the input basis $|0 \rangle $ , $|1 \rangle$, and the output basis $|0 \rangle $ , $|1 \rangle$. Find input and output bases which give rise to a different matrix representation of $A$.
