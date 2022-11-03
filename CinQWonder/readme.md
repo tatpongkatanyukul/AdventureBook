@@ -43,4 +43,4 @@ $A | 0 \rangle = A_{11} | 0 \rangle + A_{21} | 1 \rangle = | 1 \rangle$. Thus, $
 $A | 1 \rangle = A_{12} | 0 \rangle + A_{22} | 1 \rangle = | 0 \rangle$. Thus, $A_{12} = 1$, $A_{22} = 0$.
 
 That is,
-$A = \begin{bmatrix}0 & 1\\ 1 & 0 \end{bmatrix}$. 
+$A = [[0, 1], [1, 0]]$.
