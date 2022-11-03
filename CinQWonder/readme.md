@@ -27,4 +27,9 @@ N & C: Linear operators and matrices
 > "The most convenient way to understand linear operators is in terms of their _matrix representation_.
 > In fact, the linear operator and matrix viewpoints turn out to be completely equivalent."
 
-Suppose $A: V \rightarrow W$
+Suppose $A: V \rightarrow W$ is a linear operator between vector spaces $V$ and $W$. Suppose $|v_1 \rangle, \ldots, |v_m \rangle$ is a basis for $V$ and $|w_1 \rangle, \ldots, |w_n \rangle$ is a basis for $W$.
+Then for each $j$ in the range $1, \ldots, m$, there exists complex  numbers $A_{ij}$ through $A_{nj}$, such that
+
+$A|v_j \rangle = \sum_i A_{ij} |w_i \rangle$.
+
+Example (Exercise 2.2). Suppose $V$ is a vector space with basis vectors $|0 \rangle$ and $|1 \rangle$
