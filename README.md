@@ -12,6 +12,12 @@
 
 ---
 
+Decommission!
+
+* Public book git is at [https://github.com/tatpongkatanyukul/AdventuresML](https://github.com/tatpongkatanyukul/AdventuresML)
+
+I keep this for internal use.
+
 # The Adventures of Machine Learning in the World of Pattern Recognitiion 
 (a.k.a. The Adventure Book of Machine Learning)
 
